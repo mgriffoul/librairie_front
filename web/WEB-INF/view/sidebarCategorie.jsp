@@ -1,6 +1,13 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<FORM action="./index" method="GET" >
+     <br><input type="text" name="rec" value="" /><input type="submit" value="rechercher" name="go" /><br>
+     <br>
+</FORM> 
+
+
+
     <p class="lead">Categorie</p>
     <div class="list-group">
         <c:forEach items="${Categorie}" var="element">

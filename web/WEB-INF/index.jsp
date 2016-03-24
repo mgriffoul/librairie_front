@@ -32,7 +32,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Accueil</a>
+                <a class="navbar-brand" href="./index">Accueil</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -76,6 +76,25 @@
                 
             </div>  
             <%}%>
+            
+            
+            <!--Section catalogue après recherche de l'utilisateur-->
+             <% if ("rech".equals(request.getParameter("section"))) { %>
+            <div class="col-md-3">
+                <jsp:include page="/WEB-INF/view/sidebarCategorie.jsp"/>
+
+            </div>
+
+            <div class="col-md-9">
+                <jsp:include page="/WEB-INF/view/recherche.jsp"/>
+               
+                
+            </div>  
+            <%}%>
+            
+            
+            
+            
             
             
             <!--Section catalogue categorie-->
