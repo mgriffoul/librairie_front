@@ -2,10 +2,11 @@ package servlets;
 
 import beans.Bdd;
 import beans.Categorie;
+import beans.ConnexionForm;
 import beans.Edition;
 import beans.Isbn;
 import beans.SousCategorie;
-import beans.beanLogin;
+import beans.Utilisateur;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -38,12 +39,24 @@ public class index extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String url = "/WEB-INF/index.jsp";
         HttpSession session = request.getSession();
 
+        String ATT_USER = "utilisateur";
+        String ATT_FORM = "form";
+        String ATT_SESSION_USER = "sessionUtilisateur";
+        
+        String section = "";
+        String ss1 = "/WEB-INF/view/sidebarCategorie.jsp";
+        String ss2 = "/WEB-INF/view/carousel.jsp";
+        String ss3 = "/WEB-INF/view/smallBook.jsp";
+        String ss4 = "/WEB-INF/view/focus.jsp";
+        
+        
 //SECTION NULL ----> INDEX        
         if (request.getParameter("section") == null) {
-
+            section = "/WEB-INF/S2.jsp";
             //recuperation de la liste des categorie
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
 
@@ -71,11 +84,14 @@ public class index extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            request.setAttribute("ss1", ss1);
+            request.setAttribute("ss2", ss2);
+            request.setAttribute("ss3", ss3);
+            
             //envoie requete
             request.setAttribute("Edition", listeEditionMoment);
             request.setAttribute("Categorie", listeCategorie);
-
+            
         }
 //FIN DE LA SECTION=NULL (INDEX)
 
@@ -90,6 +106,7 @@ public class index extends HttpServlet {
 
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
 
+            
             request.setAttribute("Categorie", listeCategorie);
             request.setAttribute("Edition", edit);
 
@@ -105,25 +122,25 @@ public class index extends HttpServlet {
 
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
             ArrayList<Edition> listeEdition = new ArrayList();
-            
+
             Categorie cate = new Categorie(id);
             cate.chargerCategorie();
 
             if (request.getParameter("ssCat") == null) {
-                
+
                 System.out.println(">>>>>>>>>>  ssCat null");
-                
+
                 Bdd bdd = new Bdd();
                 Connection con = bdd.connecterBdd();
-                
+
                 try {
                     String query = "SELECT dbo.CATEGORIE.IDCATEGORIE, dbo.SOUSCATEGORIE.IDSOUSCATEGORIE, dbo.EDITION.ISBN"
                             + " FROM dbo.CATEGORIE INNER JOIN"
                             + " dbo.SOUSCATEGORIE ON dbo.CATEGORIE.IDCATEGORIE = dbo.SOUSCATEGORIE.IDCATEGORIE INNER JOIN"
                             + " dbo.AFFECTSOUSCATEGORIE ON dbo.SOUSCATEGORIE.IDSOUSCATEGORIE = dbo.AFFECTSOUSCATEGORIE.IDSOUSCATEGORIE INNER JOIN"
                             + " dbo.EDITION ON dbo.AFFECTSOUSCATEGORIE.ISBN = dbo.EDITION.ISBN "
-                            + " where dbo.CATEGORIE.idcategorie= " +id;
-                    
+                            + " where dbo.CATEGORIE.idcategorie= " + id;
+
                     Statement stmt = con.createStatement();
 
                     ResultSet rs = stmt.executeQuery(query);
@@ -151,93 +168,42 @@ public class index extends HttpServlet {
         }
 //FIN SECTION CATALOGUE PAR CATEGORIE       
 
+       
         if ("reg".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=user&action=reg";
         }
-
-//        if ("vuepanier".equals(request.getParameter("section"))) {
-//            url = "/WEB-INF/jspPanier.jsp";
-//            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
-//            if (bPanier == null) {
-//                bPanier = new beanPanier();
-//                session.setAttribute("panier", bPanier);
-//            }
-//            request.setAttribute("estVide", bPanier.isEmpty());
-//            request.setAttribute("list", bPanier.getList());
-//        }
-//        if ("panier".equals(request.getParameter("section"))) {
-//            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
-//            if (bPanier == null) {
-//                bPanier = new beanPanier();
-//                session.setAttribute("panier", bPanier);
-//            }
-//            if (request.getParameter("add") != null) {
-//                bPanier.add(request.getParameter("add"));
-//            }
-//            if (request.getParameter("dec") != null) {
-//                bPanier.dec(request.getParameter("dec"));
-//            }
-//            if (request.getParameter("del") != null) {
-//                bPanier.del(request.getParameter("del"));
-//            }
-//            if (request.getParameter("clear") != null) {
-//                bPanier.clear();
-//            }
-//        }
-        if ("login".equals(request.getParameter("section"))) {
-
-            if (request.getParameter("doIt") != null) {
-                beanLogin bLogin = (beanLogin) request.getAttribute("beanLogin");
-                if (bLogin == null) {
-                    bLogin = new beanLogin();
-                    request.setAttribute("beanLogin", bLogin);
-                }
-                if (bLogin.check(request.getParameter("login"),
-                        request.getParameter("password"))) {
-                    url = "/WEB-INF/jspWelcome.jsp";
-                    request.setAttribute("welcome", request.getParameter("login"));
-                    Cookie c = new Cookie("user", request.getParameter("login"));
-                    response.addCookie(c);
-                } else {
-                    request.setAttribute("msg", "Utilisateur/Mot de passe invalide !!!");
-                    request.setAttribute("user", request.getParameter("login"));
-                    Cookie essai = getCookie(request.getCookies(), "essai");
-                    if (essai == null) {
-                        essai = new Cookie("essai", "*");
-                    } else {
-                        essai.setValue(essai.getValue() + "*");
-                    }
-                    essai.setMaxAge(90);
-                    response.addCookie(essai);
-                    if (essai.getValue().length() >= 3) {
-                        url = "/WEB-INF/jspFatalError.jsp";
-                        request.setAttribute("fatalerror", "Trop de tentatives !!!");
-                    }
-                }
-            }
-//
-//            Cookie c = getCookie(request.getCookies(), "user");
-//            if (c != null) {
-//                url = "/WEB-INF/jspWelcome.jsp";
-//                request.setAttribute("welcome", c.getValue());
-//            }
-//            if (request.getParameter("deconnect") != null) {
-//                Cookie cc = new Cookie("user", "");
-//                cc.setMaxAge(0);
-//                response.addCookie(cc);
-//                url = "/WEB-INF/jspLogin.jsp";
-//            }
-//
-//            Cookie ccc = getCookie(request.getCookies(), "essai");
-//            if (ccc != null) {
-//                if (ccc.getValue().length() >= 3) {
-//                    url = "/WEB-INF/jspFatalError.jsp";
-//                    request.setAttribute("fatalerror", "Beaucoup trop de tentatives !!!");
-//                }
-//            }
+        
+         if ("loggout".equals(request.getParameter("section"))) {
+            session.invalidate();
+            url= "/WEB-INF/index.jsp";
         }
-        System.out.println(">>>>>>>>>" + url);
+        
+      
+        if ("log".equals(request.getParameter("section"))) {
+            section = "login";
+            if ("submit".equals(request.getParameter("action"))) {
+                /* Préparation de l'objet formulaire */
+                ConnexionForm form = new ConnexionForm();
 
+                /* Traitement de la requête et récupération du bean en résultant */
+                Utilisateur utilisateur = form.connecterUtilisateur(request);
+                /**
+                 * Si aucune erreur de validation n'a eu lieu, alors ajout du
+                 * bean Utilisateur à la session, sinon suppression du bean de
+                 * la session.
+                 */
+                if (form.getErreurs().isEmpty()) {
+                    session.setAttribute(ATT_SESSION_USER, utilisateur);
+                } else {
+                    session.setAttribute(ATT_SESSION_USER, null);
+                }
+
+                /* Stockage du formulaire et du bean dans l'objet request */
+                request.setAttribute(ATT_FORM, form);
+                request.setAttribute(ATT_USER, utilisateur);
+            }
+        }
+        request.setAttribute("section", section);
         request.getRequestDispatcher(url).include(request, response);
     }
 

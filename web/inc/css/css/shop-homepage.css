@@ -56,3 +56,107 @@ footer {
 .col-sm-4 col-lg-4 col-md-4{
     height : 500px;
 }
+
+
+
+
+
+/* Général ------------------------------------------------------------------------------------- */
+
+body, p, legend, label, input {
+    font: normal 8pt verdana, helvetica, sans-serif;
+}
+
+/* Forms --------------------------------------------------------------------------------------- */
+fieldset {
+    padding: 10px;
+    border: 1px #222222 solid;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width:40%;
+}
+
+h2{
+        margin-left: auto;
+    margin-right: auto;
+    width:40%;
+    
+}
+
+legend {
+    font-weight: bold;
+    color: #222222;
+    font-size: 20px;
+    padding: 10px;
+    
+}
+
+form label {
+    float: left;
+    width: 200px;
+    margin: 3px 0px 0px 0px;
+}
+
+form input {
+    margin: 8px 0px 0px 0px; 
+    border: 1px #999 solid;
+
+}
+
+.button{
+    background-color: #ececec; 
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    position:relative;
+    left:50%;
+}
+
+form input.sansLabel {
+    margin-left: 200px;
+}
+
+/* Styles et couleurs -------------------------------------------------------------------------- */
+.requis {
+    color: #c00;
+}
+
+.erreur {
+    color: #900;
+}
+
+.succes {
+    color: #090;
+}
+
+.info {
+    font-style: italic;
+    color: #E8A22B;
+}
+
+
+
+
+
+
+.shop{
+    position : static;
+    top:0;
+    float : right;
+    
+}
+.shop label{
+    color: white;
+}
+
+.menu{
+    position: static;
+    float: right;
+    border: 1px #ffffff solid;
+}
+menu ul li a{
+    color: white;
+}
