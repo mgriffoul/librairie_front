@@ -152,6 +152,59 @@ public class index extends HttpServlet {
         }
 //FIN SECTION CATALOGUE PAR CATEGORIE       
 
+        
+        
+//SECTION RECHERCHE
+
+//FIN SECTION RECHERCHE
+        
+        
+        if (request.getParameter("rec")!=null){
+            
+            ArrayList<Edition> listeEdition = new ArrayList();
+            String rech = "%"+request.getParameter("rec")+"%";
+            
+             url = "/WEB-INF/index.jsp?section=rech&value=" + request.getParameter("rec");
+            
+             Bdd bdd = new Bdd();
+                Connection con = bdd.connecterBdd();
+                
+                try {
+                    String query = "SELECT dbo.EDITION.ISBN, dbo.OEUVRE.TITRE, dbo.OEUVRE.SOUSTITRE, dbo.EDITEUR.NOMEDITEUR, dbo.CONTRIBUTEUR.NOMCONTRIBUTEUR" +
+                                   " FROM dbo.EDITION LEFT JOIN\n" +
+                                   " dbo.CONTRIBUTEUR ON dbo.EDITION.IDTRADUCTEUR = dbo.CONTRIBUTEUR.IDCONTRIBUTEUR AND \n" +
+                                   " dbo.EDITION.IDPREFACEUR = dbo.CONTRIBUTEUR.IDCONTRIBUTEUR LEFT JOIN" +
+                                   " dbo.OEUVRE ON dbo.EDITION.IDOEUVRE = dbo.OEUVRE.IDOEUVRE LEFT JOIN" +
+                                   " dbo.EDITEUR ON dbo.EDITION.IDEDITEUR = dbo.EDITEUR.IDEDITEUR " +
+                                   " WHERE titre LIKE '"+rech+"' OR SOUSTITRE LIKE '"+rech+"' " +
+                                   " OR NOMEDITEUR LIKE '"+rech+"' OR NOMCONTRIBUTEUR LIKE '"+rech+"' ";
+                    
+                    Statement stmt = con.createStatement();
+
+                    ResultSet rs = stmt.executeQuery(query);
+
+                    while (rs.next()) {
+                        Edition edition = new Edition();
+                        Isbn isbn = new Isbn();
+                        isbn.setNumeroIsbn(rs.getString("isbn"));
+                        edition.setIsbn(isbn);
+                        edition.chargerEdition();
+                        listeEdition.add(edition);
+                    }
+                    rs.close();
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
+                request.setAttribute("Recherche", request.getParameter("rec"));
+                request.setAttribute("Edition", listeEdition);
+                
+        }
+
+        
+        
+        
         if ("reg".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=user&action=reg";
         }
