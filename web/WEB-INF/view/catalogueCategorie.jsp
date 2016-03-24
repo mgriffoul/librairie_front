@@ -9,8 +9,6 @@
                                 
                             </div>
     
-    
-    
     <br><hr>
     <p class="lead">${CateChoisie}</p>
 

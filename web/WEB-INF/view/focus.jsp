@@ -10,6 +10,8 @@
         <div class="caption-full">
             <h4 class="pull-right">${Edition.prixTtc} EUR</h4>
             <h3>${Edition.titre}</h3>
+            <h4> ${Edition.nomAuteur}</h4>
+            <h5>Edition : ${Edition.editeur}
             <br>
             <p><h4>Synopsis :</h4> <br>${Edition.resume}</p>
         </div>
@@ -35,7 +37,7 @@
         </div>
         
             <p>  <a href="./index?section=panier&add=${element.numeroIsbn}">
-                    <img src="ImagesLibrairie/Bouton/commander.jpg" alt="">
+                    <h4> <img class="pullright" src="ImagesLibrairie/Bouton/commander.jpg" alt=""></h4>
                 </a>
             </p>     
     </div>

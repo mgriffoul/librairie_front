@@ -206,10 +206,10 @@
 
     <!-- jQuery -->
    
-    <script src="../inc/css/js/jquery.js"></script>
+    <script src="/inc/css/js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
    
-    <script src="../inc/css/js/bootstrap.min.js"></script>
+    <script src="/inc/css/js/bootstrap.min.js"></script>
     
     
 </body>
