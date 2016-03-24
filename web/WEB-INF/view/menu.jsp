@@ -10,6 +10,9 @@
             <a href="#">Contact</a>
         </li>
         <li>
-            <a href="/LibrairieFront/controller?section=user&action=reg">Inscription</a>
+            <a href="/siteLibrairie/index?section=user&action=reg">Inscription</a>
+        </li>
+        <li>
+            <a href="/siteLibrairie/index?section=acc">Mon Compte</a>
         </li>
     </ul>
