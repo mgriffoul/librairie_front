@@ -14,7 +14,7 @@
     <link href="inc/css/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="inc/css/css/shop-item.css" rel="stylesheet">
+    <link href="inc/css/css/shop-homepage.css" rel="stylesheet">
 </head>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

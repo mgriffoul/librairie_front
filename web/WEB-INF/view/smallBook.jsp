@@ -8,10 +8,11 @@
         <div class="col-sm-4 col-lg-4 col-md-4">
 
             <div class="thumbnail">
+                
                 <img src="${element.lienVignetteAccueil}" alt="">
                 <hr>
                 <div class="caption">
-                    <h4 class="pull-right">${element.prixTtc} EUR</h4>
+                    <h4 >${element.prixTtc} EUR</h4>
                     <h4><a href="./index?section=focus&value=${element.numeroIsbn}">${element.titre}</a></h4>
                     <h5><a href="./index?section=focus&value=${element.numeroIsbn}">${element.sousTitre}</a></h5>
 
