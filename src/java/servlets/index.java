@@ -6,6 +6,7 @@ import beans.Edition;
 import beans.Isbn;
 import beans.SousCategorie;
 import beans.beanLogin;
+import beans.beanPanier;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -215,6 +216,41 @@ public class index extends HttpServlet {
                     }
                 }
             }
+// SECTION PANIER
+            if ("vuepanier".equals(request.getParameter("section"))) {
+            url = "./WEB-INF/view/jspPanier.jsp";
+            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+            
+            if (bPanier == null) {
+                bPanier = new beanPanier();
+                session.setAttribute("panier", bPanier);
+            }
+            request.setAttribute("estVide", bPanier.isEmpty());
+            request.setAttribute("list", bPanier.getList());
+        }
+        if ("panier".equals(request.getParameter("section"))) {
+            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+
+            if (bPanier == null) {
+                bPanier = new beanPanier();
+                session.setAttribute("panier", bPanier);
+            }
+            if (request.getParameter("add") != null) {
+                bPanier.add(request.getParameter("add"));
+            }
+            if (request.getParameter("dec") != null){
+                bPanier.dec(request.getParameter("dec"));
+            }
+            if (request.getParameter("del") != null){
+                bPanier.del(request.getParameter("del"));
+            }
+            if (request.getParameter("clear") != null) {
+                bPanier.clear();
+            }
+        }
+//FIN SECTION PANIER
+            
+            
 //
 //            Cookie c = getCookie(request.getCookies(), "user");
 //            if (c != null) {
