@@ -10,6 +10,9 @@
         <div class="caption-full">
             <h4 class="pull-right">${Edition.prixTtc} EUR</h4>
             <h3>${Edition.titre}</h3>
+            <h4>${Edition.sousTitre}</h4>
+            <h4> ${Edition.nomAuteur}</h4>
+            <h5>Edition : ${Edition.editeur}
             <br>
             <p><h4>Synopsis :</h4> <br>${Edition.resume}</p>
         </div>
@@ -30,21 +33,24 @@
                     </c:if> 
                 </c:forEach> </p>
                 </c:if>
-
-            </p>
-        </div>
+            <br><br> 
+           
+ <div class="text-right">
+             <a href="./index?section=focus&value=${Edition.numeroIsbn}&det=ok" class="btn btn-success"> voir les détails</a>
+ </div>
+        
         
             <p>  <a href="./index?section=panier&add=${element.numeroIsbn}">
-                    <img src="ImagesLibrairie/Bouton/commander.jpg" alt="">
+                    <img  src="ImagesLibrairie/Bouton/commander.jpg" alt=""></h4>
                 </a>
             </p>     
     </div>
-
+</div>
     <div class="well">
 
-        <div class="text-right">
+        
             <a class="btn btn-success">Leave a Review</a>
-        </div>
+       
 
         <hr>
 

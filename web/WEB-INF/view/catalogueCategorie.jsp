@@ -1,8 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<br>
-<br>
-<br>
-<br>
 
 <div class="row">
     
@@ -12,8 +8,6 @@
                                 </div>
                                 
                             </div>
-    
-    
     
     <br><hr>
     <p class="lead">${CateChoisie}</p>
@@ -29,7 +23,7 @@
             <div class="thumbnail">
                 <img src="${element.lienVignetteAccueil}" alt="">
                 <div class="caption">
-                    <h4 class="pull-right">${element.prixTtc} EUR</h4>
+                    <h4>${element.prixTtc} EUR</h4>
                     <h4><a href="./index?section=focus&value=${element.numeroIsbn}">${element.titre}</a></h4>
                     <h5><a href="./index?section=focus&value=${element.numeroIsbn}">${element.sousTitre}</a></h5>
 
@@ -38,10 +32,7 @@
                     <p>Edition : ${element.nomEditeur}</p>
                 </div>
 
-
-
                 <div class="ratings">
-
                     <p> Note :
                         <c:if test="${empty element.note}">
                             Aucune note pour l'instant

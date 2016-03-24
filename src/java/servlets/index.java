@@ -6,7 +6,13 @@ import beans.ConnexionForm;
 import beans.Edition;
 import beans.Isbn;
 import beans.SousCategorie;
+<<<<<<< HEAD
 import beans.Utilisateur;
+=======
+import beans.beanClient;
+import beans.beanLogin;
+import beans.beanPanier;
+>>>>>>> cd7f979f4b6f510c049f15ca3f8f3f45196d5905
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -167,8 +173,220 @@ public class index extends HttpServlet {
 
         }
 //FIN SECTION CATALOGUE PAR CATEGORIE       
+        
+        // debut client
+           // affichage nom, prenom...
+        if ("acc".equals(request.getParameter("section"))) {
+            url = "/WEB-INF/index.jsp?section=acc";
 
+<<<<<<< HEAD
        
+=======
+            Bdd bdd = new Bdd();
+            Connection con = bdd.connecterBdd();
+            String str = "bruce28";
+
+            try {
+                String query = "SELECT * FROM client WHERE pseudo = '"+str+"'";
+
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                beanClient client = new beanClient();
+                String pseudo="";
+                String nomclient="";
+                String prenomclient="";
+                String mailclient="";
+                String civilite="";
+                String datenaissance="";
+                String telClient="";
+                String mdpClient="";
+                
+                while (rs.next()) {
+                    client.setCiviliteclient(rs.getString("civilite"));
+                    client.setPseudoClient(rs.getString("pseudo"));
+                    client.setNomClient(rs.getString("nomclient"));
+                    client.setPrenomClient(rs.getString("prenomclient"));
+                    client.setEmailClient(rs.getString("mailclient"));
+                    client.setDatenaissance(rs.getString("datenaissance"));
+                    client.setTelephoneClient(rs.getString("telephoneclient"));
+                    client.setMdpClient(rs.getString("motdepasseclient"));
+
+                    civilite=client.getCiviliteclient();
+                    pseudo=client.getPseudoClient();
+                    nomclient=client.getNomClient();
+                    prenomclient=client.getPrenomClient();
+                    mailclient=client.getEmailClient();
+                    datenaissance=client.getDatenaissance();
+                    telClient=client.getTelephoneClient();
+                    mdpClient=client.getMdpClient();
+                    
+                    if (civilite.equals("h")){
+                        civilite="Homme";
+                    }
+                    if (civilite.equals("f")){
+                        civilite="Femme";
+                    }
+                }
+
+                request.setAttribute("civilite",civilite);
+                request.setAttribute("pseudo", pseudo);
+                request.setAttribute("nomclient", nomclient);
+                request.setAttribute("prenomclient", prenomclient);
+                request.setAttribute("mailclient", mailclient);
+                request.setAttribute("datenaissance",datenaissance);
+                request.setAttribute("telClient", telClient);
+                request.setAttribute("mdpClient",mdpClient);
+                
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            // AFFICHAGE ADRESSE FACTURATION
+            try {
+                String query = "SELECT * FROM adresse WHERE pseudo = '"+str+"' AND natureadresse='f' AND statutadresse='a'";
+
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                beanClient client = new beanClient();
+                String adresseFac="";
+                String complementFac="";
+                String codePostalFac="";
+                String villeFac="";
+                String paysFac="";
+                
+                
+                while (rs.next()) {
+                    client.setAdresseFac(rs.getString("adresseclient"));
+                    client.setComplementFac(rs.getString("adressecomplement"));
+                    client.setCodePostalFac(rs.getString("codepostal"));
+                    client.setVilleFac(rs.getString("ville"));
+                    client.setPaysFac(rs.getString("pays"));
+                    
+                    adresseFac=client.getAdresseFac();
+                    complementFac=client.getComplementFac();
+                    codePostalFac=client.getCodePostalFac();
+                    villeFac=client.getVilleFac();
+                    paysFac=client.getPaysFac();
+                    
+                    if (complementFac == null){
+                    complementFac=".";
+                    }
+                }
+
+                request.setAttribute("adresseFac",adresseFac);
+                request.setAttribute("complementFac", complementFac);
+                request.setAttribute("codePostalFac", codePostalFac);
+                request.setAttribute("villeFac", villeFac);
+                request.setAttribute("paysFac", paysFac);
+                
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            // AFFICHAGE ADRESSE LIVRAISON
+            try {
+                String query = "SELECT * FROM adresse WHERE pseudo = '"+str+"' AND natureadresse='l' AND statutadresse='a'";
+
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                beanClient client = new beanClient();
+                String adresseLiv="";
+                String complementLiv="";
+                String codePostalLiv="";
+                String villeLiv="";
+                String paysLiv="";
+                
+                
+                while (rs.next()) {
+                    client.setAdresseLiv(rs.getString("adresseclient"));
+                    client.setComplementLiv(rs.getString("adressecomplement"));
+                    client.setCodePostalLiv(rs.getString("codepostal"));
+                    client.setVilleLiv(rs.getString("ville"));
+                    client.setPaysLiv(rs.getString("pays"));
+                    
+                    adresseLiv=client.getAdresseLiv();
+                    complementLiv=client.getComplementLiv();
+                    codePostalLiv=client.getCodePostalLiv();
+                    villeLiv=client.getVilleLiv();
+                    paysLiv=client.getPaysLiv();
+                    
+                    if (complementLiv == null){
+                    complementLiv=".";
+                    }
+                }
+
+                request.setAttribute("adresseLiv",adresseLiv);
+                request.setAttribute("complementLiv", complementLiv);
+                request.setAttribute("codePostalLiv", codePostalLiv);
+                request.setAttribute("villeLiv", villeLiv);
+                request.setAttribute("paysLiv", paysLiv);
+                
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+            
+        }
+// fin client
+
+        
+        
+//SECTION RECHERCHE
+
+//FIN SECTION RECHERCHE
+        
+        
+        if (request.getParameter("rec")!=null){
+            
+            ArrayList<Edition> listeEdition = new ArrayList();
+            String rech = "%"+request.getParameter("rec")+"%";
+            
+             url = "/WEB-INF/index.jsp?section=rech&value=" + request.getParameter("rec");
+            
+             Bdd bdd = new Bdd();
+                Connection con = bdd.connecterBdd();
+                
+                try {
+                    String query = "SELECT dbo.EDITION.ISBN, dbo.OEUVRE.TITRE, dbo.OEUVRE.SOUSTITRE, dbo.EDITEUR.NOMEDITEUR, dbo.CONTRIBUTEUR.NOMCONTRIBUTEUR" +
+                                   " FROM dbo.EDITION LEFT JOIN\n" +
+                                   " dbo.CONTRIBUTEUR ON dbo.EDITION.IDTRADUCTEUR = dbo.CONTRIBUTEUR.IDCONTRIBUTEUR AND \n" +
+                                   " dbo.EDITION.IDPREFACEUR = dbo.CONTRIBUTEUR.IDCONTRIBUTEUR LEFT JOIN" +
+                                   " dbo.OEUVRE ON dbo.EDITION.IDOEUVRE = dbo.OEUVRE.IDOEUVRE LEFT JOIN" +
+                                   " dbo.EDITEUR ON dbo.EDITION.IDEDITEUR = dbo.EDITEUR.IDEDITEUR " +
+                                   " WHERE titre LIKE '"+rech+"' OR SOUSTITRE LIKE '"+rech+"' " +
+                                   " OR NOMEDITEUR LIKE '"+rech+"' OR NOMCONTRIBUTEUR LIKE '"+rech+"' ";
+                    
+                    Statement stmt = con.createStatement();
+
+                    ResultSet rs = stmt.executeQuery(query);
+
+                    while (rs.next()) {
+                        Edition edition = new Edition();
+                        Isbn isbn = new Isbn();
+                        isbn.setNumeroIsbn(rs.getString("isbn"));
+                        edition.setIsbn(isbn);
+                        edition.chargerEdition();
+                        listeEdition.add(edition);
+                    }
+                    rs.close();
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
+                request.setAttribute("Recherche", request.getParameter("rec"));
+                request.setAttribute("Edition", listeEdition);
+                
+        }
+
+        
+        
+        
+>>>>>>> cd7f979f4b6f510c049f15ca3f8f3f45196d5905
         if ("reg".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=user&action=reg";
         }
@@ -202,6 +420,64 @@ public class index extends HttpServlet {
                 request.setAttribute(ATT_FORM, form);
                 request.setAttribute(ATT_USER, utilisateur);
             }
+<<<<<<< HEAD
+=======
+// SECTION PANIER
+            if ("vuepanier".equals(request.getParameter("section"))) {
+            url = "./WEB-INF/view/jspPanier.jsp";
+            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+            
+            if (bPanier == null) {
+                bPanier = new beanPanier();
+                session.setAttribute("panier", bPanier);
+            }
+            request.setAttribute("estVide", bPanier.isEmpty());
+            request.setAttribute("list", bPanier.getList());
+        }
+        if ("panier".equals(request.getParameter("section"))) {
+            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+
+            if (bPanier == null) {
+                bPanier = new beanPanier();
+                session.setAttribute("panier", bPanier);
+            }
+            if (request.getParameter("add") != null) {
+                bPanier.add(request.getParameter("add"));
+            }
+            if (request.getParameter("dec") != null){
+                bPanier.dec(request.getParameter("dec"));
+            }
+            if (request.getParameter("del") != null){
+                bPanier.del(request.getParameter("del"));
+            }
+            if (request.getParameter("clear") != null) {
+                bPanier.clear();
+            }
+        }
+//FIN SECTION PANIER
+            
+            
+//
+//            Cookie c = getCookie(request.getCookies(), "user");
+//            if (c != null) {
+//                url = "/WEB-INF/jspWelcome.jsp";
+//                request.setAttribute("welcome", c.getValue());
+//            }
+//            if (request.getParameter("deconnect") != null) {
+//                Cookie cc = new Cookie("user", "");
+//                cc.setMaxAge(0);
+//                response.addCookie(cc);
+//                url = "/WEB-INF/jspLogin.jsp";
+//            }
+//
+//            Cookie ccc = getCookie(request.getCookies(), "essai");
+//            if (ccc != null) {
+//                if (ccc.getValue().length() >= 3) {
+//                    url = "/WEB-INF/jspFatalError.jsp";
+//                    request.setAttribute("fatalerror", "Beaucoup trop de tentatives !!!");
+//                }
+//            }
+>>>>>>> cd7f979f4b6f510c049f15ca3f8f3f45196d5905
         }
         request.setAttribute("section", section);
         request.getRequestDispatcher(url).include(request, response);
