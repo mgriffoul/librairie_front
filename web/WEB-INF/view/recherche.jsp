@@ -10,11 +10,14 @@
                             </div>
     
     <br><hr>
-    <p class="lead">Nos livres correspondant à "${Recherche}"</p>
+   
 
-    
-    
-    
+    <c:if test="${empty Edition}">
+        <h4><font color="red">Désolé, aucun résultat trouvé pour "${Recherche}"</font></h4>
+    </c:if>
+     <c:if test="${not empty Edition}">
+     <p class="lead">Nos livres correspondant à "${Recherche}"</p>
+        </c:if>
     <c:forEach items="${Edition}" var="element">
 
         

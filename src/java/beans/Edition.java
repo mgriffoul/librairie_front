@@ -187,8 +187,8 @@ public class Edition implements Serializable {
             f = this.prixVenteHt + ((this.prixVenteHt * this.tva.getTauxTva()) / 100);
         }
 
-        DecimalFormat df = new DecimalFormat("#.##");
-       String fl = String.valueOf(df.format(f));
+        DecimalFormat df = new DecimalFormat("#.00");
+        String fl = String.valueOf(df.format(f));
 
         return fl;
     }
