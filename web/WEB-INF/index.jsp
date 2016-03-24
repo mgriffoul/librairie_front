@@ -100,6 +100,12 @@
             <jsp:include page="/WEB-INF/view/register.jsp"/>
             <%}%>
             <%}%>
+            <!-- affichage compte client -->
+            <!-- voir pour mettre un if cookie on renvoit vers acc -->
+            <!-- si pas de cookie on renvoit vers login.jsp -->
+            <%if ("acc".equals(request.getParameter("section"))) {%>
+            <jsp:include page="/WEB-INF/view/client.jsp"/>
+            <%}%>
 
         </div>
 
