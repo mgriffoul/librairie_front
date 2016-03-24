@@ -212,10 +212,10 @@
 
     <!-- jQuery -->
    
-    <script src="/inc/css/js/jquery.js"></script>
+    <script src="/librairie_git_front/inc/css/js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
    
-    <script src="/inc/css/js/bootstrap.min.js"></script>
+    <script src="/librairie_git_front/inc/css/js/bootstrap.min.js"></script>
     
     
 </body>
