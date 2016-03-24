@@ -18,3 +18,4 @@ genfiles.properties
 src/conf/MANIFEST.MF
 build.xml
 /build/
+Bdd.java
