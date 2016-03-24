@@ -54,6 +54,8 @@ public class index extends HttpServlet {
         String ss2 = "/WEB-INF/view/carousel.jsp";
         String ss3 = "/WEB-INF/view/smallBook.jsp";
         String ss4 = "/WEB-INF/view/focus.jsp";
+        String ss5 = "/WEB-INF/view/catalogueCategorie.jsp";
+        String ss6 = "/WEB-INF/view/recherche.jsp";
         
         
 //SECTION NULL ----> INDEX        
@@ -99,7 +101,9 @@ public class index extends HttpServlet {
 
 //SECTION = FOCUS (zoom du livre)        
         if ("focus".equals(request.getParameter("section"))) {
-            url = "/WEB-INF/index.jsp?section=focus";
+            
+            section = "/WEB-INF/S3.jsp";
+            
             Edition edit = new Edition();
             Isbn isb = new Isbn();
             isb.setNumeroIsbn(request.getParameter("value"));
@@ -108,7 +112,8 @@ public class index extends HttpServlet {
 
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
 
-            
+              request.setAttribute("ss1", ss1);
+            request.setAttribute("ss4", ss2);
             request.setAttribute("Categorie", listeCategorie);
             request.setAttribute("Edition", edit);
 
@@ -117,7 +122,7 @@ public class index extends HttpServlet {
 
 //SECTION CATALOGUE PAR CATEGORIE        
         if ("cat".equals(request.getParameter("section"))) {
-            url = "/WEB-INF/index.jsp?section=cat&value=" + request.getParameter("value");
+            section = "/WEB-INF/S4.jsp";
 
             int id = Integer.valueOf(request.getParameter("value"));
             ArrayList<SousCategorie> listeSousCate = Categorie.recupererSousCategorie(id);
@@ -162,6 +167,8 @@ public class index extends HttpServlet {
                 }
             }
 
+            request.setAttribute("ss1", ss1);
+            request.setAttribute("ss5", ss2);
             request.setAttribute("Edition", listeEdition);
             request.setAttribute("Categorie", listeCategorie);
             request.setAttribute("ListeSousCate", listeSousCate);
@@ -338,7 +345,7 @@ public class index extends HttpServlet {
             ArrayList<Edition> listeEdition = new ArrayList();
             String rech = "%"+request.getParameter("rec")+"%";
             
-             url = "/WEB-INF/index.jsp?section=rech&value=" + request.getParameter("rec");
+             section = "/WEB-INF/S5.jsp";
             
              Bdd bdd = new Bdd();
                 Connection con = bdd.connecterBdd();
@@ -371,10 +378,21 @@ public class index extends HttpServlet {
                     Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
                 }
             
+                
+                
+                request.setAttribute("ss1", ss1);
+                request.setAttribute("ss6", ss2);
                 request.setAttribute("Recherche", request.getParameter("rec"));
                 request.setAttribute("Edition", listeEdition);
                 
+                
+                
+                
         }   
+        
+        
+        
+        
         
         if ("reg".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=user&action=reg";
