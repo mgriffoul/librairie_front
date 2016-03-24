@@ -5,6 +5,7 @@ import beans.Categorie;
 import beans.Edition;
 import beans.Isbn;
 import beans.SousCategorie;
+import beans.beanClient;
 import beans.beanLogin;
 import beans.beanPanier;
 import java.io.IOException;
@@ -151,6 +152,162 @@ public class index extends HttpServlet {
 
         }
 //FIN SECTION CATALOGUE PAR CATEGORIE       
+        
+        // debut client
+           // affichage nom, prenom...
+        if ("acc".equals(request.getParameter("section"))) {
+            url = "/WEB-INF/index.jsp?section=acc";
+
+            Bdd bdd = new Bdd();
+            Connection con = bdd.connecterBdd();
+            String str = "bruce28";
+
+            try {
+                String query = "SELECT * FROM client WHERE pseudo = '"+str+"'";
+
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                beanClient client = new beanClient();
+                String pseudo="";
+                String nomclient="";
+                String prenomclient="";
+                String mailclient="";
+                String civilite="";
+                String datenaissance="";
+                String telClient="";
+                String mdpClient="";
+                
+                while (rs.next()) {
+                    client.setCiviliteclient(rs.getString("civilite"));
+                    client.setPseudoClient(rs.getString("pseudo"));
+                    client.setNomClient(rs.getString("nomclient"));
+                    client.setPrenomClient(rs.getString("prenomclient"));
+                    client.setEmailClient(rs.getString("mailclient"));
+                    client.setDatenaissance(rs.getString("datenaissance"));
+                    client.setTelephoneClient(rs.getString("telephoneclient"));
+                    client.setMdpClient(rs.getString("motdepasseclient"));
+
+                    civilite=client.getCiviliteclient();
+                    pseudo=client.getPseudoClient();
+                    nomclient=client.getNomClient();
+                    prenomclient=client.getPrenomClient();
+                    mailclient=client.getEmailClient();
+                    datenaissance=client.getDatenaissance();
+                    telClient=client.getTelephoneClient();
+                    mdpClient=client.getMdpClient();
+                    
+                    if (civilite.equals("h")){
+                        civilite="Homme";
+                    }
+                    if (civilite.equals("f")){
+                        civilite="Femme";
+                    }
+                }
+
+                request.setAttribute("civilite",civilite);
+                request.setAttribute("pseudo", pseudo);
+                request.setAttribute("nomclient", nomclient);
+                request.setAttribute("prenomclient", prenomclient);
+                request.setAttribute("mailclient", mailclient);
+                request.setAttribute("datenaissance",datenaissance);
+                request.setAttribute("telClient", telClient);
+                request.setAttribute("mdpClient",mdpClient);
+                
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            // AFFICHAGE ADRESSE FACTURATION
+            try {
+                String query = "SELECT * FROM adresse WHERE pseudo = '"+str+"' AND natureadresse='f' AND statutadresse='a'";
+
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                beanClient client = new beanClient();
+                String adresseFac="";
+                String complementFac="";
+                String codePostalFac="";
+                String villeFac="";
+                String paysFac="";
+                
+                
+                while (rs.next()) {
+                    client.setAdresseFac(rs.getString("adresseclient"));
+                    client.setComplementFac(rs.getString("adressecomplement"));
+                    client.setCodePostalFac(rs.getString("codepostal"));
+                    client.setVilleFac(rs.getString("ville"));
+                    client.setPaysFac(rs.getString("pays"));
+                    
+                    adresseFac=client.getAdresseFac();
+                    complementFac=client.getComplementFac();
+                    codePostalFac=client.getCodePostalFac();
+                    villeFac=client.getVilleFac();
+                    paysFac=client.getPaysFac();
+                    
+                    if (complementFac == null){
+                    complementFac=".";
+                    }
+                }
+
+                request.setAttribute("adresseFac",adresseFac);
+                request.setAttribute("complementFac", complementFac);
+                request.setAttribute("codePostalFac", codePostalFac);
+                request.setAttribute("villeFac", villeFac);
+                request.setAttribute("paysFac", paysFac);
+                
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            // AFFICHAGE ADRESSE LIVRAISON
+            try {
+                String query = "SELECT * FROM adresse WHERE pseudo = '"+str+"' AND natureadresse='l' AND statutadresse='a'";
+
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                beanClient client = new beanClient();
+                String adresseLiv="";
+                String complementLiv="";
+                String codePostalLiv="";
+                String villeLiv="";
+                String paysLiv="";
+                
+                
+                while (rs.next()) {
+                    client.setAdresseLiv(rs.getString("adresseclient"));
+                    client.setComplementLiv(rs.getString("adressecomplement"));
+                    client.setCodePostalLiv(rs.getString("codepostal"));
+                    client.setVilleLiv(rs.getString("ville"));
+                    client.setPaysLiv(rs.getString("pays"));
+                    
+                    adresseLiv=client.getAdresseLiv();
+                    complementLiv=client.getComplementLiv();
+                    codePostalLiv=client.getCodePostalLiv();
+                    villeLiv=client.getVilleLiv();
+                    paysLiv=client.getPaysLiv();
+                    
+                    if (complementLiv == null){
+                    complementLiv=".";
+                    }
+                }
+
+                request.setAttribute("adresseLiv",adresseLiv);
+                request.setAttribute("complementLiv", complementLiv);
+                request.setAttribute("codePostalLiv", codePostalLiv);
+                request.setAttribute("villeLiv", villeLiv);
+                request.setAttribute("paysLiv", paysLiv);
+                
+                rs.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+            
+        }
+// fin client
 
         
         
