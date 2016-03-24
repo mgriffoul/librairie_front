@@ -201,7 +201,7 @@ public class Edition implements Serializable {
         return t;
     }
 
-    public String getsousTitre(){
+    public String getSousTitre(){
         String t ="";
         if(this.getOeuvre() != null){
              t = this.getOeuvre().getSousTitre();
