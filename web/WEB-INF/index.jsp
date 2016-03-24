@@ -55,8 +55,6 @@
                 <!-- /.container -->
                 <jsp:include page="/WEB-INF/view/footer.jsp" />
 
-
-
                 <!-- jQuery -->
                 <script src="/librairie_git_front/inc/css/js/jquery.js"></script>
                 <!-- Bootstrap Core JavaScript -->

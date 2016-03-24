@@ -6,13 +6,9 @@ import beans.ConnexionForm;
 import beans.Edition;
 import beans.Isbn;
 import beans.SousCategorie;
-<<<<<<< HEAD
 import beans.Utilisateur;
-=======
 import beans.beanClient;
-import beans.beanLogin;
 import beans.beanPanier;
->>>>>>> cd7f979f4b6f510c049f15ca3f8f3f45196d5905
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -179,9 +175,6 @@ public class index extends HttpServlet {
         if ("acc".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=acc";
 
-<<<<<<< HEAD
-       
-=======
             Bdd bdd = new Bdd();
             Connection con = bdd.connecterBdd();
             String str = "bruce28";
@@ -381,12 +374,8 @@ public class index extends HttpServlet {
                 request.setAttribute("Recherche", request.getParameter("rec"));
                 request.setAttribute("Edition", listeEdition);
                 
-        }
-
+        }   
         
-        
-        
->>>>>>> cd7f979f4b6f510c049f15ca3f8f3f45196d5905
         if ("reg".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=user&action=reg";
         }
@@ -420,8 +409,7 @@ public class index extends HttpServlet {
                 request.setAttribute(ATT_FORM, form);
                 request.setAttribute(ATT_USER, utilisateur);
             }
-<<<<<<< HEAD
-=======
+
 // SECTION PANIER
             if ("vuepanier".equals(request.getParameter("section"))) {
             url = "./WEB-INF/view/jspPanier.jsp";
@@ -456,28 +444,6 @@ public class index extends HttpServlet {
         }
 //FIN SECTION PANIER
             
-            
-//
-//            Cookie c = getCookie(request.getCookies(), "user");
-//            if (c != null) {
-//                url = "/WEB-INF/jspWelcome.jsp";
-//                request.setAttribute("welcome", c.getValue());
-//            }
-//            if (request.getParameter("deconnect") != null) {
-//                Cookie cc = new Cookie("user", "");
-//                cc.setMaxAge(0);
-//                response.addCookie(cc);
-//                url = "/WEB-INF/jspLogin.jsp";
-//            }
-//
-//            Cookie ccc = getCookie(request.getCookies(), "essai");
-//            if (ccc != null) {
-//                if (ccc.getValue().length() >= 3) {
-//                    url = "/WEB-INF/jspFatalError.jsp";
-//                    request.setAttribute("fatalerror", "Beaucoup trop de tentatives !!!");
-//                }
-//            }
->>>>>>> cd7f979f4b6f510c049f15ca3f8f3f45196d5905
         }
         request.setAttribute("section", section);
         request.getRequestDispatcher(url).include(request, response);
