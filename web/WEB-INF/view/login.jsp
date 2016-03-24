@@ -1,8 +1,20 @@
-        <div style="float:right;width:60%;height: 30px">
-            <FORM ACTION='controller' METHOD='POST'>
-            <INPUT TYPE="HIDDEN" NAME="section" value="login" /> 
-            Login : <INPUT TYPE='TEXT' NAME='login' VALUE='${user}'>
-            Mot de passe :<INPUT TYPE='PASSWORD' NAME='password'>
-            <INPUT TYPE='submit' NAME='doIt' VALUE='Ok' >
-        </FORM>
-        </div>
+        <form method="post" action="connexion">
+            <fieldset>
+                <legend>Connexion</legend>
+                <p>Vous pouvez vous connecter via ce formulaire.</p>
+
+                <label for="nom">Adresse email <span class="requis">*</span></label>
+                <input type="email" id="email" name="email" value=""/>
+                <span class="erreur">${Login.erreurs['email']}</span>
+                
+
+                <label for="motdepasse">Mot de passe <span class="requis">*</span></label>
+                <input type="password" id="motdepasse" name="motdepasse" value="" size="20" maxlength="20" />
+                <span class="erreur">${Login.erreurs['motdepasse']}</span>
+
+
+                <input type="submit" value="Connexion" class="sansLabel" />
+                           
+                <p class="${empty Login.erreurs ? 'succes' : 'erreur'}">${Login.resultat}</p>
+            </fieldset>
+        </form>
