@@ -56,7 +56,7 @@ public class index extends HttpServlet {
         String ss4 = "/WEB-INF/view/focus.jsp";
         String ss5 = "/WEB-INF/view/catalogueCategorie.jsp";
         String ss6 = "/WEB-INF/view/recherche.jsp";
-        
+        String ss7 = "/WEB-INF/view/details.jsp";
         
 //SECTION NULL ----> INDEX        
         if (request.getParameter("section") == null) {
@@ -112,7 +112,11 @@ public class index extends HttpServlet {
 
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
 
-              request.setAttribute("ss1", ss1);
+            if("ok".equals(request.getParameter("det"))){
+                request.setAttribute("ss7", ss7);
+            }
+            
+            request.setAttribute("ss1", ss1);
             request.setAttribute("ss4", ss2);
             request.setAttribute("Categorie", listeCategorie);
             request.setAttribute("Edition", edit);

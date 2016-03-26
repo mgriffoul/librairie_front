@@ -80,10 +80,10 @@ fieldset {
 }
 
 h2{
-        margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
     width:40%;
-    
+
 }
 
 legend {
@@ -91,7 +91,7 @@ legend {
     color: #222222;
     font-size: 20px;
     padding: 10px;
-    
+
 }
 
 form label {
@@ -148,7 +148,7 @@ form input.sansLabel {
     position : static;
     top:0;
     float : right;
-    
+
 }
 .shop label{
     color: white;
@@ -161,4 +161,26 @@ form input.sansLabel {
 }
 menu ul li a{
     color: white;
+}
+
+.detail{
+}
+
+.details1{
+    float : left;
+    height : auto;
+    width: 50%;
+}
+
+.details2{
+    float : right;
+    height : auto;
+    width : 50%;
+}
+
+.details1 p {
+    text-decoration: underline;
+}
+.details2 p {
+    text-decoration: underline;
 }

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -44,6 +45,28 @@ public class Edition implements Serializable {
     public Edition() {
     }
 
+    public String getNomPrefaceur() {
+        String p = "";
+
+        if (this.getPrefaceur() != null) {
+            if (this.getPrefaceur().getNomContributeur() != null && this.getPrefaceur().getPrenomContributeur() != null) {
+                p = this.getPrefaceur().getPrenomContributeur() + " " + this.getPrefaceur().getNomContributeur();
+            }
+        }
+        return p;
+    }
+
+    public String getNomTraducteur() {
+        String p = "";
+
+        if (this.getTraducteur() != null) {
+            if (this.getTraducteur().getNomContributeur() != null && this.getTraducteur().getPrenomContributeur() != null) {
+                p = this.getTraducteur().getPrenomContributeur() + " " + this.getTraducteur().getNomContributeur();
+            }
+        }
+        return p;
+    }
+
     public SousCategorie getSousCategorie() {
         return sousCategorie;
     }
@@ -65,16 +88,15 @@ public class Edition implements Serializable {
         return lienVignettePanier;
     }
 
-    public String getResume(){
+    public String getResume() {
         String r = "";
-        if(this.getOeuvre()!=null){
-            r=this.getOeuvre().getResume();
+        if (this.getOeuvre() != null) {
+            r = this.getOeuvre().getResume();
         }
-        
+
         return r;
     }
-    
-    
+
     public void setSousCategorie(SousCategorie sousCategorie) {
         this.sousCategorie = sousCategorie;
     }
@@ -98,12 +120,11 @@ public class Edition implements Serializable {
         return str;
     }
 
-    public String getNumeroIsbn(){
+    public String getNumeroIsbn() {
         return this.getIsbn().getNumeroIsbn();
-        
+
     }
-    
-    
+
     public Isbn getIsbn() {
         return isbn;
     }
@@ -120,8 +141,24 @@ public class Edition implements Serializable {
         return listeMotClef;
     }
 
+    public String getStringMotClef() {
+        String s = "";
+        if (this.getListeMotClef() != null) {
+            ArrayList<Tag> liste = this.getListeMotClef().getListeMc();
+            for (Tag t : liste){
+                s += t.getNom()+" ";
+            }
+        }
+        return s;
+    }
+
     public Tva getTva() {
         return tva;
+    }
+
+    public String getTauxTva() {
+        String s = String.valueOf(this.tva.getTauxTva());
+        return s;
     }
 
     public Editeur getEditeur() {
@@ -134,6 +171,14 @@ public class Edition implements Serializable {
 
     public Date getDateParution() {
         return dateParution;
+    }
+
+    public String getStringDateParution() {
+
+        SimpleDateFormat sdp = new SimpleDateFormat("dd/MM/yyyy");
+        String s = sdp.format(this.getDateParution());
+
+        return s;
     }
 
     public Float getPrixVenteHt() {
@@ -156,7 +201,6 @@ public class Edition implements Serializable {
         return stock;
     }
 
-  
     public String getLangue() {
         return Langue;
     }
@@ -201,14 +245,14 @@ public class Edition implements Serializable {
         return t;
     }
 
-    public String getSousTitre(){
-        String t ="";
-        if(this.getOeuvre() != null){
-             t = this.getOeuvre().getSousTitre();
+    public String getSousTitre() {
+        String t = "";
+        if (this.getOeuvre() != null) {
+            t = this.getOeuvre().getSousTitre();
         }
         return t;
     }
-    
+
     public String getNomEditeur() {
         String n = "";
         if (this.getEditeur() != null) {
@@ -293,7 +337,6 @@ public class Edition implements Serializable {
         this.stock = stock;
     }
 
- 
     public void setLangue(String Langue) {
         this.Langue = Langue;
     }
@@ -520,9 +563,9 @@ public class Edition implements Serializable {
         } catch (SQLException ex) {
             Logger.getLogger(Edition.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //recupération des images
-         query = "SELECT isbn, vignetteAccueil, vignetteFocus, vignettePanier"
+        query = "SELECT isbn, vignetteAccueil, vignetteFocus, vignettePanier"
                 + " FROM edition as ed join image as im ON ed.idimage=im.idimage"
                 + " WHERE isbn= ? ";
 
@@ -543,30 +586,26 @@ public class Edition implements Serializable {
         } catch (SQLException ex) {
             Logger.getLogger(Edition.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //recupération de la note
-         try {
-                     query = "SELECT dbo.COMMENTAIRE.NOTE, dbo.EDITION.ISBN"
-                            + " FROM dbo.EDITION INNER JOIN"
-                            + " dbo.LIGNECOMMANDE ON dbo.EDITION.ISBN = dbo.LIGNECOMMANDE.ISBN INNER JOIN"
-                            + " dbo.COMMENTAIRE ON dbo.LIGNECOMMANDE.IDLIGNECOMMANDE = dbo.COMMENTAIRE.IDLIGNECOMMANDE "
-                            + " WHERE dbo.EDITION.ISBN='" + isbn.getNumeroIsbn() + "'";
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(query);
-                    if (rs.next()) {
-                        this.setNote(rs.getInt("note"));
-                    }
-                    rs.close();
-                    stmt.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-                }
-        
-        
+        try {
+            query = "SELECT dbo.COMMENTAIRE.NOTE, dbo.EDITION.ISBN"
+                    + " FROM dbo.EDITION INNER JOIN"
+                    + " dbo.LIGNECOMMANDE ON dbo.EDITION.ISBN = dbo.LIGNECOMMANDE.ISBN INNER JOIN"
+                    + " dbo.COMMENTAIRE ON dbo.LIGNECOMMANDE.IDLIGNECOMMANDE = dbo.COMMENTAIRE.IDLIGNECOMMANDE "
+                    + " WHERE dbo.EDITION.ISBN='" + isbn.getNumeroIsbn() + "'";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                this.setNote(rs.getInt("note"));
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         lbd.decoBdd(con);
     }
-    
-   
-    
-    
+
 }
