@@ -36,7 +36,7 @@
             <br><br> 
            
  <div class="text-right">
-             <a href="./index?section=focus&value=${Edition.numeroIsbn}&det=ok" class="btn btn-success"> voir les détails</a>
+             <a href="./index?section=focus&value=${Edition.numeroIsbn}&det=ok" > plus de détails</a>
  </div>
         
         
