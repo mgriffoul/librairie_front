@@ -55,11 +55,12 @@
                 <!-- /.container -->
                 <jsp:include page="/WEB-INF/view/footer.jsp" />
 
-                <!-- jQuery -->
-                <script src="/librairie_git_front/inc/css/js/jquery.js"></script>
-                <!-- Bootstrap Core JavaScript -->
-                <script src="/librairie_git_front/inc/css/js/bootstrap.min.js"></script>
+              <!-- jQuery -->
+    <script src="js/jquery.js"></script>
 
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+              
 
                 </body>
                 </html>
