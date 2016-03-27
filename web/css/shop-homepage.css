@@ -40,6 +40,8 @@ body {
     padding-right: 10px;
     padding-left: 10px;
     color: #d17581;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .thumbnail {
@@ -47,7 +49,7 @@ body {
 }
 
 .thumbnail .caption-full {
-    padding: 9px;
+    padding: 25px;
     color: #333;
 }
 
@@ -163,24 +165,35 @@ menu ul li a{
     color: white;
 }
 
+
+
+/* partie focus produit */
+
 .detail{
+   line-height: 25px;
+   overflow: auto;
+   padding: 10px;
+   border : 1px solid #ececec;
 }
 
-.details1{
+
+ .details1{
     float : left;
-    height : auto;
+    height : 100%;
     width: 50%;
+    margin-bottom: 20px;
+    
 }
 
 .details2{
-    float : right;
-    height : auto;
-    width : 50%;
+   height : 100%;
 }
 
-.details1 p {
-    text-decoration: underline;
+.detail u {
+    font-size: 120%;
 }
-.details2 p {
-    text-decoration: underline;
+
+.stock{
+    text-align: center;
 }
+

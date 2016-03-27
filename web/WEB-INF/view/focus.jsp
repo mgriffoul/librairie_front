@@ -1,8 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<br>
-<br>
-<br>
 <div class="col-md-9">
 
     <div class="thumbnail">
@@ -12,10 +9,10 @@
             <h3>${Edition.titre}</h3>
             <h4>${Edition.sousTitre}</h4>
             <h4> ${Edition.nomAuteur}</h4>
-            <h5>Edition :<br> ${Edition.editeur}<br>
-                
-                Description :<br> ${Edition.description}<br>
-                <p><h4>Synopsis :</h4> <br>${Edition.resume}</p>
+            <h5>Edition : ${Edition.editeur}<br>
+
+                Description : ${Edition.description}<br>
+                <p><h4>Synopsis :</h4> ${Edition.resume}</p>
 
                 <div class="ratings">
                     <p class="pull-right">3 reviews</p>
@@ -47,10 +44,11 @@
                     <jsp:include page="${ss7}" />
                 </c:if>
 
-                <p>  <a href="./index?section=panier&add=${element.numeroIsbn}">
-                        <img  src="ImagesLibrairie/Bouton/commander.jpg" alt=""></h4>
-                    </a>
-                </p>     
+            <div class="stock">En stock</div>
+                    <h4><a href="./index?section=panier&add=${element.numeroIsbn}">
+                        <img  src="ImagesLibrairie/Bouton/commander.jpg" alt="">
+                        </a></h4>
+                
         </div>
     </div>
 
