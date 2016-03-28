@@ -6,8 +6,8 @@
         <img class="img-responsive" src="${Edition.lienVignetteFocus}" alt="">
         <div class="caption-full">
             <h4 class="pull-right">${Edition.prixTtc} EUR</h4>
-            <h3>${Edition.titre}</h3>
-            <h4>${Edition.sousTitre}</h4>
+            <div class="titre">  <h3>${Edition.titre}</h3></div>
+             <h4>${Edition.sousTitre}</h4>
             <h4> ${Edition.nomAuteur}</h4>
             <h5>Edition : ${Edition.editeur}<br>
 
@@ -44,11 +44,12 @@
                     <jsp:include page="${ss7}" />
                 </c:if>
 
-            <div class="stock">En stock</div>
-                    <h4><a href="./index?section=panier&add=${element.numeroIsbn}">
+            
+               
+                <h4><a href="./index?section=panier&add=${Edition.numeroIsbn}">
                         <img  src="ImagesLibrairie/Bouton/commander.jpg" alt="">
-                        </a></h4>
-                
+                    </a></h4>
+
         </div>
     </div>
 

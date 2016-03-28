@@ -51,6 +51,7 @@ body {
 .thumbnail .caption-full {
     padding: 25px;
     color: #333;
+    
 }
 
 footer {
@@ -195,5 +196,19 @@ menu ul li a{
 
 .stock{
     text-align: center;
+   
 }
 
+.titre{
+    color : #337ab7;
+}
+
+.rupture{
+   
+  
+}
+.choixSousCate {
+    
+    line-height: 130%;
+    
+}
