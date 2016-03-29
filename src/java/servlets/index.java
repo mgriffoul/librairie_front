@@ -2,6 +2,7 @@ package servlets;
 
 import beans.Bdd;
 import beans.Categorie;
+import beans.Commentaire;
 import beans.ConnexionForm;
 import beans.Edition;
 import beans.Isbn;
@@ -67,9 +68,9 @@ public class index extends HttpServlet {
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
 
             //récupération des livres du momment
-           ArrayList<Edition> listeEditionMoment = Edition.chargerLivreMoment();
-            
-            
+            ArrayList<Edition> listeEditionMoment = Edition.chargerLivreMoment();
+            System.out.println(">>>>>>>>>>>>" + listeEditionMoment.size());
+
             request.setAttribute("ss1", ss1);
             request.setAttribute("ss2", ss2);
             request.setAttribute("ss3", ss3);
@@ -85,7 +86,12 @@ public class index extends HttpServlet {
         if ("focus".equals(request.getParameter("section"))) {
 
             section = "/WEB-INF/S3.jsp";
-
+            Boolean presComent = false;
+            
+            
+            Utilisateur util = (Utilisateur) request.getAttribute("sessionUtilisateur");
+        
+            
             Edition edit = new Edition();
             Isbn isb = new Isbn();
             isb.setNumeroIsbn(request.getParameter("value"));
@@ -93,22 +99,35 @@ public class index extends HttpServlet {
             edit.chargerEdition();
 
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
+            System.out.println("isbn>>>>>" + isb.getNumeroIsbn());
+            //Vérification de la présence d'un commentaire déjà laissé par l'utilisateur sur cette edition
+            if (util != null) {
+                 presComent = util.verifPrevComent(isb.getNumeroIsbn());
+            }
+            //récuperation de la liste des commentaires associés à l'edition en focus
+            ArrayList<Commentaire> listeCommentaire = Commentaire.recupererCommentaire(isb.getNumeroIsbn());
+            System.out.println("liste commentaire : " + listeCommentaire.size());
 
             if ("ok".equals(request.getParameter("det"))) {
                 request.setAttribute("ss7", ss7);
             }
 
+            if (presComent) {
+                request.setAttribute("presComent", "vrai");
+            }
+            request.setAttribute("sessionUtilisateur", util);
             request.setAttribute("ss1", ss1);
             request.setAttribute("ss4", ss2);
             request.setAttribute("Categorie", listeCategorie);
             request.setAttribute("Edition", edit);
+            request.setAttribute("Commentaire", listeCommentaire);
 
         }
 //FIN SECTION = FOCUS
 
 //SECTION CATALOGUE PAR CATEGORIE        
         if ("cat".equals(request.getParameter("section"))) {
-            
+
             section = "/WEB-INF/S4.jsp";
 
             //recuperation de l'id de la categorie choisie par l'utilisateur
@@ -130,27 +149,23 @@ public class index extends HttpServlet {
 
             //idem pour la sous-Categorie
             SousCategorie sousCateChoisie = new SousCategorie();
-            if(idSsCate!=null){
-            sousCateChoisie.setIdSousCategorie(idSsCate);
-            sousCateChoisie.chargerSousCategorie();
+            if (idSsCate != null) {
+                sousCateChoisie.setIdSousCategorie(idSsCate);
+                sousCateChoisie.chargerSousCategorie();
             }
-            
-          
+
             //Liste sous categories concernees
             listeSousCate = SousCategorie.recupererSousCategorie(id);
-            
-             
-            //Liste des editions concernées
-            if ( idSsCate == null) {
 
-               listeEdition = Edition.editionParCategorie(id);
-                
+            //Liste des editions concernées
+            if (idSsCate == null) {
+
+                listeEdition = Edition.editionParCategorie(id);
+
             } else {
 
-               listeEdition = Edition.editionParSousCategorie(id, idSsCate);
+                listeEdition = Edition.editionParSousCategorie(id, idSsCate);
             }
-
-            
 
             request.setAttribute("ss1", ss1);
             request.setAttribute("ss5", ss2);

@@ -16,7 +16,7 @@ import servlets.index;
 
 public class Edition implements Serializable {
 
-    private Isbn isbn;//
+    private Isbn isbn;
     private Oeuvre oeuvre;
     private Auteur auteur;
     private Traducteur traducteur;
@@ -627,11 +627,11 @@ public class Edition implements Serializable {
                 edition.setIsbn(isbn);
                 edition.chargerEdition();
                 System.out.println(edition);
-                if (edition.getStock() != null) {
-                    if (edition.getStock() > 0) {
+//                if (edition.getStock() != null) {
+//                    if (edition.getStock() > 0) {
                         listeEditionMoment.add(edition);
-                    }
-                }
+//                    }
+//                }
 
             }
             rs.close();

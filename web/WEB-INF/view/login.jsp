@@ -23,12 +23,10 @@
     <h3>Vous êtes connecté(e) avec l'adresse : ${sessionScope.sessionUtilisateur.email}</h3>
     <h3> REDIRECTION VERS L'ACCUEIL... </h3>
 <SCRIPT LANGUAGE='JavaScript'>
- 
 function redirect()
 {
 window.location='./index' ;
 }
 setTimeout('redirect()',2500); 
- 
 </SCRIPT>
 </c:if>

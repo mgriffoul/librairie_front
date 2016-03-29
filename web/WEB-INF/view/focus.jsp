@@ -7,7 +7,7 @@
         <div class="caption-full">
             <h4 class="pull-right">${Edition.prixTtc} EUR</h4>
             <div class="titre">  <h3>${Edition.titre}</h3></div>
-             <h4>${Edition.sousTitre}</h4>
+            <h4>${Edition.sousTitre}</h4>
             <h4> ${Edition.nomAuteur}</h4>
             <h5>Edition : ${Edition.editeur}<br>
 
@@ -17,7 +17,7 @@
                 <div class="ratings">
                     <p class="pull-right">3 reviews</p>
                     <p>
-                        Note : 
+                        Note moyenne : 
                         <c:if test="${empty Edition.note}">
                             Aucune note pour l'instant
                         </c:if>
@@ -44,8 +44,8 @@
                     <jsp:include page="${ss7}" />
                 </c:if>
 
-            
-               
+
+
                 <h4><a href="./index?section=panier&add=${Edition.numeroIsbn}">
                         <img  src="ImagesLibrairie/Bouton/commander.jpg" alt="">
                     </a></h4>
@@ -56,54 +56,41 @@
 
     <div class="well">
 
-
-        <a class="btn btn-success">Leave a Review</a>
-
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-                Anonymous
-                <span class="pull-right">10 days ago</span>
-                <p>This product was great in terms of quality. I would definitely buy another!</p>
-            </div>
-        </div>
+        <c:if test="${empty sessionUtilisateur}">
+            
+            <a class="btn btn-success">Connection</a> Connectez vous pour laisser des commentaires
+        </c:if>
+        <c:if test="${not empty sessionUtilisateur}">
+            <c:if test="${empty presComent}">
+            <a class="btn btn-success">Leave a Review</a>
+            </c:if>
+            <c:if test="${not empty presComent}">
+                Vous avez déjà commenté ce livre.
+            </c:if>    
+                
+        </c:if>
 
         <hr>
-
-        <div class="row">
-            <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-                Anonymous
-                <span class="pull-right">12 days ago</span>
-                <p>I've alredy ordered another one!</p>
+        <c:forEach items="${Commentaire}" var="coment">
+            <div class="row">
+                <div class="col-md-12">
+                    <c:forEach var="i" begin="1" end="5" step="1">
+                        <c:if test="${i<=coment.note}">
+                            <span class="glyphicon glyphicon-star"></span>
+                        </c:if> 
+                        <c:if test="${i>coment.note}">
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        </c:if> 
+                    </c:forEach> 
+                    ${coment.pseudo}
+                    <span class="pull-right">${coment.date}</span>
+                    <p>${coment.commentaire}</p>
+                </div>
             </div>
-        </div>
+            <hr>
+        </c:forEach>
 
-        <hr>
 
-        <div class="row">
-            <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-                Anonymous
-                <span class="pull-right">15 days ago</span>
-                <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
-            </div>
-        </div>
 
     </div>
 </div>
