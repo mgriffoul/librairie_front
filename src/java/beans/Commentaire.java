@@ -1,11 +1,12 @@
 package beans;
 
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -119,4 +120,18 @@ public class Commentaire {
 
     }
 
+    
+    public void soumettreCom (String isbn){
+        
+         Bdd bdd = new Bdd();
+         Connection con = bdd.connecterBdd();
+        
+         String query = "INSERT INTO " ;
+        
+        
+        
+        
+    }
+    
+    
 }

@@ -54,11 +54,10 @@ public class Utilisateur {
 
         try {
 
-            String query = "SELECT dbo.EDITION.ISBN, dbo.COMMENTAIRE.PSEUDO"
-                    + " FROM dbo.EDITION INNER JOIN"
-                    + " dbo.LIGNECOMMANDE ON dbo.EDITION.ISBN = dbo.LIGNECOMMANDE.ISBN INNER JOIN\n"
-                    + " dbo.COMMENTAIRE ON dbo.LIGNECOMMANDE.IDLIGNECOMMANDE = dbo.COMMENTAIRE.IDLIGNECOMMANDE"
-                    + " where  dbo.EDITION.ISBN = ? and dbo.COMMENTAIRE.PSEUDO= ?";
+            String query = "SELECT dbo.COMMENTAIRE.PSEUDO, dbo.LIGNECOMMANDE.ISBN"
+                    + " FROM  dbo.COMMENTAIRE INNER JOIN"
+                    + " dbo.LIGNECOMMANDE ON dbo.COMMENTAIRE.IDLIGNECOMMANDE = dbo.LIGNECOMMANDE.IDLIGNECOMMANDE"
+                    + " where dbo.LIGNECOMMANDE.ISBN= ? and dbo.COMMENTAIRE.PSEUDO= ?";
 
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, isbn);
@@ -80,4 +79,39 @@ public class Utilisateur {
         return pres;
     }
 
+     public Boolean verifierPrevAchat(String isbn) {
+    
+          Boolean pres = false;
+
+        Bdd bdd = new Bdd();
+        Connection con = bdd.connecterBdd();
+
+         try {
+
+            String query = "SELECT dbo.COMMANDE.PSEUDO, dbo.EDITION.ISBN" 
+                    +" FROM  dbo.COMMANDE INNER JOIN" 
+                    +" dbo.LIGNECOMMANDE ON dbo.COMMANDE.IDCOMMANDE = dbo.LIGNECOMMANDE.IDCOMMANDE INNER JOIN" 
+                    +" dbo.EDITION ON dbo.LIGNECOMMANDE.ISBN = dbo.EDITION.ISBN "
+                    +" where dbo.EDITION.ISBN= ? and dbo.COMMANDE.PSEUDO= ?";
+
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, isbn);
+            ps.setString(2, this.getPseudo());
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()){
+                pres = true;
+            }
+            
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Utilisateur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        bdd.decoBdd(con);
+         
+         return pres;
+     }
 }

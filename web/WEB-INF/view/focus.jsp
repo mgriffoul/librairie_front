@@ -57,18 +57,31 @@
     <div class="well">
 
         <c:if test="${empty sessionUtilisateur}">
-            
-            <a class="btn btn-success">Connection</a> Connectez vous pour laisser des commentaires
+
+            <a href="./index?section=log" class="btn btn-success">Connection</a> Connectez vous pour laisser des commentaires
         </c:if>
         <c:if test="${not empty sessionUtilisateur}">
             <c:if test="${empty presComent}">
-            <a class="btn btn-success">Leave a Review</a>
+
+                <c:if test="${not empty presAchat}">
+                    <c:if test="${not empty com}">
+                        <%@include file="/WEB-INF/view/commentaireForm.jsp" %>
+                    </c:if>
+                    <c:if test="${empty com}">
+                        <a href="./index?section=focus&value=${Edition.numeroIsbn}&com=let" class="btn btn-success">Laisser un commentaire</a>
+                    </c:if>
+                </c:if>   
+                    <c:if test="${empty presAchat}">
+                        Vous devez avoir acheté ce livre pour le commenter
+                    </c:if>        
             </c:if>
             <c:if test="${not empty presComent}">
                 Vous avez déjà commenté ce livre.
             </c:if>    
-                
         </c:if>
+
+        <hr>
+
 
         <hr>
         <c:forEach items="${Commentaire}" var="coment">

@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -87,11 +88,14 @@ public class index extends HttpServlet {
 
             section = "/WEB-INF/S3.jsp";
             Boolean presComent = false;
-            
-            
-            Utilisateur util = (Utilisateur) request.getAttribute("sessionUtilisateur");
-        
-            
+            Boolean presAchat = false;
+
+            Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
+            if(util!=null){
+            System.out.println("util pseudo :"+util.getPseudo());
+            }else{
+                System.out.println("util null");
+            }
             Edition edit = new Edition();
             Isbn isb = new Isbn();
             isb.setNumeroIsbn(request.getParameter("value"));
@@ -102,18 +106,59 @@ public class index extends HttpServlet {
             System.out.println("isbn>>>>>" + isb.getNumeroIsbn());
             //Vérification de la présence d'un commentaire déjà laissé par l'utilisateur sur cette edition
             if (util != null) {
-                 presComent = util.verifPrevComent(isb.getNumeroIsbn());
+                presComent = util.verifPrevComent(isb.getNumeroIsbn());
             }
+            System.out.println("pres coment +++++"+presComent);
+            //Vérification de la presence d'un achet du livre par l'utilisateur
+            if(util != null){
+                presAchat = util.verifierPrevAchat(isb.getNumeroIsbn());
+            }
+            System.out.println("pres achat +++++"+presAchat);
+            
+            
             //récuperation de la liste des commentaires associés à l'edition en focus
             ArrayList<Commentaire> listeCommentaire = Commentaire.recupererCommentaire(isb.getNumeroIsbn());
             System.out.println("liste commentaire : " + listeCommentaire.size());
+
+            //si un commentaire vient d'être laissé
+            if ("go".equals(request.getParameter("Valider"))) {
+
+                Boolean ok = false;
+
+                if (request.getParameter("note") != null && request.getParameter("coment") != null) {
+                    if (!request.getParameter("note").isEmpty() && !request.getParameter("coment").isEmpty()) {
+                        ok = true;
+
+                        Commentaire com = new Commentaire();
+                        com.setCommentaire(request.getParameter("coment"));
+                        com.setNote(Integer.valueOf(request.getParameter("note")));
+                        com.setPseudo(util.getPseudo());
+
+                        String format = "dd/MM/yy H:mm:ss";
+                         java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat(format);
+                        Date date = new Date();
+                        com.setDate(date);
+                        
+                        com.soumettreCom(isb.getNumeroIsbn());
+
+                    }
+                }
+
+            }
 
             if ("ok".equals(request.getParameter("det"))) {
                 request.setAttribute("ss7", ss7);
             }
 
+            if(presAchat){
+                request.setAttribute("presAchat", "vrai");
+            }
+            
             if (presComent) {
                 request.setAttribute("presComent", "vrai");
+            }
+            if (request.getParameter("com") != null) {
+                request.setAttribute("com", "let");
             }
             request.setAttribute("sessionUtilisateur", util);
             request.setAttribute("ss1", ss1);
@@ -333,7 +378,6 @@ public class index extends HttpServlet {
 // fin client
 
 //SECTION RECHERCHE
-//FIN SECTION RECHERCHE
         if (request.getParameter("rec") != null) {
 
             ArrayList<Edition> listeEdition = new ArrayList();
@@ -382,6 +426,7 @@ public class index extends HttpServlet {
             request.setAttribute("Edition", listeEdition);
 
         }
+//FIN SECTION RECHERCHE
 
         if ("reg".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=user&action=reg";
@@ -391,9 +436,10 @@ public class index extends HttpServlet {
             session.invalidate();
             section = "/WEB-INF/S1.jsp";
             request.setAttribute("ss", ss9);
-            
+
         }
 
+        //DEBUT SECTION LOG
         if ("log".equals(request.getParameter("section"))) {
             section = "/WEB-INF/S1.jsp";
             if ("submit".equals(request.getParameter("action"))) {
@@ -416,49 +462,47 @@ public class index extends HttpServlet {
                 /* Stockage du formulaire et du bean dans l'objet request */
                 request.setAttribute(ATT_FORM, form);
                 request.setAttribute(ATT_USER, utilisateur);
-              
-                }
-                request.setAttribute("ss", ss8);
+
+            }
+
+            request.setAttribute("ss", ss8);
         }
+        //FIN SECTION LOG
+
 // SECTION PANIER
-            if ("vuepanier".equals(request.getParameter("section"))) {
-                url = "./WEB-INF/view/jspPanier.jsp";
-                beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+        if ("vuepanier".equals(request.getParameter("section"))) {
+            url = "./WEB-INF/view/jspPanier.jsp";
+            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
 
-                if (bPanier == null) {
-                    bPanier = new beanPanier();
-                    session.setAttribute("panier", bPanier);
-                }
-                request.setAttribute("estVide", bPanier.isEmpty());
-                request.setAttribute("list", bPanier.getList());
+            if (bPanier == null) {
+                bPanier = new beanPanier();
+                session.setAttribute("panier", bPanier);
             }
-            if ("panier".equals(request.getParameter("section"))) {
-                beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+            request.setAttribute("estVide", bPanier.isEmpty());
+            request.setAttribute("list", bPanier.getList());
+        }
+        if ("panier".equals(request.getParameter("section"))) {
+            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
 
-                if (bPanier == null) {
-                    bPanier = new beanPanier();
-                    session.setAttribute("panier", bPanier);
-                }
-                if (request.getParameter("add") != null) {
-                    bPanier.add(request.getParameter("add"));
-                }
-                if (request.getParameter("dec") != null) {
-                    bPanier.dec(request.getParameter("dec"));
-                }
-                if (request.getParameter("del") != null) {
-                    bPanier.del(request.getParameter("del"));
-                }
-                if (request.getParameter("clear") != null) {
-                    bPanier.clear();
-                }
+            if (bPanier == null) {
+                bPanier = new beanPanier();
+                session.setAttribute("panier", bPanier);
             }
+            if (request.getParameter("add") != null) {
+                bPanier.add(request.getParameter("add"));
+            }
+            if (request.getParameter("dec") != null) {
+                bPanier.dec(request.getParameter("dec"));
+            }
+            if (request.getParameter("del") != null) {
+                bPanier.del(request.getParameter("del"));
+            }
+            if (request.getParameter("clear") != null) {
+                bPanier.clear();
+            }
+        }
 //FIN SECTION PANIER
 
-      
-    
-      
-      
-        
         request.setAttribute("section", section);
         request.getRequestDispatcher(url).include(request, response);
     }
