@@ -6,6 +6,8 @@ public class Utilisateur {
     private String email;
     private String motDePasse;
     private String nom;
+    
+    
 
     public void setEmail(String email) {
 	this.email = email;

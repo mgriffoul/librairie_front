@@ -57,6 +57,8 @@ public class index extends HttpServlet {
         String ss5 = "/WEB-INF/view/catalogueCategorie.jsp";
         String ss6 = "/WEB-INF/view/recherche.jsp";
         String ss7 = "/WEB-INF/view/details.jsp";
+        String ss8 = "/WEB-INF/view/login.jsp";
+        String ss9 = "/WEB-INF/view/logout.jsp";
 
 //SECTION NULL ----> INDEX        
         if (request.getParameter("section") == null) {
@@ -372,11 +374,13 @@ public class index extends HttpServlet {
 
         if ("loggout".equals(request.getParameter("section"))) {
             session.invalidate();
-            url = "/WEB-INF/index.jsp";
+            section = "/WEB-INF/S1.jsp";
+            request.setAttribute("ss", ss9);
+            
         }
 
         if ("log".equals(request.getParameter("section"))) {
-            section = "login";
+            section = "/WEB-INF/S1.jsp";
             if ("submit".equals(request.getParameter("action"))) {
                 /* Préparation de l'objet formulaire */
                 ConnexionForm form = new ConnexionForm();
@@ -397,8 +401,10 @@ public class index extends HttpServlet {
                 /* Stockage du formulaire et du bean dans l'objet request */
                 request.setAttribute(ATT_FORM, form);
                 request.setAttribute(ATT_USER, utilisateur);
-            }
-
+              
+                }
+                request.setAttribute("ss", ss8);
+        }
 // SECTION PANIER
             if ("vuepanier".equals(request.getParameter("section"))) {
                 url = "./WEB-INF/view/jspPanier.jsp";
@@ -433,7 +439,11 @@ public class index extends HttpServlet {
             }
 //FIN SECTION PANIER
 
-        }
+      
+    
+      
+      
+        
         request.setAttribute("section", section);
         request.getRequestDispatcher(url).include(request, response);
     }

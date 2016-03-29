@@ -1,1 +1,1 @@
-  <jsp:include page="/WEB-INF/view/register.jsp"/>
+<jsp:include page="${ss}"/>
