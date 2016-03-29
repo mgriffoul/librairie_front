@@ -65,34 +65,9 @@ public class index extends HttpServlet {
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
 
             //récupération des livres du momment
-            Bdd bdd = new Bdd();
-            Connection con = bdd.connecterBdd();
-            ArrayList<Edition> listeEditionMoment = new ArrayList();
-            try {
-                String query = "SELECT * FROM AFFECTSOUSCATEGORIE WHERE idsouscategorie = 37";
-                Statement stmt = con.createStatement();
-
-                ResultSet rs = stmt.executeQuery(query);
-
-                while (rs.next()) {
-                    Edition edition = new Edition();
-                    Isbn isbn = new Isbn();
-                    isbn.setNumeroIsbn(rs.getString("isbn"));
-                    edition.setIsbn(isbn);
-                    edition.chargerEdition();
-                    System.out.println(edition);
-                    if (edition.getStock() != null) {
-                        if (edition.getStock() > 0) {
-                            listeEditionMoment.add(edition);
-                        }
-                    }
-
-                }
-                rs.close();
-                stmt.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-            }
+           ArrayList<Edition> listeEditionMoment = Edition.chargerLivreMoment();
+            
+            
             request.setAttribute("ss1", ss1);
             request.setAttribute("ss2", ss2);
             request.setAttribute("ss3", ss3);
@@ -143,8 +118,7 @@ public class index extends HttpServlet {
             }
 
             //Listes à envoyer dans la reponse
-            ArrayList<SousCategorie> listeSousCate = Categorie.recupererSousCategorie(id);
-
+            ArrayList<SousCategorie> listeSousCate = new ArrayList();
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
             ArrayList<Edition> listeEdition = new ArrayList();
 
@@ -159,98 +133,22 @@ public class index extends HttpServlet {
             sousCateChoisie.chargerSousCategorie();
             }
             
-            Bdd bdd = new Bdd();
-            Connection con = bdd.connecterBdd();
-
+          
             //Liste sous categories concernees
-            try {
-                String query = "SELECT idsouscategorie, nomsouscategorie FROM souscategorie"
-                        + " where idcategorie = " + id + " and statutSouscategorie = 'a'";
-
-                Statement stmt = con.createStatement();
-
-                ResultSet rs = stmt.executeQuery(query);
-
-                while (rs.next()) {
-                    SousCategorie sousCate = new SousCategorie();
-                    sousCate.setIdSousCategorie(rs.getInt("idSousCategorie"));
-                    sousCate.setNomSousCategorie(rs.getString("nomSousCategorie"));
-                    listeSousCate.add(sousCate);
-                }
-                rs.close();
-                stmt.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            listeSousCate = SousCategorie.recupererSousCategorie(id);
+            
+             
             //Liste des editions concernées
             if ( idSsCate == null) {
 
-                try {
-
-                    String query = "SELECT dbo.CATEGORIE.IDCATEGORIE, dbo.SOUSCATEGORIE.IDSOUSCATEGORIE, dbo.EDITION.ISBN"
-                            + " FROM dbo.CATEGORIE INNER JOIN"
-                            + " dbo.SOUSCATEGORIE ON dbo.CATEGORIE.IDCATEGORIE = dbo.SOUSCATEGORIE.IDCATEGORIE INNER JOIN"
-                            + " dbo.AFFECTSOUSCATEGORIE ON dbo.SOUSCATEGORIE.IDSOUSCATEGORIE = dbo.AFFECTSOUSCATEGORIE.IDSOUSCATEGORIE INNER JOIN"
-                            + " dbo.EDITION ON dbo.AFFECTSOUSCATEGORIE.ISBN = dbo.EDITION.ISBN "
-                            + " where dbo.CATEGORIE.idcategorie= " + id;
-
-                    Statement stmt = con.createStatement();
-
-                    ResultSet rs = stmt.executeQuery(query);
-
-                    while (rs.next()) {
-                        Edition edition = new Edition();
-                        Isbn isbn = new Isbn();
-                        isbn.setNumeroIsbn(rs.getString("isbn"));
-                        edition.setIsbn(isbn);
-                        edition.chargerEdition();
-                        if (edition.getStock() != null) {
-                            if (edition.getStock() > 0) {
-                                listeEdition.add(edition);
-                            }
-                        }
-                    }
-                    rs.close();
-                    stmt.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-                }
+               listeEdition = Edition.editionParCategorie(id);
+                
             } else {
 
-                try {
-                    String query = "SELECT dbo.CATEGORIE.IDCATEGORIE, dbo.SOUSCATEGORIE.IDSOUSCATEGORIE, dbo.EDITION.ISBN"
-                            + " FROM dbo.CATEGORIE INNER JOIN"
-                            + " dbo.SOUSCATEGORIE ON dbo.CATEGORIE.IDCATEGORIE = dbo.SOUSCATEGORIE.IDCATEGORIE INNER JOIN"
-                            + " dbo.AFFECTSOUSCATEGORIE ON dbo.SOUSCATEGORIE.IDSOUSCATEGORIE = dbo.AFFECTSOUSCATEGORIE.IDSOUSCATEGORIE INNER JOIN"
-                            + " dbo.EDITION ON dbo.AFFECTSOUSCATEGORIE.ISBN = dbo.EDITION.ISBN "
-                            + " where dbo.CATEGORIE.idcategorie= " + id + " AND dbo.SOUSCATEGORIE.IDSOUSCATEGORIE= "+ idSsCate;
-
-                    Statement stmt = con.createStatement();
-
-                    ResultSet rs = stmt.executeQuery(query);
-
-                    while (rs.next()) {
-                        Edition edition = new Edition();
-                        Isbn isbn = new Isbn();
-                        isbn.setNumeroIsbn(rs.getString("isbn"));
-                        edition.setIsbn(isbn);
-                        edition.chargerEdition();
-                        if (edition.getStock() != null) {
-                            if (edition.getStock() > 0) {
-                                listeEdition.add(edition);
-                            }
-                        }
-                    }
-                    rs.close();
-                    stmt.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+               listeEdition = Edition.editionParSousCategorie(id, idSsCate);
             }
 
-            bdd.decoBdd(con);
+            
 
             request.setAttribute("ss1", ss1);
             request.setAttribute("ss5", ss2);

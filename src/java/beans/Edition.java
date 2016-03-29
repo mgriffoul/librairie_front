@@ -145,8 +145,8 @@ public class Edition implements Serializable {
         String s = "";
         if (this.getListeMotClef() != null) {
             ArrayList<Tag> liste = this.getListeMotClef().getListeMc();
-            for (Tag t : liste){
-                s += t.getNom()+" ";
+            for (Tag t : liste) {
+                s += t.getNom() + " ";
             }
         }
         return s;
@@ -608,4 +608,118 @@ public class Edition implements Serializable {
         lbd.decoBdd(con);
     }
 
+    //fonction qui charge les editions du moment dans une arrayList
+    public static ArrayList<Edition> chargerLivreMoment() {
+
+        Bdd bdd = new Bdd();
+        Connection con = bdd.connecterBdd();
+        ArrayList<Edition> listeEditionMoment = new ArrayList();
+        try {
+            String query = "SELECT * FROM AFFECTSOUSCATEGORIE WHERE idsouscategorie = 37";
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                Edition edition = new Edition();
+                Isbn isbn = new Isbn();
+                isbn.setNumeroIsbn(rs.getString("isbn"));
+                edition.setIsbn(isbn);
+                edition.chargerEdition();
+                System.out.println(edition);
+                if (edition.getStock() != null) {
+                    if (edition.getStock() > 0) {
+                        listeEditionMoment.add(edition);
+                    }
+                }
+
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listeEditionMoment;
+
+    }
+
+    //fonction qui charge les Editions concernées par une categorie en particulier
+    public static ArrayList<Edition> editionParCategorie(Integer id) {
+        Bdd bdd = new Bdd();
+        Connection con = bdd.connecterBdd();
+
+        ArrayList<Edition> listeEdition = new ArrayList();
+        try {
+
+            String query = "SELECT dbo.CATEGORIE.IDCATEGORIE, dbo.SOUSCATEGORIE.IDSOUSCATEGORIE, dbo.EDITION.ISBN"
+                    + " FROM dbo.CATEGORIE INNER JOIN"
+                    + " dbo.SOUSCATEGORIE ON dbo.CATEGORIE.IDCATEGORIE = dbo.SOUSCATEGORIE.IDCATEGORIE INNER JOIN"
+                    + " dbo.AFFECTSOUSCATEGORIE ON dbo.SOUSCATEGORIE.IDSOUSCATEGORIE = dbo.AFFECTSOUSCATEGORIE.IDSOUSCATEGORIE INNER JOIN"
+                    + " dbo.EDITION ON dbo.AFFECTSOUSCATEGORIE.ISBN = dbo.EDITION.ISBN "
+                    + " where dbo.CATEGORIE.idcategorie= " + id;
+
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                Edition edition = new Edition();
+                Isbn isbn = new Isbn();
+                isbn.setNumeroIsbn(rs.getString("isbn"));
+                edition.setIsbn(isbn);
+                edition.chargerEdition();
+                if (edition.getStock() != null) {
+                    if (edition.getStock() > 0) {
+                        listeEdition.add(edition);
+                    }
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        bdd.decoBdd(con);
+
+        return listeEdition;
+    }
+
+    //Fonction qui récupère en ArrayList les editions d'une sous categorie en particulier
+    public static ArrayList<Edition> editionParSousCategorie(Integer idCat, Integer idSsCat) {
+
+        Bdd bdd = new Bdd();
+        Connection con = bdd.connecterBdd();
+        ArrayList<Edition> listeEdition = new ArrayList();
+        try {
+            String query = "SELECT dbo.CATEGORIE.IDCATEGORIE, dbo.SOUSCATEGORIE.IDSOUSCATEGORIE, dbo.EDITION.ISBN"
+                    + " FROM dbo.CATEGORIE INNER JOIN"
+                    + " dbo.SOUSCATEGORIE ON dbo.CATEGORIE.IDCATEGORIE = dbo.SOUSCATEGORIE.IDCATEGORIE INNER JOIN"
+                    + " dbo.AFFECTSOUSCATEGORIE ON dbo.SOUSCATEGORIE.IDSOUSCATEGORIE = dbo.AFFECTSOUSCATEGORIE.IDSOUSCATEGORIE INNER JOIN"
+                    + " dbo.EDITION ON dbo.AFFECTSOUSCATEGORIE.ISBN = dbo.EDITION.ISBN "
+                    + " where dbo.CATEGORIE.idcategorie= " + idCat + " AND dbo.SOUSCATEGORIE.IDSOUSCATEGORIE= " + idSsCat;
+
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                Edition edition = new Edition();
+                Isbn isbn = new Isbn();
+                isbn.setNumeroIsbn(rs.getString("isbn"));
+                edition.setIsbn(isbn);
+                edition.chargerEdition();
+                if (edition.getStock() != null) {
+                    if (edition.getStock() > 0) {
+                        listeEdition.add(edition);
+                    }
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listeEdition;
+    }
 }

@@ -79,45 +79,11 @@ public class Categorie implements Serializable {
         } catch (SQLException ex) {
             Logger.getLogger(beans.Categorie.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+bdd.decoBdd(con);
         return listeCategorie;
     }
 
-    //fonction pour récupérer toutes les sous categorie de la bdd associé à un id de catégorie en paramêtre
-    public static ArrayList<SousCategorie> recupererSousCategorie(int id) {
-
-        Bdd bdd = new Bdd();
-        Connection con = bdd.connecterBdd();
-        ArrayList<beans.SousCategorie> listeSousCate = new ArrayList();
-
-        try {
-
-            String query = "select idsousCategorie, nomsouscategorie from souscategorie as so join categorie as ca"
-                    + " on so.idcategorie = ca.idcategorie where ca.idcategorie= ?";
-
-            PreparedStatement ps = con.prepareStatement(query);
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            
-
-            while (rs.next()) {
-                SousCategorie sousCate = new SousCategorie();
-                sousCate.setIdSousCategorie(rs.getInt("idSouscategorie"));
-                sousCate.setNomSousCategorie(rs.getString("nomSousCategorie"));
-              
-                listeSousCate.add(sousCate);
-                
-            }
-
-            rs.close();
-            ps.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(beans.Categorie.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return listeSousCate;
-    }
+  
 
     public void chargerCategorie(){
         
@@ -150,7 +116,7 @@ public class Categorie implements Serializable {
         }
         
         
-        
+        bdd.decoBdd(con);
         
         
     }
