@@ -65,6 +65,7 @@
 
                 <c:if test="${not empty presAchat}">
                     <c:if test="${not empty com}">
+                        <FONT COLOR="red"><h5>${Erreur}</h5></FONT>
                         <%@include file="/WEB-INF/view/commentaireForm.jsp" %>
                     </c:if>
                     <c:if test="${empty com}">
