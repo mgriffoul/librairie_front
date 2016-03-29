@@ -15,8 +15,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -70,7 +70,7 @@ public class index extends HttpServlet {
 
             //récupération des livres du momment
             ArrayList<Edition> listeEditionMoment = Edition.chargerLivreMoment();
-            System.out.println(">>>>>>>>>>>>" + listeEditionMoment.size());
+            
 
             request.setAttribute("ss1", ss1);
             request.setAttribute("ss2", ss2);
@@ -91,11 +91,7 @@ public class index extends HttpServlet {
             Boolean presAchat = false;
 
             Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
-            if(util!=null){
-            System.out.println("util pseudo :"+util.getPseudo());
-            }else{
-                System.out.println("util null");
-            }
+            
             Edition edit = new Edition();
             Isbn isb = new Isbn();
             isb.setNumeroIsbn(request.getParameter("value"));
@@ -103,26 +99,27 @@ public class index extends HttpServlet {
             edit.chargerEdition();
 
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
-            System.out.println("isbn>>>>>" + isb.getNumeroIsbn());
+          
             //Vérification de la présence d'un commentaire déjà laissé par l'utilisateur sur cette edition
             if (util != null) {
                 presComent = util.verifPrevComent(isb.getNumeroIsbn());
             }
-            System.out.println("pres coment +++++"+presComent);
+            
             //Vérification de la presence d'un achet du livre par l'utilisateur
             if(util != null){
                 presAchat = util.verifierPrevAchat(isb.getNumeroIsbn());
             }
-            System.out.println("pres achat +++++"+presAchat);
+            
             
             
             //récuperation de la liste des commentaires associés à l'edition en focus
             ArrayList<Commentaire> listeCommentaire = Commentaire.recupererCommentaire(isb.getNumeroIsbn());
-            System.out.println("liste commentaire : " + listeCommentaire.size());
+            
 
             //si un commentaire vient d'être laissé
-            if ("go".equals(request.getParameter("Valider"))) {
-
+            if(util!=null){
+            if ("Valider".equals(request.getParameter("go"))) {
+                System.out.println("entrée dans le test request");
                 Boolean ok = false;
 
                 if (request.getParameter("note") != null && request.getParameter("coment") != null) {
@@ -134,18 +131,18 @@ public class index extends HttpServlet {
                         com.setNote(Integer.valueOf(request.getParameter("note")));
                         com.setPseudo(util.getPseudo());
 
-                        String format = "dd/MM/yy H:mm:ss";
-                         java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat(format);
-                        Date date = new Date();
-                        com.setDate(date);
+                        java.util.Date date= new java.util.Date();
+                        com.setDate(new Timestamp(date.getTime()));
                         
+                        System.out.println("envoie à soumission bdd");
                         com.soumettreCom(isb.getNumeroIsbn());
-
+                        
                     }
                 }
 
             }
-
+            }
+            
             if ("ok".equals(request.getParameter("det"))) {
                 request.setAttribute("ss7", ss7);
             }

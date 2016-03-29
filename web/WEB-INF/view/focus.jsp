@@ -96,7 +96,7 @@
                         </c:if> 
                     </c:forEach> 
                     ${coment.pseudo}
-                    <span class="pull-right">${coment.date}</span>
+                    <span class="pull-right">${coment.dateFormat}</span>
                     <p>${coment.commentaire}</p>
                 </div>
             </div>

@@ -94,6 +94,8 @@ public class Utilisateur {
                     +" dbo.EDITION ON dbo.LIGNECOMMANDE.ISBN = dbo.EDITION.ISBN "
                     +" where dbo.EDITION.ISBN= ? and dbo.COMMANDE.PSEUDO= ?";
 
+            
+            
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, isbn);
             ps.setString(2, this.getPseudo());
