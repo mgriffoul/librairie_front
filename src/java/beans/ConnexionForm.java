@@ -69,7 +69,7 @@ public final class ConnexionForm {
                         setErreur(CHAMP_PASS, e.getMessage());
                     }
                     utilisateur.setMotDePasse(motDePasse);
-
+                    
                 }
                 lbd.decoBdd(con);
             }else{

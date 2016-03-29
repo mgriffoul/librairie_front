@@ -2,6 +2,7 @@ package servlets;
 
 import beans.Bdd;
 import beans.Categorie;
+import beans.Commande;
 import beans.Commentaire;
 import beans.ConnexionForm;
 import beans.Edition;
@@ -9,7 +10,7 @@ import beans.Isbn;
 import beans.SousCategorie;
 import beans.Utilisateur;
 import beans.beanClient;
-import beans.beanPanier;
+import beans.Panier;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -60,6 +61,8 @@ public class index extends HttpServlet {
         String ss7 = "/WEB-INF/view/details.jsp";
         String ss8 = "/WEB-INF/view/login.jsp";
         String ss9 = "/WEB-INF/view/logout.jsp";
+        String ss10 = "/WEB-INF/view/register.jsp";
+        String ss11 = "/WEB-INF/view/panier.jsp";
 
 //SECTION NULL ----> INDEX        
         if (request.getParameter("section") == null) {
@@ -384,14 +387,18 @@ public class index extends HttpServlet {
         }
 
         if ("reg".equals(request.getParameter("section"))) {
-            url = "/WEB-INF/index.jsp?section=user&action=reg";
+           section = "/WEB-INF/S1.jsp";
+           request.setAttribute("ss", ss10);
         }
 
+        
+        
+        
+        
         if ("loggout".equals(request.getParameter("section"))) {
             session.invalidate();
             section = "/WEB-INF/S1.jsp";
-            request.setAttribute("ss", ss9);
-            
+            request.setAttribute("ss", ss9);         
         }
 
         if ("log".equals(request.getParameter("section"))) {
@@ -420,23 +427,40 @@ public class index extends HttpServlet {
                 }
                 request.setAttribute("ss", ss8);
         }
+        
+        
 // SECTION PANIER
-            if ("vuepanier".equals(request.getParameter("section"))) {
-                url = "./WEB-INF/view/jspPanier.jsp";
-                beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+            if ("pan".equals(request.getParameter("section"))) {
+                
+                section = "/WEB-INF/S1.jsp";
+                Panier bPanier = (Panier) session.getAttribute("panier");
 
+                
+                
+                
+                bPanier = new Panier();
+                bPanier.add("9782226258083");
+                
+                
+                
+                
                 if (bPanier == null) {
-                    bPanier = new beanPanier();
+                    bPanier = new Panier();
                     session.setAttribute("panier", bPanier);
                 }
+                Commande commande = new Commande();
+                commande.s
+                
+                request.setAttribute("ss", ss11);
                 request.setAttribute("estVide", bPanier.isEmpty());
                 request.setAttribute("list", bPanier.getList());
+                
             }
             if ("panier".equals(request.getParameter("section"))) {
-                beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+                Panier bPanier = (Panier) session.getAttribute("panier");
 
                 if (bPanier == null) {
-                    bPanier = new beanPanier();
+                    bPanier = new Panier();
                     session.setAttribute("panier", bPanier);
                 }
                 if (request.getParameter("add") != null) {
@@ -454,11 +478,7 @@ public class index extends HttpServlet {
             }
 //FIN SECTION PANIER
 
-      
-    
-      
-      
-        
+     
         request.setAttribute("section", section);
         request.getRequestDispatcher(url).include(request, response);
     }

@@ -166,7 +166,6 @@ form input.sansLabel {
 .menu{
     position: static;
     float: right;
-    border: 1px #ffffff solid;
 }
 menu ul li a{
     color: white;
@@ -218,3 +217,41 @@ menu ul li a{
     line-height: 130%;
     
 }
+
+caption{
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 30px;
+    font-size: 20px;
+}
+
+table {
+ border-collapse:collapse;
+ width:100%;
+ }
+th, td {
+
+ width:20%;
+ text-align:center;
+
+
+ }
+ th{
+ height: 30px;
+ }
+td {
+ text-align:center;
+ height: 50px;
+
+ }
+caption {
+ font-weight:bold
+ }
+ 
+ .total{
+   text-align: right;
+   margin-left: auto;
+    margin-right: auto;
+font-size: 20px;
+   
+ }

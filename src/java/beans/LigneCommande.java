@@ -1,32 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package beans;
 
-import java.text.DecimalFormat;
 import java.util.Vector;
 
-/**
- *
- * @author cdi206
- */
 public class LigneCommande {
     
     private int idLigneCommande;
+    private String nomAuteur;
     private Edition edition;
     private Oeuvre oeuvre;
     private int qte;
     private float reduc;
     private float tvaAppli;
-    private float prixTTC;
+    private String prixTTC;
     private String titreLivre;
     private String isbn;
-    
-    
-    
-    // constructeurs
+
+    public String getNomAuteur() {
+        return nomAuteur;
+    }
+
+    public void setNomAuteur(String nomAuteur) {
+        this.nomAuteur = nomAuteur;
+    }
 
     public LigneCommande() {
     }
@@ -34,8 +30,7 @@ public class LigneCommande {
     public LigneCommande(Edition edition, int qte, float reduc) {
 
         this.edition = edition;
-  
-        this.qte = qte;
+         this.qte = qte;
         this.reduc = reduc;
 
     }
@@ -80,11 +75,11 @@ public class LigneCommande {
         this.tvaAppli = tvaAppli;
     }
 
-    public float getPrixTTC() {
+    public String getPrixTTC() {
         return prixTTC;
     }
 
-    public void setPrixTTC(float prixTTC) {
+    public void setPrixTTC(String prixTTC) {
         this.prixTTC = prixTTC;
     }
     
