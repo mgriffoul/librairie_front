@@ -8,10 +8,10 @@
             <h4 class="pull-right">${Edition.prixTtc} EUR</h4>
             <div class="titre">  <h3>${Edition.titre}</h3></div>
             <h4>${Edition.sousTitre}</h4>
-            <h4> ${Edition.nomAuteur}</h4>
+            <h4>de ${Edition.nomAuteur}</h4>
             <h5>Edition : ${Edition.editeur}<br>
-
-                Description : ${Edition.description}<br>
+                <br>
+                Description : ${Edition.description}
                 <p><h4>Synopsis :</h4> ${Edition.resume}</p>
 
                 <div class="ratings">
