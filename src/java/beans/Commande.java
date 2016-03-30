@@ -3,7 +3,6 @@ package beans;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Commande {
 
