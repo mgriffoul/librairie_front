@@ -1,40 +1,54 @@
-
 package beans;
 
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collection;
-
 
 public class Commande {
 
     public Commande() {
-    
+        prixCommande = "0";
+        poidsCommande = 0;
+
     }
-    
+
+    public void setStatutCommande(String statutCommande) {
+        this.statutCommande = statutCommande;
+    }
+
+    public void setLigneCommande(ArrayList<LigneCommande> LigneCommande) {
+        this.LigneCommande = LigneCommande;
+    }
+
     String pseudo;
     String numeroCommande;
     String prixCommande;
     Date dateCommande;
+
+    public String getStatutCommande() {
+        return statutCommande;
+    }
+
+    public ArrayList<LigneCommande> getLigneCommande() {
+        return LigneCommande;
+    }
     float poidsCommande;
     String adresseipCommande;
-    
-    Collection LigneCommande;
+    String statutCommande;
+
+    ArrayList<LigneCommande> LigneCommande = new ArrayList();
 
     public String getPrixCommande() {
         return prixCommande;
     }
 
-    public Collection getLigneCommande() {
-        return LigneCommande;
-    }
 
     public void setPrixCommande(String prixCommande) {
         this.prixCommande = prixCommande;
     }
 
-    public void setLigneCommande(Collection LigneCommande) {
-        this.LigneCommande = LigneCommande;
-    }
+
 
     public String getPseudo() {
         return pseudo;
@@ -76,15 +90,17 @@ public class Commande {
         this.adresseipCommande = adresseipCommande;
     }
 
-    public void addLigneCommande(LigneCommande lc){
-        this.LigneCommande.add(lc); 
+    public void addLigneCommande(LigneCommande lc) {
+        this.LigneCommande.add(lc);
     }
-    
-    
-    
-    
-    
-    
-    
+
+    public void calcPrixCommande(String prix) {
+        prix = prix.replaceAll(",",".");
+        float p = Float.parseFloat(prix);
+        float tp = Float.parseFloat(this.prixCommande);
+        tp += p;
+        DecimalFormat df = new DecimalFormat("#.00");
+        this.prixCommande = String.valueOf(df.format(tp));
+    }
     
 }

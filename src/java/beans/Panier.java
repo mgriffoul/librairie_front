@@ -1,12 +1,9 @@
 package beans;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
 
 public class Panier implements Serializable {
 
-    //HashMap<String, LigneCommande> map;
     Commande commande = null;
 
     public Panier() {
@@ -14,28 +11,30 @@ public class Panier implements Serializable {
     }
 
     public void add(String isbn) {
+         float reduc;
+        if (commande == null) {
+            this.commande = new Commande();
+        }
         LigneCommande ligne = new LigneCommande();
         Edition edition = new Edition();
         Isbn is = new Isbn();
         is.setNumeroIsbn(isbn);
         edition.setIsbn(is);
         edition.chargerEdition();
-        add(isbn, edition, ligne, 1);
- 
-
+        reduc = ligne.getReduc();
+        ligne = new LigneCommande(edition, 1, reduc);
+        edition.chargerEdition();
+        commande.calcPrixCommande(edition.getPrixTtc());
+        ligne.setTitreLivre(edition.getTitre());
+        ligne.setIsbn(isbn);
+        ligne.setPrixTTC(edition.getPrixTtc());
+        ligne.setNomAuteur(edition.getNomAuteur());
+        ligne.setNomEditeur(edition.getNomEditeur());
+        this.commande.addLigneCommande(ligne);
     }
 
     public void add(String isbn, Edition edition, LigneCommande ligne, int qte) {
-            float reduc;
-            reduc = ligne.getReduc();
-            ligne = new LigneCommande(edition, qte, reduc); 
-            edition.chargerEdition();
-            String str = edition.getTitre();
-            ligne.setTitreLivre(str);
-            ligne.setIsbn(isbn);
-            ligne.setPrixTTC(edition.getPrixTtc());
-            ligne.setNomAuteur(edition.getNomAuteur());     
-            this.commande.addLigneCommande(ligne);
+
     }
 
 //    public void dec(String isbn) {
@@ -47,7 +46,6 @@ public class Panier implements Serializable {
 //
 //        dec(isbn, edition, ligne, 1);
 //    }
-
 //    public void dec(String isbn, Edition edition, LigneCommande ligne, int qte) {
 //
 //        //System.out.println("isbn = "+edition.getIsbn().getNumeroIsbn());
@@ -61,7 +59,6 @@ public class Panier implements Serializable {
 //            }
 //        }
 //    }
-
 //    public void dec( String isbn) {
 //        dec( isbn, 1);
 //    }
@@ -77,8 +74,6 @@ public class Panier implements Serializable {
 //            }
 //        }
 //    }
-    
-        
 //  
 //    
 //    public void del(String isbn) {
@@ -93,9 +88,9 @@ public class Panier implements Serializable {
 //        return map.isEmpty();
 //    }
 //
-//    public Collection getList() {
-//        return map.values();
-//    }
+    public Commande getCommande() {
+        return this.commande;
+    }
 //
 //    public float getTotal() {
 //        return -1;

@@ -51,7 +51,7 @@ body {
 .thumbnail .caption-full {
     padding: 25px;
     color: #333;
-    
+
 }
 
 footer {
@@ -176,23 +176,23 @@ menu ul li a{
 /* partie focus produit */
 
 .detail{
-   line-height: 25px;
-   overflow: auto;
-   padding: 10px;
-   border : 1px solid #ececec;
+    line-height: 25px;
+    overflow: auto;
+    padding: 10px;
+    border : 1px solid #ececec;
 }
 
 
- .details1{
+.details1{
     float : left;
     height : 100%;
     width: 50%;
     margin-bottom: 20px;
-    
+
 }
 
 .details2{
-   height : 100%;
+    height : 100%;
 }
 
 .detail u {
@@ -201,7 +201,7 @@ menu ul li a{
 
 .stock{
     text-align: center;
-   
+
 }
 
 .titre{
@@ -209,13 +209,13 @@ menu ul li a{
 }
 
 .rupture{
-   
-  
+
+
 }
 .choixSousCate {
-    
+
     line-height: 130%;
-    
+
 }
 
 caption{
@@ -226,32 +226,40 @@ caption{
 }
 
 table {
- border-collapse:collapse;
- width:100%;
- }
+    border-collapse:collapse;
+    width:100%;
+}
 th, td {
 
- width:20%;
- text-align:center;
+    width:20%;
+    text-align:center;
 
 
- }
- th{
- height: 30px;
- }
+}
+th{
+    height: 30px;
+
+}
 td {
- text-align:center;
- height: 50px;
+    text-align:center;
+    height: 50px;
 
- }
+}
 caption {
- font-weight:bold
- }
- 
- .total{
-   text-align: right;
-   margin-left: auto;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 160%;
+    padding: 5px;
+    font-weight: bold;
+    color: black;
+}
+
+.total{
+    text-align: right;
+    margin-left: auto;
     margin-right: auto;
-font-size: 20px;
-   
- }
+    font-size: 20px;
+    border-top: 1px #222222 solid;
+    margin-top: 40px;
+
+}

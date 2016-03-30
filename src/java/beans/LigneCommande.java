@@ -13,8 +13,17 @@ public class LigneCommande {
     private float reduc;
     private float tvaAppli;
     private String prixTTC;
+
+    public void setNomEditeur(String nomEditeur) {
+        this.nomEditeur = nomEditeur;
+    }
     private String titreLivre;
     private String isbn;
+
+    public String getNomEditeur() {
+        return nomEditeur;
+    }
+    private String nomEditeur;
 
     public String getNomAuteur() {
         return nomAuteur;
@@ -28,9 +37,8 @@ public class LigneCommande {
     }
 
     public LigneCommande(Edition edition, int qte, float reduc) {
-
         this.edition = edition;
-         this.qte = qte;
+        this.qte = qte;
         this.reduc = reduc;
 
     }

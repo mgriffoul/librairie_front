@@ -1,14 +1,15 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:if test="${estVide}">
+<c:if test="${fn:length(list)} = 0">
     <a href="./index"> Retour </a>
     Panier vide !!! 
 </c:if>
 <c:if test="${!estVide}">
     <table>
-        <caption>Votre panier contient ${fn:length(list)} article!</caption>
+        <caption>Panier: ${fn:length(list)} article!</caption>
         <tr>
             <th>Titre</th>
+            <th>Auteur</th>
             <th>Editeur</th>
             <th>Prix</th>
             <th>Quantité</th>
@@ -17,6 +18,7 @@
             <c:forEach var="i" items="${list}">
                 <td>${i.titreLivre}</td>
                 <td>${i.nomAuteur}</td>
+                <td>${i.nomEditeur}</td>
                 <td>${i.prixTTC} EUROS TTC</td>
                 <td><select>
                         <option value="1">1</option>
@@ -40,6 +42,6 @@
         </c:forEach>      
         </tr>
     </table>
-        <p class='total'> Prix total: </p>
+        <p class='total'> Prix total: ${commande.prixCommande} </p>
     <a href="./index?section=pan&clear">Vider le panier</a>
 </c:if>
