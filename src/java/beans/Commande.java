@@ -9,7 +9,6 @@ public class Commande {
     public Commande() {
         prixCommande = "0";
         poidsCommande = 0;
-
     }
 
     public void setStatutCommande(String statutCommande) {
@@ -101,6 +100,19 @@ public class Commande {
         tp += p;
         DecimalFormat df = new DecimalFormat("#.00");
         this.prixCommande = String.valueOf(df.format(tp));
+    }
+    
+    public void delLigneCommande(String isbn){  
+        for(LigneCommande lc: LigneCommande){
+            if(lc.getIsbn()==isbn){
+              this.LigneCommande.remove(lc);
+            }
+        }
+    }
+    
+    public void clear(){
+        this.prixCommande = "0";
+        this.LigneCommande.clear();
     }
     
 }

@@ -49,9 +49,7 @@ public class index extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        
-        
-        
+
         String url = "/WEB-INF/index.jsp";
         HttpSession session = request.getSession();
 
@@ -130,11 +128,11 @@ public class index extends HttpServlet {
 
                     if (request.getParameter("note") != null && request.getParameter("coment") != null) {
 
-                        if (!request.getParameter("note").isEmpty() && request.getParameter("coment").length()>1 ) {
+                        if (!request.getParameter("note").isEmpty() && request.getParameter("coment").length() > 1) {
 
                             System.out.println("NO erreur detectée");
                             String s = request.getParameter("coment");
-                            System.out.println("SIZE REQU"+ s.length());
+                            System.out.println("SIZE REQU" + s.length());
                             ok = true;
 
                             Commentaire com = new Commentaire();
@@ -441,19 +439,14 @@ public class index extends HttpServlet {
 //FIN SECTION RECHERCHE
 
         if ("reg".equals(request.getParameter("section"))) {
-           section = "/WEB-INF/S1.jsp";
-           request.setAttribute("ss", ss10);
+            section = "/WEB-INF/S1.jsp";
+            request.setAttribute("ss", ss10);
         }
 
-        
-        
-        
-        
         if ("loggout".equals(request.getParameter("section"))) {
             session.invalidate();
             section = "/WEB-INF/S1.jsp";
             request.setAttribute("ss", ss9);
-
 
         }
 
@@ -485,47 +478,43 @@ public class index extends HttpServlet {
 
             request.setAttribute("ss", ss8);
         }
-        
-        
+
 // SECTION PANIER
-            if ("pan".equals(request.getParameter("section"))) {
-                
-                section = "/WEB-INF/S1.jsp";
-                Panier bPanier = (Panier) session.getAttribute("panier");
+        if ("pan".equals(request.getParameter("section"))) {
 
-//                bPanier = new Panier();
-//                bPanier.add("9782226258083");
+            section = "/WEB-INF/S1.jsp";
+            Panier bPanier = (Panier) session.getAttribute("panier");
 
-                if (bPanier == null) {
-                    bPanier = new Panier();
-                    session.setAttribute("panier", bPanier);
-                }
-                
-                    if (request.getParameter("add") != null) {
-                    bPanier.add(request.getParameter("add"));
-                }
-                
-                
-                Commande commande = bPanier.getCommande();
-                Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);     
-             
-                request.setAttribute("commande", commande);
-                request.setAttribute("ss", ss11);
-                request.setAttribute("list", commande.getLigneCommande());
-                
-
-            
+            if (bPanier == null) {
+                bPanier = new Panier();
+                session.setAttribute("panier", bPanier);
             }
+
+            if (request.getParameter("add") != null) {
+                bPanier.add(request.getParameter("add"));
+            }
+            if (request.getParameter("del") != null) {
+                bPanier.del(request.getParameter("del"));
+            }
+            if (request.getParameter("clear") != null) {
+                bPanier.clear();
+            }
+
+            Commande commande = bPanier.getCommande();
+            Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
+
+            request.setAttribute("commande", commande);
+            request.setAttribute("ss", ss11);
+            request.setAttribute("list", commande.getLigneCommande());
+
+        }
 //                if (request.getParameter("dec") != null) {
 //                   bPanier.dec(request.getParameter("dec"));
 //               }
-//               if (request.getParameter("del") != null) {
-//                    bPanier.del(request.getParameter("del"));
-//               }
-//                if (request.getParameter("clear") != null) {
-//                    bPanier.clear();
-//               }
-            
+//             
+//              
+
+
 //FIN SECTION PANIER
 
 
@@ -589,6 +578,7 @@ public class index extends HttpServlet {
         
         // ccc
         request.setAttribute("section", section);
+
 
         request.getRequestDispatcher(url).include(request, response);
     }
