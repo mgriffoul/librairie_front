@@ -9,7 +9,6 @@ import beans.Isbn;
 import beans.SousCategorie;
 import beans.Utilisateur;
 import beans.beanClient;
-import beans.beanPanier;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
