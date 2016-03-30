@@ -69,6 +69,7 @@ public final class ConnexionForm {
                         setErreur(CHAMP_PASS, e.getMessage());
                     }
                     utilisateur.setMotDePasse(motDePasse);
+                    utilisateur.setPseudo(rst.getString("PSEUDO"));
 
                     
                 }

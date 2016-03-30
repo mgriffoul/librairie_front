@@ -37,13 +37,11 @@
                     <div class ="menu">
                         <jsp:include page="/WEB-INF/view/menu.jsp" />
                     </div>
-                    <c:if test="${!empty sessionScope.sessionUtilisateur}">
                     <div class="shop">
                         <a href="./index?section=pan">
                             <label for="shop">(${fn:length(list)})</label><img src="ImagesLibrairie/Bouton/shop-cart-icon.png" alt="shop" style="width:55px;height:55px;">    
                         </a>        
                     </div> 
-                    </c:if>
                 </div>
             </div>
         </nav>
