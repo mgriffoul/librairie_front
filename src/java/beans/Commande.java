@@ -102,16 +102,27 @@ public class Commande {
         this.prixCommande = String.valueOf(df.format(tp));
     }
     
+    public void calcPrixCommande(){
+        float tp = 0;
+        for(LigneCommande lc: LigneCommande){        
+            float p = Float.parseFloat(lc.getPrixTTC().replaceAll(",", "."));
+            tp +=p;
+            }
+         DecimalFormat df = new DecimalFormat("#.00");
+        this.prixCommande = String.valueOf(df.format(tp));
+    }
+    
+    
     public void delLigneCommande(String isbn){  
-        for(LigneCommande lc: LigneCommande){
-            if(lc.getIsbn()==isbn){
+        for(LigneCommande lc: LigneCommande){        
+            if(lc.getIsbn().equals(isbn)){
               this.LigneCommande.remove(lc);
+              return;
             }
         }
     }
     
     public void clear(){
-        this.prixCommande = "0";
         this.LigneCommande.clear();
     }
     

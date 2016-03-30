@@ -12,14 +12,16 @@
             <th>Editeur</th>
             <th>Prix</th>
             <th>Quantité</th>
+            <th>Supprimer</th>
         </tr>
         <tr>
             <c:forEach var="i" items="${list}">
                 <td>${i.titreLivre}</td>
                 <td>${i.nomAuteur}</td>
                 <td>${i.nomEditeur}</td>
-                <td>${i.prixTTC} EUROS TTC</td>
-                <td><select>
+                <td>${i.prixTTC} EUROS</td>
+                <td>
+                    <select id="selectBox" onchange="changeFunc();">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -34,6 +36,8 @@
                             ${i.qte}
                         </option>
                     </select>
+                </td>
+                <td>
                     <a href="./index?section=pan&del=${i.isbn}">
                         <img src="ImagesLibrairie/Bouton/corbeille.png" alt="shop" style="width:25px;height:25px;">    
                     </a> 
@@ -41,6 +45,13 @@
         </tr>
         </c:forEach>      
     </table>
-    <p class='total'> Prix total: ${commande.prixCommande} </p>
+    <p class='total'> Prix total: ${commande.prixCommande} EUROS </p>
     <a href="./index?section=pan&clear" >Vider le panier</a>
 </c:if>
+   <script type="text/javascript">
+   function changeFunc() {
+    var selectBox = document.getElementById("selectBox");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    document.location.href="./index?section=pan&qte="+selectedValue;
+   }
+  </script>

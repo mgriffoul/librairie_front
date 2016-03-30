@@ -488,7 +488,6 @@ public class index extends HttpServlet {
                 bPanier = new Panier();
                 session.setAttribute("panier", bPanier);
             }
-
             if (request.getParameter("add") != null) {
                 bPanier.add(request.getParameter("add"));
             }
@@ -498,6 +497,10 @@ public class index extends HttpServlet {
             if (request.getParameter("clear") != null) {
                 bPanier.clear();
             }
+            if (request.getParameter("qte") != null) {
+                
+            }
+            
 
             Commande commande = bPanier.getCommande();
             Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);

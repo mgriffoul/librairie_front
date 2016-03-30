@@ -24,18 +24,15 @@ public class Panier implements Serializable {
         reduc = ligne.getReduc();
         ligne = new LigneCommande(edition, 1, reduc);
         edition.chargerEdition();
-        commande.calcPrixCommande(edition.getPrixTtc());
         ligne.setTitreLivre(edition.getTitre());
         ligne.setIsbn(isbn);
         ligne.setPrixTTC(edition.getPrixTtc());
         ligne.setNomAuteur(edition.getNomAuteur());
         ligne.setNomEditeur(edition.getNomEditeur());
         this.commande.addLigneCommande(ligne);
+        this.commande.calcPrixCommande();
     }
 
-    public void add(String isbn, Edition edition, LigneCommande ligne, int qte) {
-
-    }
 
 //    public void dec(String isbn) {
 //        LigneCommande ligne = new LigneCommande();
@@ -78,11 +75,13 @@ public class Panier implements Serializable {
 //    
     public void del(String isbn) {
         this.commande.delLigneCommande(isbn);
+        this.commande.calcPrixCommande();
     }
 //
 
     public void clear() {
         this.commande.clear();
+         this.commande.calcPrixCommande();
     }
 //
 //    public boolean isEmpty() {
