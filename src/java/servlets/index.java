@@ -1,5 +1,6 @@
 package servlets;
 
+import beans.Adresse;
 import beans.Bdd;
 import beans.Categorie;
 import beans.Commande;
@@ -10,6 +11,7 @@ import beans.Isbn;
 import beans.Panier;
 import beans.SousCategorie;
 import beans.Utilisateur;
+import beans.beanAdresse;
 import beans.beanClient;
 import java.io.IOException;
 import java.sql.Connection;
@@ -47,9 +49,7 @@ public class index extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        
-        
-        
+
         String url = "/WEB-INF/index.jsp";
         HttpSession session = request.getSession();
 
@@ -128,11 +128,11 @@ public class index extends HttpServlet {
 
                     if (request.getParameter("note") != null && request.getParameter("coment") != null) {
 
-                        if (!request.getParameter("note").isEmpty() && request.getParameter("coment").length()>1 ) {
+                        if (!request.getParameter("note").isEmpty() && request.getParameter("coment").length() > 1) {
 
                             System.out.println("NO erreur detectée");
                             String s = request.getParameter("coment");
-                            System.out.println("SIZE REQU"+ s.length());
+                            System.out.println("SIZE REQU" + s.length());
                             ok = true;
 
                             Commentaire com = new Commentaire();
@@ -531,19 +531,14 @@ System.out.println("presComent :::::" + presComent);
 //FIN SECTION RECHERCHE
 
         if ("reg".equals(request.getParameter("section"))) {
-           section = "/WEB-INF/S1.jsp";
-           request.setAttribute("ss", ss10);
+            section = "/WEB-INF/S1.jsp";
+            request.setAttribute("ss", ss10);
         }
 
-        
-        
-        
-        
         if ("loggout".equals(request.getParameter("section"))) {
             session.invalidate();
             section = "/WEB-INF/S1.jsp";
             request.setAttribute("ss", ss9);
-
 
         }
 
@@ -575,51 +570,108 @@ System.out.println("presComent :::::" + presComent);
 
             request.setAttribute("ss", ss8);
         }
-        
-        
+
 // SECTION PANIER
-            if ("pan".equals(request.getParameter("section"))) {
-                
-                section = "/WEB-INF/S1.jsp";
-                Panier bPanier = (Panier) session.getAttribute("panier");
+        if ("pan".equals(request.getParameter("section"))) {
 
-//                bPanier = new Panier();
-//                bPanier.add("9782226258083");
+            section = "/WEB-INF/S1.jsp";
+            Panier bPanier = (Panier) session.getAttribute("panier");
 
-                if (bPanier == null) {
-                    bPanier = new Panier();
-                    session.setAttribute("panier", bPanier);
-                }
-                
-                    if (request.getParameter("add") != null) {
-                    bPanier.add(request.getParameter("add"));
-                }
-                
-                
-                Commande commande = bPanier.getCommande();
-                Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);     
-             
-                request.setAttribute("commande", commande);
-                request.setAttribute("ss", ss11);
-                request.setAttribute("list", commande.getLigneCommande());
-                
-
-            
+            if (bPanier == null) {
+                bPanier = new Panier();
+                session.setAttribute("panier", bPanier);
             }
+
+            if (request.getParameter("add") != null) {
+                bPanier.add(request.getParameter("add"));
+            }
+            if (request.getParameter("del") != null) {
+                bPanier.del(request.getParameter("del"));
+            }
+            if (request.getParameter("clear") != null) {
+                bPanier.clear();
+            }
+
+            Commande commande = bPanier.getCommande();
+            Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
+
+            request.setAttribute("commande", commande);
+            request.setAttribute("ss", ss11);
+            request.setAttribute("list", commande.getLigneCommande());
+
+        }
 //                if (request.getParameter("dec") != null) {
 //                   bPanier.dec(request.getParameter("dec"));
 //               }
-//               if (request.getParameter("del") != null) {
-//                    bPanier.del(request.getParameter("del"));
-//               }
-//                if (request.getParameter("clear") != null) {
-//                    bPanier.clear();
-//               }
-            
+//             
+//              
+
+
 //FIN SECTION PANIER
 
-     
-       request.setAttribute("section", section);
+
+//SECTION VALIFATION DU PANIER 
+        
+        //VALIDATION ADRESSE
+        if ("choixAdresse".equals(request.getParameter("section"))){
+            if (request.getParameter("doIt") != null){
+            url = "./WEB-INF/view/adresse.jsp";
+            
+                beanAdresse adrBeanFacturation = (beanAdresse) session.getAttribute("adresselivraison");
+                if (adrBeanFacturation == null) {
+                    adrBeanFacturation = new beanAdresse(session.getAttribute("login").toString(), "F");
+                    session.setAttribute("adressefacturation", adrBeanFacturation.getList());
+                }
+                adrBeanFacturation.getAdresse(session.getAttribute("login").toString(), "F");
+                request.setAttribute("adressefacturation", adrBeanFacturation.getList());
+
+                beanAdresse adLivraison = (beanAdresse) session.getAttribute("adresselivraison");
+                if (adLivraison == null) {
+                    adLivraison = new beanAdresse(session.getAttribute("login").toString(), "L");
+                    session.setAttribute("adresselivraison", adLivraison.getList());
+                }
+                adLivraison.getAdresse(session.getAttribute("login").toString(), "L");
+                request.setAttribute("adresselivraison", adLivraison.getList());
+            }else{
+                url = "./WEB-INF/view/panier.jsp";
+            }
+            
+            
+        }
+
+        // FIN VALIDATION ADRESSE  
+        
+        // AJOUT ADRESSE
+        if ("nouvelleadresse".equals(request.getParameter("section"))) {
+            url = "/WEB-INF/view/jspNewAdresse.jsp";
+        }
+        
+        if ("sauvegAdresse".equals(request.getParameter("section"))){
+            Adresse ad = new Adresse();
+            Utilisateur ut = (Utilisateur) session.getAttribute("sessionUtilisateur");
+            ad.sauvegarderAdresse(ut.getPseudo(), request.getParameter("Civilite"), request.getParameter("adresseClient"),request.getParameter("codePostal"),request.getParameter("ville"),request.getParameter("complementAdresse"),request.getParameter("pays"),request.getParameter("natureAdresse"));
+            
+             if (request.getParameter("doIt") != null) {
+                url = "/WEB-INF/adresse.jsp";
+                beanAdresse adFacturation = new beanAdresse(session.getAttribute("pseudo").toString(), "F");
+                session.setAttribute("adressefacturation", adFacturation.getList());
+                request.setAttribute("adressefacturation", adFacturation.getList());
+
+                beanAdresse adLivraison = new beanAdresse(session.getAttribute("pseudo").toString(), "L");
+                session.setAttribute("adresselivraison", adLivraison.getList());
+                request.setAttribute("adresselivraison", adLivraison.getList());
+
+            } else { url = "./WEB-INF/view/panier.jsp";
+        }
+        }
+        //FIN AJOUT ADRESSE
+        
+        // VALIDATION TRANSPORTEUR
+        
+        // ccc
+        request.setAttribute("section", section);
+
+
         request.getRequestDispatcher(url).include(request, response);
     }
 

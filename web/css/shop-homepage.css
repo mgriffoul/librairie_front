@@ -81,7 +81,12 @@ fieldset {
     margin-right: auto;
     width:40%;
 }
-
+h1{
+     margin-left: auto;
+    margin-right: auto;
+    width:50%;
+    
+}
 h2{
     margin-left: auto;
     margin-right: auto;
@@ -261,5 +266,11 @@ caption {
     font-size: 20px;
     border-top: 1px #222222 solid;
     margin-top: 40px;
+}
 
+a{
+
+    font-size: 15px;
+      text-align : center;
+  display : block;
 }

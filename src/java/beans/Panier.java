@@ -11,7 +11,7 @@ public class Panier implements Serializable {
     }
 
     public void add(String isbn) {
-         float reduc;
+        float reduc;
         if (commande == null) {
             this.commande = new Commande();
         }
@@ -76,18 +76,20 @@ public class Panier implements Serializable {
 //    }
 //  
 //    
-//    public void del(String isbn) {
-//        this.map.remove(isbn);
-//    }
+    public void del(String isbn) {
+        this.commande.delLigneCommande(isbn);
+    }
 //
-//    public void clear() {
-//        map.clear();
-//    }
+
+    public void clear() {
+        this.commande.clear();
+    }
 //
 //    public boolean isEmpty() {
 //        return map.isEmpty();
 //    }
 //
+
     public Commande getCommande() {
         return this.commande;
     }
