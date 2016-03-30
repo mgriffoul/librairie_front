@@ -11,6 +11,6 @@ function redirect()
 {
 window.location='./index' ;
 }
-setTimeout('redirect()',2500); 
+setTimeout('redirect()',2000); 
  
 </SCRIPT>
