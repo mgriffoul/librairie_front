@@ -34,5 +34,4 @@ public class Bdd {
             System.err.println("Erreur " + ex.getMessage());
         }
     }
-    
-}
+}   

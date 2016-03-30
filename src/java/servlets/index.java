@@ -10,6 +10,7 @@ import beans.Isbn;
 import beans.Panier;
 import beans.SousCategorie;
 import beans.Utilisateur;
+import beans.beanAdresse;
 import beans.beanClient;
 import java.io.IOException;
 import java.sql.Connection;
@@ -512,8 +513,71 @@ public class index extends HttpServlet {
 //             
 //              
 
+
 //FIN SECTION PANIER
+
+
+//SECTION VALIFATION DU PANIER 
+        
+        //VALIDATION ADRESSE
+        if ("choixAdresse".equals(request.getParameter("section"))){
+            if (request.getParameter("doIt") != null){
+            url = "./WEB-INF/view/jspAdresse.jsp";
+            
+                beanAdresse adrBeanFacturation = (beanAdresse) session.getAttribute("adresselivraison");
+                if (adrBeanFacturation == null) {
+                    adrBeanFacturation = new beanAdresse(session.getAttribute("login").toString(), "F");
+                    session.setAttribute("adressefacturation", adrBeanFacturation.getList());
+                }
+                adrBeanFacturation.getAdresse(session.getAttribute("login").toString(), "F");
+                request.setAttribute("adressefacturation", adrBeanFacturation.getList());
+
+                beanAdresse adLivraison = (beanAdresse) session.getAttribute("adresselivraison");
+                if (adLivraison == null) {
+                    adLivraison = new beanAdresse(session.getAttribute("login").toString(), "L");
+                    session.setAttribute("adresselivraison", adLivraison.getList());
+                }
+                adLivraison.getAdresse(session.getAttribute("login").toString(), "L");
+                request.setAttribute("adresselivraison", adLivraison.getList());
+            }else{
+                url = "./WEB-INF/view/jspPanier.jsp";
+            }
+            
+            
+        }
+
+        // FIN VALIDATION ADRESSE  
+        
+        // AJOUT ADRESSE
+        if ("nouvelleadresse".equals(request.getParameter("section"))) {
+            url = "/WEB-INF/view/jspNewAdresse.jsp";
+        }
+        
+        if ("sauvegAdresse".equals(request.getParameter("section"))){
+            Bdd bdd = new Bdd();
+            //bdd.sauvegarderAdresse();
+            
+             if (request.getParameter("doIt") != null) {
+                url = "/WEB-INF/adresse.jsp";
+                beanAdresse adFacturation = new beanAdresse(session.getAttribute("pseudo").toString(), "F");
+                session.setAttribute("adressefacturation", adFacturation.getList());
+                request.setAttribute("adressefacturation", adFacturation.getList());
+
+                beanAdresse adLivraison = new beanAdresse(session.getAttribute("pseudo").toString(), "L");
+                session.setAttribute("adresselivraison", adLivraison.getList());
+                request.setAttribute("adresselivraison", adLivraison.getList());
+
+            } else { url = "./WEB-INF/view/jspPanier.jsp";
+        }
+        }
+        //FIN AJOUT ADRESSE
+        
+        // VALIDATION TRANSPORTEUR
+        
+        // ccc
         request.setAttribute("section", section);
+
+
         request.getRequestDispatcher(url).include(request, response);
     }
 
