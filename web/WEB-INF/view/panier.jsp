@@ -38,9 +38,9 @@
                     <a href="./index?section=pan&del=${i.isbn}">
                         <img src="ImagesLibrairie/Bouton/corbeille.png" alt="shop" style="width:25px;height:25px;">    
                     </a> 
-                </td>  
-        </c:forEach>      
+                </td>
         </tr>
+        </c:forEach>      
     </table>
         <p class='total'> Prix total: ${commande.prixCommande} </p>
     <a href="./index?section=pan&clear">Vider le panier</a>

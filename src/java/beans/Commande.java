@@ -95,6 +95,7 @@ public class Commande {
 
     public void calcPrixCommande(String prix) {
         prix = prix.replaceAll(",",".");
+        this.prixCommande =this.prixCommande.replaceAll(",", ".");
         float p = Float.parseFloat(prix);
         float tp = Float.parseFloat(this.prixCommande);
         tp += p;

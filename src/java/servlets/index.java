@@ -491,35 +491,28 @@ public class index extends HttpServlet {
                 section = "/WEB-INF/S1.jsp";
                 Panier bPanier = (Panier) session.getAttribute("panier");
 
-                bPanier = new Panier();
-                bPanier.add("9782226258083");
+//                bPanier = new Panier();
+//                bPanier.add("9782226258083");
 
                 if (bPanier == null) {
                     bPanier = new Panier();
                     session.setAttribute("panier", bPanier);
                 }
-               
+                
+                    if (request.getParameter("add") != null) {
+                    bPanier.add(request.getParameter("add"));
+                }
                 
                 
                 Commande commande = bPanier.getCommande();
                 Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);     
-                commande.setPseudo(utilisateur.getPseudo());
              
                 request.setAttribute("commande", commande);
                 request.setAttribute("ss", ss11);
                 request.setAttribute("list", commande.getLigneCommande());
                 
-            }
-            if ("panier".equals(request.getParameter("section"))) {
-                Panier bPanier = (Panier) session.getAttribute("panier");
 
-                if (bPanier == null) {
-                    bPanier = new Panier();
-                    session.setAttribute("panier", bPanier);
-               }
-                if (request.getParameter("add") != null) {
-                    bPanier.add(request.getParameter("add"));
-                }
+            
             }
 //                if (request.getParameter("dec") != null) {
 //                   bPanier.dec(request.getParameter("dec"));
