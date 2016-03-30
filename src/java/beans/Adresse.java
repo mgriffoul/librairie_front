@@ -116,27 +116,28 @@ public class Adresse implements Serializable{
         this.prenomClient = prenomClient;
     }
     
-   public void sauvegarderAdresse(String civilite, String adresse, String complement, String codePostal, String ville, String pays, String natureAdresse){
+   public void sauvegarderAdresse(String pseudo, String civilite, String adresse, String complement, String codePostal, String ville, String pays, String natureAdresse){
        
             Bdd bdd= new Bdd();
             Connection con = bdd.connecterBdd();
        
        try {
            
-            String query = "INSERT INTO Adresse (Civilite,adresseclient,"
+            String query = "INSERT INTO Adresse (pseudo,Civilite,adresseclient,"
                     + "codePostal,ville,complementCoordonnees,pays,"
                     + ",natureadresse) "
-                    + "VALUES (?,?,?,?,?,?,?)";
+                    + "VALUES (?,?,?,?,?,?,?,?)";
             
             
             PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, civilite);
-            stmt.setString(2, adresse);
-            stmt.setString(3, codePostal);
-            stmt.setString(4, ville);
-            stmt.setString(5, complement);
-            stmt.setString(6, pays);
-            stmt.setString(7, natureAdresse);
+            stmt.setString(1, pseudo);
+            stmt.setString(2, civilite);
+            stmt.setString(3, adresse);
+            stmt.setString(4, codePostal);
+            stmt.setString(5, ville);
+            stmt.setString(6, complement);
+            stmt.setString(7, pays);
+            stmt.setString(8, natureAdresse);
             
             
             stmt.executeUpdate();

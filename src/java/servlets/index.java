@@ -556,8 +556,8 @@ public class index extends HttpServlet {
         
         if ("sauvegAdresse".equals(request.getParameter("section"))){
             Adresse ad = new Adresse();
-            
-            ad.sauvegarderAdresse();
+            Utilisateur ut = (Utilisateur) session.getAttribute("sessionUtilisateur");
+            ad.sauvegarderAdresse(ut.getPseudo(), request.getParameter("Civilite"), request.getParameter("adresseClient"),request.getParameter("codePostal"),request.getParameter("ville"),request.getParameter("complementAdresse"),request.getParameter("pays"),request.getParameter("natureAdresse"));
             
              if (request.getParameter("doIt") != null) {
                 url = "/WEB-INF/adresse.jsp";
