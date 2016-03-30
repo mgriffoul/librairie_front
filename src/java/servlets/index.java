@@ -520,6 +520,7 @@ public class index extends HttpServlet {
                 if (request.getParameter("add") != null) {
                     bPanier.add(request.getParameter("add"));
                 }
+            }
 //                if (request.getParameter("dec") != null) {
 //                   bPanier.dec(request.getParameter("dec"));
 //               }

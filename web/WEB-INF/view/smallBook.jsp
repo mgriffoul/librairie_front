@@ -40,7 +40,7 @@
                 </div>
 
 
-                <a href="./index?section=panier&add=${element.numeroIsbn}">
+                <a href="./index?section=pan&add=${element.numeroIsbn}">
                     <img src="ImagesLibrairie/Bouton/commander.jpg" alt="">
                 </a>
 
