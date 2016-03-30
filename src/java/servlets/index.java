@@ -1,5 +1,6 @@
 package servlets;
 
+import beans.Adresse;
 import beans.Bdd;
 import beans.Categorie;
 import beans.Commande;
@@ -533,7 +534,7 @@ public class index extends HttpServlet {
         //VALIDATION ADRESSE
         if ("choixAdresse".equals(request.getParameter("section"))){
             if (request.getParameter("doIt") != null){
-            url = "./WEB-INF/view/jspAdresse.jsp";
+            url = "./WEB-INF/view/adresse.jsp";
             
                 beanAdresse adrBeanFacturation = (beanAdresse) session.getAttribute("adresselivraison");
                 if (adrBeanFacturation == null) {
@@ -551,7 +552,7 @@ public class index extends HttpServlet {
                 adLivraison.getAdresse(session.getAttribute("login").toString(), "L");
                 request.setAttribute("adresselivraison", adLivraison.getList());
             }else{
-                url = "./WEB-INF/view/jspPanier.jsp";
+                url = "./WEB-INF/view/panier.jsp";
             }
             
             
@@ -565,8 +566,9 @@ public class index extends HttpServlet {
         }
         
         if ("sauvegAdresse".equals(request.getParameter("section"))){
-            Bdd bdd = new Bdd();
-            //bdd.sauvegarderAdresse();
+            Adresse ad = new Adresse();
+            
+            ad.sauvegarderAdresse();
             
              if (request.getParameter("doIt") != null) {
                 url = "/WEB-INF/adresse.jsp";
@@ -578,7 +580,7 @@ public class index extends HttpServlet {
                 session.setAttribute("adresselivraison", adLivraison.getList());
                 request.setAttribute("adresselivraison", adLivraison.getList());
 
-            } else { url = "./WEB-INF/view/jspPanier.jsp";
+            } else { url = "./WEB-INF/view/panier.jsp";
         }
         }
         //FIN AJOUT ADRESSE
