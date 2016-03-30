@@ -527,7 +527,7 @@ public class index extends HttpServlet {
             
 //FIN SECTION PANIER
 
-<<<<<<< HEAD
+
 //SECTION VALIFATION DU PANIER 
         
         //VALIDATION ADRESSE
@@ -566,7 +566,7 @@ public class index extends HttpServlet {
         
         if ("sauvegAdresse".equals(request.getParameter("section"))){
             Bdd bdd = new Bdd();
-            bdd.sauvegarderAdresse();
+            //bdd.sauvegarderAdresse();
             
              if (request.getParameter("doIt") != null) {
                 url = "/WEB-INF/adresse.jsp";
@@ -585,12 +585,9 @@ public class index extends HttpServlet {
         
         // VALIDATION TRANSPORTEUR
         
-        
+        // ccc
         request.setAttribute("section", section);
-=======
-     
-       request.setAttribute("section", section);
->>>>>>> ad4209d3b298da1d912cedb49a87c34101a2e4f8
+
         request.getRequestDispatcher(url).include(request, response);
     }
 
