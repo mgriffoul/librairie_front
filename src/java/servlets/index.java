@@ -178,6 +178,98 @@ public class index extends HttpServlet {
             request.setAttribute("Commentaire", listeCommentaire);
 
         }
+//SECTION = FOCUS (zoom du livre)        
+        if ("focus".equals(request.getParameter("section"))) {
+
+            section = "/WEB-INF/S3.jsp";
+            Boolean presComent = false;
+            Boolean presAchat = false;
+
+            Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
+            System.out.println("util " + util.getPseudo());
+            
+            Edition edit = new Edition();
+            Isbn isb = new Isbn();
+            isb.setNumeroIsbn(request.getParameter("value"));
+            edit.setIsbn(isb);
+            edit.chargerEdition();
+            
+            System.out.println("isbn " + isb.getNumeroIsbn());
+            
+            ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
+
+            //Vérification de la présence d'un commentaire déjà laissé par l'utilisateur sur cette edition
+            
+            if (util != null) {
+                presComent = util.verifPrevComent(isb.getNumeroIsbn());
+            }
+System.out.println("presComent :::::" + presComent);
+            //Vérification de la presence d'un achet du livre par l'utilisateur
+            if (util != null) {
+                presAchat = util.verifierPrevAchat(isb.getNumeroIsbn());
+            }
+            System.out.println("pres achat :::::" + presAchat);
+            //récuperation de la liste des commentaires associés à l'edition en focus
+            ArrayList<Commentaire> listeCommentaire = Commentaire.recupererCommentaire(isb.getNumeroIsbn());
+
+            //si un commentaire vient d'être laissé
+            if (util != null) {
+                if ("Valider".equals(request.getParameter("go"))) {
+                    System.out.println("entrée dans le test request");
+                    Boolean ok = false;
+
+                    if (request.getParameter("note") != null && request.getParameter("coment") != null) {
+
+                        if (!request.getParameter("note").isEmpty() && request.getParameter("coment").length()>1 ) {
+
+                            System.out.println("NO erreur detectée");
+                            String s = request.getParameter("coment");
+                            System.out.println("SIZE REQU"+ s.length());
+                            ok = true;
+
+                            Commentaire com = new Commentaire();
+                            com.setCommentaire(request.getParameter("coment"));
+                            com.setNote(Integer.valueOf(request.getParameter("note")));
+                            com.setPseudo(util.getPseudo());
+
+                            java.util.Date date = new java.util.Date();
+                            com.setDate(new Timestamp(date.getTime()));
+
+                            System.out.println("envoie à soumission bdd");
+                            com.soumettreCom(isb.getNumeroIsbn());
+
+                        } else {
+                            System.out.println("erreur detectée");
+                            request.setAttribute("Erreur", "La note ou le commentaire ne peuvent pas etre vide.");
+                            request.setAttribute("com", "let");
+                        }
+                    }
+
+                }
+            }
+
+            if ("ok".equals(request.getParameter("det"))) {
+                request.setAttribute("ss7", ss7);
+            }
+
+            if (presAchat) {
+                request.setAttribute("presAchat", "vrai");
+            }
+
+            if (presComent) {
+                request.setAttribute("presComent", "vrai");
+            }
+            if (request.getParameter("com") != null) {
+                request.setAttribute("com", "let");
+            }
+            request.setAttribute("sessionUtilisateur", util);
+            request.setAttribute("ss1", ss1);
+            request.setAttribute("ss4", ss2);
+            request.setAttribute("Categorie", listeCategorie);
+            request.setAttribute("Edition", edit);
+            request.setAttribute("Commentaire", listeCommentaire);
+
+        }
 //FIN SECTION = FOCUS
 
 //SECTION CATALOGUE PAR CATEGORIE        
