@@ -1,5 +1,6 @@
 <%@page pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -36,30 +37,34 @@
                     <div class ="menu">
                         <jsp:include page="/WEB-INF/view/menu.jsp" />
                     </div>
+                    <c:if test="${!empty sessionScope.sessionUtilisateur}">
                     <div class="shop">
-                        <label for="shop">(0)</label><img src="ImagesLibrairie/Bouton/shop-cart-icon.png" alt="shop" style="width:55px;height:55px;">    
-                    </div>   
+                        <a href="./index?section=pan">
+                            <label for="shop">(${fn:length(list)})</label><img src="ImagesLibrairie/Bouton/shop-cart-icon.png" alt="shop" style="width:55px;height:55px;">    
+                        </a>        
+                    </div> 
+                    </c:if>
                 </div>
             </div>
         </nav>
-                <!-- Page Content -->
-                <div class="container">
-                    <div class="row">
-                        <jsp:include page="${section}" />
-                    </div>  
-                </div>
-                <!-- /.container -->
-                <jsp:include page="/WEB-INF/view/footer.jsp" />
+        <!-- Page Content -->
+        <div class="container">
+            <div class="row">
+                <jsp:include page="${section}" />
+            </div>  
+        </div>
+        <!-- /.container -->
+        <jsp:include page="/WEB-INF/view/footer.jsp" />
 
-              <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-              
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
 
-                </body>
-                </html>
+
+    </body>
+</html>
 
 
 

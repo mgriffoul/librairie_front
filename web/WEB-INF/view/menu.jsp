@@ -4,8 +4,12 @@
     <c:if test="${!empty sessionScope.sessionUtilisateur}">
         <%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
         <li>
-            <a href="./index?section=loggout">deconnexion</a>
+            <a href="./index?section=loggout">Mon compte</a>
         </li>
+        <li>
+            <a href="./index?section=loggout">Deconnexion</a>
+        </li>
+        
     </c:if>
     <c:if test="${empty sessionScope.sessionUtilisateur}">
         <li>

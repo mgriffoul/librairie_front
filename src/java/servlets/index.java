@@ -2,10 +2,12 @@ package servlets;
 
 import beans.Bdd;
 import beans.Categorie;
+import beans.Commande;
 import beans.Commentaire;
 import beans.ConnexionForm;
 import beans.Edition;
 import beans.Isbn;
+import beans.Panier;
 import beans.SousCategorie;
 import beans.Utilisateur;
 import beans.beanClient;
@@ -65,6 +67,8 @@ public class index extends HttpServlet {
         String ss7 = "/WEB-INF/view/details.jsp";
         String ss8 = "/WEB-INF/view/login.jsp";
         String ss9 = "/WEB-INF/view/logout.jsp";
+        String ss10 = "/WEB-INF/view/register.jsp";
+        String ss11 = "/WEB-INF/view/panier.jsp";
 
 //SECTION NULL ----> INDEX        
         if (request.getParameter("section") == null) {
@@ -435,13 +439,19 @@ public class index extends HttpServlet {
 //FIN SECTION RECHERCHE
 
         if ("reg".equals(request.getParameter("section"))) {
-            url = "/WEB-INF/index.jsp?section=user&action=reg";
+           section = "/WEB-INF/S1.jsp";
+           request.setAttribute("ss", ss10);
         }
 
+        
+        
+        
+        
         if ("loggout".equals(request.getParameter("section"))) {
             session.invalidate();
             section = "/WEB-INF/S1.jsp";
             request.setAttribute("ss", ss9);
+
 
         }
 
@@ -473,43 +483,57 @@ public class index extends HttpServlet {
 
             request.setAttribute("ss", ss8);
         }
-        //FIN SECTION LOG
-
+        
+        
 // SECTION PANIER
-        if ("vuepanier".equals(request.getParameter("section"))) {
-            url = "./WEB-INF/view/jspPanier.jsp";
-            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+            if ("pan".equals(request.getParameter("section"))) {
+                
+                section = "/WEB-INF/S1.jsp";
+                Panier bPanier = (Panier) session.getAttribute("panier");
 
-            if (bPanier == null) {
-                bPanier = new beanPanier();
-                session.setAttribute("panier", bPanier);
-            }
-            request.setAttribute("estVide", bPanier.isEmpty());
-            request.setAttribute("list", bPanier.getList());
-        }
-        if ("panier".equals(request.getParameter("section"))) {
-            beanPanier bPanier = (beanPanier) session.getAttribute("panier");
+                bPanier = new Panier();
+                bPanier.add("9782226258083");
 
-            if (bPanier == null) {
-                bPanier = new beanPanier();
-                session.setAttribute("panier", bPanier);
+                if (bPanier == null) {
+                    bPanier = new Panier();
+                    session.setAttribute("panier", bPanier);
+                }
+               
+                
+                
+                Commande commande = bPanier.getCommande();
+                Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);     
+                commande.setPseudo(utilisateur.getPseudo());
+             
+                request.setAttribute("commande", commande);
+                request.setAttribute("ss", ss11);
+                request.setAttribute("list", commande.getLigneCommande());
+                
             }
-            if (request.getParameter("add") != null) {
-                bPanier.add(request.getParameter("add"));
-            }
-            if (request.getParameter("dec") != null) {
-                bPanier.dec(request.getParameter("dec"));
-            }
-            if (request.getParameter("del") != null) {
-                bPanier.del(request.getParameter("del"));
-            }
-            if (request.getParameter("clear") != null) {
-                bPanier.clear();
-            }
-        }
+//            if ("panier".equals(request.getParameter("section"))) {
+//                Panier bPanier = (Panier) session.getAttribute("panier");
+//
+//                if (bPanier == null) {
+//                    bPanier = new Panier();
+//                    session.setAttribute("panier", bPanier);
+//                }
+//                if (request.getParameter("add") != null) {
+//                    bPanier.add(request.getParameter("add"));
+//                }
+//                if (request.getParameter("dec") != null) {
+//                    bPanier.dec(request.getParameter("dec"));
+//                }
+//                if (request.getParameter("del") != null) {
+//                    bPanier.del(request.getParameter("del"));
+//                }
+//                if (request.getParameter("clear") != null) {
+//                    bPanier.clear();
+//                }
+            
 //FIN SECTION PANIER
 
-        request.setAttribute("section", section);
+     
+       request.setAttribute("section", section);
         request.getRequestDispatcher(url).include(request, response);
     }
 
