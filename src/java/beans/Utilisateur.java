@@ -88,13 +88,12 @@ public class Utilisateur {
 
          try {
 
-            String query = "SELECT dbo.COMMANDE.PSEUDO, dbo.EDITION.ISBN" 
-                    +" FROM  dbo.COMMANDE INNER JOIN" 
-                    +" dbo.LIGNECOMMANDE ON dbo.COMMANDE.IDCOMMANDE = dbo.LIGNECOMMANDE.IDCOMMANDE INNER JOIN" 
-                    +" dbo.EDITION ON dbo.LIGNECOMMANDE.ISBN = dbo.EDITION.ISBN "
-                    +" where dbo.EDITION.ISBN= ? and dbo.COMMANDE.PSEUDO= ?";
+            String query = "SELECT dbo.COMMANDE.PSEUDO, dbo.LIGNECOMMANDE.ISBN" 
+                    +" FROM dbo.COMMANDE INNER JOIN" 
+                    +" dbo.LIGNECOMMANDE ON dbo.COMMANDE.IDCOMMANDE = dbo.LIGNECOMMANDE.IDCOMMANDE" 
+                    +" where dbo.LIGNECOMMANDE.ISBN = ? and dbo.COMMANDE.PSEUDO= ? ";
 
-            
+             System.out.println(query);
             
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, isbn);
@@ -103,6 +102,7 @@ public class Utilisateur {
             ResultSet rs = ps.executeQuery();
             
             if(rs.next()){
+                System.out.println("coucou rs");
                 pres = true;
             }
             
