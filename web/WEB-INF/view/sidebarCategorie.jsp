@@ -1,6 +1,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<img src="ImagesLibrairie/Bouton/logov3g.png" alt="">
+
 <FORM action="./index" method="GET" >
     <br><input type="text" name="rec" value="" class="find" />
     <!--<input type="image" src="ImagesLibrairie/Bouton/find.png"  name="go" height="25" width="25"/>-->
