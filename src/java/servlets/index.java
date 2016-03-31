@@ -186,7 +186,7 @@ public class index extends HttpServlet {
             Boolean presAchat = false;
 
             Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
-            System.out.println("util " + util.getPseudo());
+            
             
             Edition edit = new Edition();
             Isbn isb = new Isbn();
