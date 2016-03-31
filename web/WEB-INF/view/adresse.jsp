@@ -8,6 +8,8 @@
         <title>Choix de l'adresse</title>
     </head>
     <body>
+        <c:if test="${empty sessionScope.sessionUtilisateur}">
+        
         <h1>Selection des adresses de facturation et de livraison</h1>
         <div style="display: inline-block; height: 30px; width: 410px; padding-left: 10px; float: left"></div>
         <div style="display: inline-block; height: 30px; width: 130px; padding-left: 10px">
@@ -60,6 +62,11 @@
                 <input type="submit" name="doIt" value="Suivant">
             </div>
         </form>
+</c:if>
         
+        <c:if test="${!empty sessionScope.sessionUtilisateur}">
+            <h2>Veuillez vous logger !</h2>
+            
+        </c:if>
     </body>
 </html>

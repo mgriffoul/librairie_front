@@ -615,7 +615,7 @@ System.out.println("presComent :::::" + presComent);
 //SECTION VALIFATION DU PANIER 
         
         //VALIDATION ADRESSE
-        if ("choixAdresse".equals(request.getParameter("section"))){
+        if ("choixadresse".equals(request.getParameter("section"))){
             if (request.getParameter("doIt") != null){
             url = "./WEB-INF/view/adresse.jsp";
             
@@ -634,7 +634,7 @@ System.out.println("presComent :::::" + presComent);
                 }
                 adLivraison.getAdresse(session.getAttribute("login").toString(), "L");
                 request.setAttribute("adresselivraison", adLivraison.getList());
-            }else{
+                }else{
                 url = "./WEB-INF/view/panier.jsp";
             }
             

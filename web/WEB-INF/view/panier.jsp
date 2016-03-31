@@ -47,6 +47,10 @@
     </table>
     <p class='total'> Prix total: ${commande.prixCommande} EUROS </p>
     <a href="./index?section=pan&clear" >Vider le panier</a>
+    <hr>
+    <form action="./index?section=choixadresse" method="POST">
+    <input type="submit" name="doIt" value="Valider le panier" />
+    </form> 
 </c:if>
    <script type="text/javascript">
    function changeFunc() {
