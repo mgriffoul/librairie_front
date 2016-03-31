@@ -39,7 +39,7 @@
                     </div>
                     <div class="shop">
                         <a href="./index?section=pan">
-                            <label>(${fn:length(list)})</label><img src="ImagesLibrairie/Bouton/shop-cart-icon.png" alt="shop" style="width:55px;height:55px;">    
+                            <label>(${fn:length(sessionScope.list)})</label><img src="ImagesLibrairie/Bouton/shop-cart-icon.png" alt="shop" style="width:55px;height:55px;">    
                         </a>        
                     </div> 
                 </div>
