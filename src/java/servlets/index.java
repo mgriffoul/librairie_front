@@ -56,8 +56,7 @@ public class index extends HttpServlet {
         String ATT_USER = "utilisateur";
         String ATT_FORM = "form";
         String ATT_SESSION_USER = "sessionUtilisateur";
-        String ACT_SECTION = "";
-        String ACT_VALUE = "";
+
 
         String section = "";
         String ss1 = "/WEB-INF/view/sidebarCategorie.jsp";
@@ -280,8 +279,6 @@ public class index extends HttpServlet {
 
             //recuperation de l'id de la categorie choisie par l'utilisateur
             Integer id = Integer.valueOf(request.getParameter("value"));
-            ACT_VALUE = request.getParameter("value");
-            ACT_SECTION = request.getParameter("section");
             //Idem pour la sous categorie eventuelle
             Integer idSsCate = null;
             if (request.getParameter("ssCat") != null) {

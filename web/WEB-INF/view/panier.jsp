@@ -38,7 +38,7 @@
                     </select>
                 </td>
                 <td>
-                    <a href="./index?section=pan&del=${i.isbn}">
+                    <a href="./index?action=pan&section=pan&del=${i.isbn}">
                         <img src="ImagesLibrairie/Bouton/corbeille.png" alt="shop" style="width:25px;height:25px;">    
                     </a> 
                 </td>
@@ -46,13 +46,13 @@
         </c:forEach>      
     </table>
     <p class='total'> Prix total: ${commande.prixCommande} EUROS </p>
-    <a class='clear' href="./index?section=pan&clear" >Vider le panier</a>
+    <a class='clear' href="./index?action=pan&section=pan&clear" >Vider le panier</a>
 </c:if>
    <script type="text/javascript">
    function changeFunc() {
     var selectBox = document.getElementById("selectBox");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
     var selectedText = selectBox.options[selectBox.selectedIndex].text;
-    document.location.href="./index?section=pan&qte="+selectedText+"&isbn="+selectedValue;
+    document.location.href="./index?action=pan&section=pan&qte="+selectedText+"&isbn="+selectedValue;
    }
   </script>

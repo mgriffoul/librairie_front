@@ -131,9 +131,35 @@ form input {
     left:50%;
 }
 
-form input.sansLabel {
-    margin-left: 200px;
+.form input{
+/*  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 1px 3px #666666;
+  -moz-box-shadow: 0px 1px 3px #666666;
+  box-shadow: 0px 1px 3px #666666;
+  font-family: Arial;
+  color: #4878bc;
+  font-size: 15px;
+  background: #ffffff;
+  padding: 5px 15px 5px 15px;
+  border: solid #d4ccd4 0px;
+  text-decoration: none;
+  margin-left: 15px; */
+
+  	background:url(ImagesLibrairie/Bouton/find.png) top right no-repeat;
+	width:220px;
+	height: 70px;
+	padding: 0 0 0 10px;
+	cursor: pointer;
+	border:0;
 }
+form input.find{
+    line-height: 25px;
+    width: 85%;
+    margin-bottom: 20px;
+}
+
 
 /* Styles et couleurs -------------------------------------------------------------------------- */
 .requis {
