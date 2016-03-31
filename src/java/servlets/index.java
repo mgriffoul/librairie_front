@@ -570,7 +570,6 @@ System.out.println("presComent :::::" + presComent);
 
             request.setAttribute("ss", ss8);
         }
-
 // SECTION PANIER
         if ("pan".equals(request.getParameter("section"))) {
 
@@ -590,8 +589,8 @@ System.out.println("presComent :::::" + presComent);
             if (request.getParameter("clear") != null) {
                 bPanier.clear();
             }
-            if (request.getParameter("qte") != null) {
-                
+            if (request.getParameter("qte") != null) {  
+                bPanier.qtyChange(request.getParameter("isbn"), Integer.parseInt(request.getParameter("qte")));
             }
             
             Commande commande = bPanier.getCommande();

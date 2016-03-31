@@ -92,20 +92,22 @@ public class Commande {
         this.LigneCommande.add(lc);
     }
 
-    public void calcPrixCommande(String prix) {
-        prix = prix.replaceAll(",",".");
-        this.prixCommande =this.prixCommande.replaceAll(",", ".");
-        float p = Float.parseFloat(prix);
-        float tp = Float.parseFloat(this.prixCommande);
-        tp += p;
-        DecimalFormat df = new DecimalFormat("#.00");
-        this.prixCommande = String.valueOf(df.format(tp));
+    public void qtyChangeLigne(String isbn,int qte){
+          for(LigneCommande lc: LigneCommande){        
+            if(lc.getIsbn().equals(isbn)){
+              lc.setQte(qte);
+              return;
+            }
+        }
+        
+        
     }
     
     public void calcPrixCommande(){
         float tp = 0;
         for(LigneCommande lc: LigneCommande){        
             float p = Float.parseFloat(lc.getPrixTTC().replaceAll(",", "."));
+            p = p*lc.getQte();
             tp +=p;
             }
          DecimalFormat df = new DecimalFormat("#.00");
