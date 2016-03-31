@@ -72,8 +72,10 @@ public class index extends HttpServlet {
         String ss10 = "/WEB-INF/view/register.jsp";
         String ss11 = "/WEB-INF/view/panier.jsp";
 
+            
 //SECTION NULL ----> INDEX        
         if (request.getParameter("section") == null) {
+            System.out.println("entree index");
             section = "/WEB-INF/S2.jsp";
             //recuperation de la liste des categorie
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
@@ -276,7 +278,7 @@ System.out.println("presComent :::::" + presComent);
 
 //SECTION CATALOGUE PAR CATEGORIE        
         if ("cat".equals(request.getParameter("section"))) {
-
+            
             section = "/WEB-INF/S4.jsp";
 
             //recuperation de l'id de la categorie choisie par l'utilisateur
@@ -317,7 +319,8 @@ System.out.println("presComent :::::" + presComent);
 
                 listeEdition = Edition.editionParSousCategorie(id, idSsCate);
             }
-
+            System.out.println("id = " + id);
+            request.setAttribute("idCat", id);
             request.setAttribute("ss1", ss1);
             request.setAttribute("ss5", ss2);
             request.setAttribute("Edition", listeEdition);

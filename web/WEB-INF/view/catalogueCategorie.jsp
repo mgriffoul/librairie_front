@@ -62,8 +62,8 @@
                     </c:forEach> </p>
             </div>
 
-
-            <a href="./index?section=pan&add=${element.numeroIsbn}">
+${idChoisie}
+            <a href="./index?section=cat&value=${idCat}&action=pan&add=${element.numeroIsbn}">
                 <img src="ImagesLibrairie/Bouton/commander.jpg" alt="">
             </a>
 
