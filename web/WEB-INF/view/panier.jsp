@@ -22,16 +22,16 @@
                 <td>${i.prixTTC} EUROS</td>
                 <td>
                     <select id="selectBox" onchange="changeFunc();">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="4">5</option>
-                        <option value="4">6</option>
-                        <option value="4">7</option>
-                        <option value="4">8</option>
-                        <option value="4">9</option>
-                        <option value="4">10</option>
+                        <option value="${i.isbn}">1</option>
+                        <option value="${i.isbn}">2</option>
+                        <option value="${i.isbn}">3</option>
+                        <option value="${i.isbn}">4</option>
+                        <option value="${i.isbn}">5</option>
+                        <option value="${i.isbn}">6</option>
+                        <option value="${i.isbn}">7</option>
+                        <option value="${i.isbn}">8</option>
+                        <option value="${i.isbn}">9</option>
+                        <option value="${i.isbn}">10</option>
                         <option selected="selected">
                             ${i.qte}
                         </option>
@@ -52,6 +52,7 @@
    function changeFunc() {
     var selectBox = document.getElementById("selectBox");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    document.location.href="./index?section=pan&qte="+selectedValue;
+    var selectedText = selectBox.options[selectBox.selectedIndex].text;
+    document.location.href="./index?section=pan&qte="+selectedText+"&isbn="+selectedValue;
    }
   </script>

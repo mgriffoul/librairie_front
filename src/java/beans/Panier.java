@@ -81,13 +81,13 @@ public class Panier implements Serializable {
 
     public void clear() {
         this.commande.clear();
-         this.commande.calcPrixCommande();
+        this.commande.calcPrixCommande();
     }
-//
-//    public boolean isEmpty() {
-//        return map.isEmpty();
-//    }
-//
+
+    public void qtyChange(String isbn,int qte){
+        this.commande.qtyChangeLigne(isbn,qte);
+        this.commande.calcPrixCommande();
+    }
 
     public Commande getCommande() {
         return this.commande;

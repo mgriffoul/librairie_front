@@ -162,10 +162,11 @@ form input.sansLabel {
     position : static;
     top:0;
     float : right;
-
 }
+
 .shop label{
     color: white;
+    font-size: 15px;
 }
 
 .menu{
