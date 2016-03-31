@@ -21,8 +21,6 @@
                     <p>Edition : ${element.nomEditeur}</p>
                 </div>
 
-
-
                 <div class="ratings">
 
                     <p> Note :
@@ -39,11 +37,9 @@
                         </c:forEach> </p>
                 </div>
 
-
                 <a href="./index?section=pan&add=${element.numeroIsbn}">
                     <img src="ImagesLibrairie/Bouton/commander.jpg" alt="">
                 </a>
-
 
             </div>
         </div>

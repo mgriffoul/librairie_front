@@ -594,7 +594,6 @@ System.out.println("presComent :::::" + presComent);
                 
             }
             
-
             Commande commande = bPanier.getCommande();
             Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 
