@@ -186,7 +186,7 @@ public class index extends HttpServlet {
             Boolean presAchat = false;
 
             Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
-            System.out.println("util " + util.getPseudo());
+            
             
             Edition edit = new Edition();
             Isbn isb = new Isbn();
@@ -593,7 +593,6 @@ System.out.println("presComent :::::" + presComent);
                 bPanier.qtyChange(request.getParameter("isbn"), Integer.parseInt(request.getParameter("qte")));
             }
             
-
             Commande commande = bPanier.getCommande();
             Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 
