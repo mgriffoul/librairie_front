@@ -56,6 +56,8 @@ public class index extends HttpServlet {
         String ATT_USER = "utilisateur";
         String ATT_FORM = "form";
         String ATT_SESSION_USER = "sessionUtilisateur";
+        String ACT_SECTION = "";
+        String ACT_VALUE = "";
 
         String section = "";
         String ss1 = "/WEB-INF/view/sidebarCategorie.jsp";
@@ -279,6 +281,8 @@ System.out.println("presComent :::::" + presComent);
 
             //recuperation de l'id de la categorie choisie par l'utilisateur
             Integer id = Integer.valueOf(request.getParameter("value"));
+            ACT_VALUE = request.getParameter("value");
+            ACT_SECTION = request.getParameter("section");
             //Idem pour la sous categorie eventuelle
             Integer idSsCate = null;
             if (request.getParameter("ssCat") != null) {
@@ -571,10 +575,9 @@ System.out.println("presComent :::::" + presComent);
             request.setAttribute("ss", ss8);
         }
 // SECTION PANIER
-        if ("pan".equals(request.getParameter("section"))) {
+        if ("pan".equals(request.getParameter("action"))) {
 
-            section = "/WEB-INF/S1.jsp";
-            Panier bPanier = (Panier) session.getAttribute("panier");
+             Panier bPanier = (Panier) session.getAttribute("panier");
 
             if (bPanier == null) {
                 bPanier = new Panier();
@@ -599,14 +602,13 @@ System.out.println("presComent :::::" + presComent);
             request.setAttribute("commande", commande);
             request.setAttribute("ss", ss11);
             request.setAttribute("list", commande.getLigneCommande());
+            System.out.println(url+"?section="+ACT_SECTION+"&value="+ACT_VALUE);
+            if (!ACT_SECTION.isEmpty() && !ACT_VALUE.isEmpty()){
+                 request.getRequestDispatcher(url+"?section="+ACT_SECTION+"&value="+ACT_VALUE).include(request, response);
+                 System.out.println(url+"?section="+ACT_SECTION+"&value="+ACT_VALUE);
+            }
 
         }
-//                if (request.getParameter("dec") != null) {
-//                   bPanier.dec(request.getParameter("dec"));
-//               }
-//             
-//              
-
 
 //FIN SECTION PANIER
 
