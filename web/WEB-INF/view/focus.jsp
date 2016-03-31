@@ -46,7 +46,7 @@
 
 
 
-                <h4><a href="./index?section=pan&add=${Edition.numeroIsbn}">
+                <h4><a href="./index?section=focus&value=${Edition.numeroIsbn}&action=pan&add=${Edition.numeroIsbn}">
                         <img  src="ImagesLibrairie/Bouton/commander.jpg" alt="">
                     </a></h4>
 
