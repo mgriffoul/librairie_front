@@ -82,7 +82,7 @@ fieldset {
     width:40%;
 }
 h1{
-     margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
     width:50%;
     
@@ -96,6 +96,8 @@ h3{
     margin-left: auto;
     margin-right: auto;
 }
+
+
 
 legend {
     font-weight: bold;
@@ -162,10 +164,11 @@ form input.sansLabel {
     position : static;
     top:0;
     float : right;
-
 }
+
 .shop label{
     color: white;
+    font-size: 15px;
 }
 
 .menu{
@@ -268,9 +271,9 @@ caption {
     margin-top: 40px;
 }
 
-a{
+.clear{
 
-    font-size: 15px;
-      text-align : center;
+  font-size: 15px;
+  text-align : center;
   display : block;
 }
