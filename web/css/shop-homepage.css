@@ -23,11 +23,12 @@ body {
 
 .caption {
     height: 150px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .caption h4 {
-    white-space: nowrap;
+    
+    
 }
 
 .thumbnail img {
@@ -40,8 +41,8 @@ body {
     padding-right: 10px;
     padding-left: 10px;
     color: #d17581;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .thumbnail {

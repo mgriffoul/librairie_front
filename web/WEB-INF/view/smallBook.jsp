@@ -16,8 +16,8 @@
                     <h4><a href="./index?section=focus&value=${element.numeroIsbn}">${element.titre}</a></h4>
                     <h5><a href="./index?section=focus&value=${element.numeroIsbn}">${element.sousTitre}</a></h5>
 
-                    <h5>${element.nomAuteur}</a>
-                    </h5>
+                    <h6>Auteur :${element.nomAuteur}</a>
+                    </h6>
                     <p>Edition : ${element.nomEditeur}</p>
                 </div>
 
