@@ -46,7 +46,7 @@
         </c:forEach>      
     </table>
     <p class='total'> Prix total: ${commande.prixCommande} EUROS </p>
-    <a href="./index?section=pan&clear" >Vider le panier</a>
+    <a class='clear' href="./index?section=pan&clear" >Vider le panier</a>
 </c:if>
    <script type="text/javascript">
    function changeFunc() {
