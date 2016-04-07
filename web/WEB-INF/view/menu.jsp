@@ -4,12 +4,19 @@
     <c:if test="${!empty sessionScope.sessionUtilisateur}">
         <%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
         <li>
-            <a href="./index?section=loggout">Mon compte</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle drop" type="button" data-toggle="dropdown">Mon compte
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Mes informations personnelles</a></li>
+                    <li><a href="#">Mes commande(s)</a></li>
+                </ul>
+            </div>  
         </li>
         <li>
             <a href="./index?section=loggout">Deconnexion</a>
         </li>
-        
+
     </c:if>
     <c:if test="${empty sessionScope.sessionUtilisateur}">
         <li>

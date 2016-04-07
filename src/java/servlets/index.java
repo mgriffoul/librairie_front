@@ -1,5 +1,4 @@
 package servlets;
-
 import beans.Adresse;
 import beans.Bdd;
 import beans.Categorie;
