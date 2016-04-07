@@ -8,8 +8,8 @@
                 <button class="dropdown-toggle drop" type="button" data-toggle="dropdown">Mon compte
                     <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Mes informations personnelles</a></li>
-                    <li><a href="#">Mes commande(s)</a></li>
+                    <li><a href="./index?section=acc">Mes informations personnelles</a></li>
+                    <li><a href="./index?section=com">Mes commande(s)</a></li>
                 </ul>
             </div>  
         </li>
