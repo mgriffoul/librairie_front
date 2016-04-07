@@ -7,6 +7,7 @@ import beans.Commentaire;
 import beans.ConnexionForm;
 import beans.Edition;
 import beans.Isbn;
+import beans.LigneCommande;
 import beans.Panier;
 import beans.SousCategorie;
 import beans.Utilisateur;
@@ -18,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -325,15 +327,18 @@ public class index extends HttpServlet {
         }
 //FIN SECTION CATALOGUE PAR CATEGORIE       
 
-        // debut client
+// DEBUT AFFICHAGE COMPTE CLIENT 
         // affichage nom, prenom...
+        Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
+        
         if ("acc".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=acc";
-
+            section = "/WEB-INF/view/client.jsp";
             Bdd bdd = new Bdd();
             Connection con = bdd.connecterBdd();
-            String str = "bruce28";
-
+            String str = util.getPseudo();
+            System.out.println("valeur str : "+str);
+            String strNumCom = "";
             try {
                 String query = "SELECT * FROM client WHERE pseudo = '" + str + "'";
 
@@ -417,9 +422,6 @@ public class index extends HttpServlet {
                     villeFac = client.getVilleFac();
                     paysFac = client.getPaysFac();
 
-                    if (complementFac == null) {
-                        complementFac = ".";
-                    }
                 }
 
                 request.setAttribute("adresseFac", adresseFac);
@@ -459,9 +461,6 @@ public class index extends HttpServlet {
                     villeLiv = client.getVilleLiv();
                     paysLiv = client.getPaysLiv();
 
-                    if (complementLiv == null) {
-                        complementLiv = ".";
-                    }
                 }
 
                 request.setAttribute("adresseLiv", adresseLiv);
@@ -475,9 +474,93 @@ public class index extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }
+// AFFICHAGE DES COMMANDES DU CLIENT
+            float totalCommande = 0f;
+            float totalCommandeInter = 0f;
+            try {
+                String query = "SELECT numerocommande, datecommande, statutcommande FROM commande "
+                        + "WHERE pseudo='" + str + "' ORDER BY datecommande";
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
 
+                ArrayList<Commande> listeCom = new ArrayList();
+                ArrayList<LigneCommande> llcom = new ArrayList();
+ 
+                while (rs.next()) {
+
+                    Commande commande = new Commande();
+                    commande.setNumeroCommande(rs.getString("numerocommande"));
+                    commande.setDateCommande(rs.getDate("datecommande"));
+                    commande.setStatutCommande(rs.getString("statutcommande"));
+                    strNumCom = commande.getNumeroCommande();
+                    commande.setTotalCom(totalCommande);
+                    listeCom.add(commande);
+                    System.out.println("2e SOUT : " + listeCom);
+                }
+                
+                request.setAttribute("listeCom", listeCom);
+                System.out.println("3e SOUT : " + listeCom);
+
+                rs.close();
+                stmt.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            String select=request.getParameter("selection"); // toujours null ???
+            System.out.println("test 1 : "+request.getParameter("selection"));
+            
+            if (request.getParameter("selection") != null){
+                url = "/WEB-INF/index.jsp?section=acc";
+
+            section = "/WEB-INF/view/client.jsp";
+
+            try{
+                ArrayList<LigneCommande> llcom = new ArrayList();
+
+               // LIGNES DE COMMANDE
+                    String query2 = "SELECT  titre, quantitecommande, prixventeht, tvaappliquee, reduction "
+                            + "FROM OEUVRE AS oe "
+                            + "JOIN EDITION AS ed "
+                            + "ON oe.IDOEUVRE=ed.IDOEUVRE "
+                            + "JOIN LIGNECOMMANDE AS li "
+                            + "ON ed.ISBN=li.ISBN "
+                            + "JOIN COMMANDE AS co "
+                            + "ON li.IDCOMMANDE=co.IDCOMMANDE "
+                            + "WHERE co.NUMEROCOMMANDE='" + select + "'";
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery(query2);
+
+                   System.out.println("TEST RECUP VALEUR COMBOBOX JSP CLIENT : "+select);
+                    
+                    while (rs2.next()) {
+                        LigneCommande llCom2 = new LigneCommande();
+                        
+                        llCom2.setTitreLivre(rs2.getString("titre"));
+                        llCom2.setQte(rs2.getInt("quantitecommande"));
+                        llCom2.setPrixUHT(rs2.getFloat("prixventeht"));
+                        llCom2.setTvaAppli(rs2.getFloat("tvaappliquee"));
+                        llCom2.setReduc(rs2.getFloat("reduction"));
+                        
+                        totalCommandeInter=(((llCom2.getQte()*llCom2.getPrixUHT())*(1+(llCom2.getTvaAppli()/100)))*(1-(llCom2.getReduc()/100)));
+
+                        llcom.add(llCom2);
+                        totalCommande=totalCommande+totalCommandeInter;  
+                    }
+                    DecimalFormat df= new DecimalFormat ("#.00");
+                    String strTotal = df.format(totalCommande);
+                    
+                    request.setAttribute("select",select);
+                    request.setAttribute("totalCommande",strTotal);
+                    request.setAttribute("llcom", llcom); 
+            }catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
         }
-// fin client
+// FIN AFFICHAGE COMPTE CLIENT
 
 //SECTION RECHERCHE
         if (request.getParameter("rec") != null) {
