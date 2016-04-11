@@ -523,9 +523,9 @@ public class index extends HttpServlet {
             System.out.println("test 1 : "+request.getParameter("selection"));
             
             if (request.getParameter("selection") != null){
-                url = "/WEB-INF/index.jsp?section=acc";
+                url = "/WEB-INF/index.jsp?section=com";
 
-            section = "/WEB-INF/view/client.jsp";
+            section = "/WEB-INF/view/ligneCommande.jsp";
 
             try{
                 ArrayList<LigneCommande> llcom = new ArrayList();
