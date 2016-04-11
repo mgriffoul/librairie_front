@@ -73,7 +73,7 @@
         <div class="col-md-6">
             <div>
                 <table width="400" border="1">
-                    <caption>Adresse de Facturation</caption>
+                    <caption>Adresse de Facturation Active</caption>
                     <tr>
                         <td width="150" align="left" bgcolor="lightgrey">Adresse : </td>
                         <td width="250" align="center"><c:out value="${adresseFac}" /></td>
@@ -100,7 +100,7 @@
 
             <div>
                 <table width="400" border="1">
-                    <caption>Adresse de Livraison</caption>
+                    <caption>Adresse de Livraison Active</caption>
                     <tr>
                         <td width="150" align="left" bgcolor="lightgrey">Adresse : </td>
                         <td width="250" align="center"><c:out value="${adresseLiv}" /></td>
