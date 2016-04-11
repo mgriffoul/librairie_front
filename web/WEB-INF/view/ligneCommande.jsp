@@ -41,7 +41,7 @@
         </div>
         <div>
             <table  align="center" valign="middle"  CELLPADDING="5" width="220">
-                <caption>Détail commande <font color="red"><c:out value="${select}"/></font></caption>
+                <caption>Détail commande n° <font color="red"><c:out value="${select}"/></font></caption>
                 <thead>
                     <tr style="background-color:lightgrey;">
                         <th style="width:100px;">Titre du livre</th>
@@ -65,9 +65,9 @@
                 <tfoot>
                     <tr style="background-color:lightgrey; text-align:center; width:220px;">
                         <td><strong><c:out value="${select}"/></strong></td>
+                        <td><font color="red"><c:out value="${com.statutCommande}"/></font></td>
                         <td></td>
-                        <td></td>
-                        <td><strong>total TTC : </strong></td>
+                        <td style="text-align:right"><strong>total TTC : </strong></td>
                         <td><strong><c:out value="${totalCommande}"/> euro</strong></td>
                     </tr>
                 </tfoot>
