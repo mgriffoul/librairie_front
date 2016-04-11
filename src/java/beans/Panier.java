@@ -1,6 +1,11 @@
 package beans;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.util.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Panier implements Serializable {
 
@@ -100,5 +105,50 @@ public class Panier implements Serializable {
 //    public int getQty() {
 //        return map.size();
 //    }
+ public void sauvegarderCommande(String pseudo, String date, String ip){
+     Bdd bdd = new Bdd();
+     Connection con = bdd.connecterBdd();
 
+     
+     try{
+         String query = "INSERT INTO COMMANDE (PSEUDO, DATECOMMANDE, IPCOMMANDE, NUMEROCOMMANDE) VALUES (?,?,?,?)";
+         PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, pseudo);
+            stmt.setString(2, date);
+            stmt.setString(3, ip);
+            stmt.setString(4,"");
+            
+            stmt.executeUpdate();
+            stmt.close();
+     } catch (SQLException ex){
+         System.err.println("Oops:SQL:" + ex.getErrorCode() + "/" + ex.getMessage());
+     }
+   }  
+   public void sauvegarderLigneCommande(ArrayList<LigneCommande> lc,int id){
+       Bdd bdd = new Bdd();
+     Connection con = bdd.connecterBdd();
+    
+     for (LigneCommande c : lc){
+     try{
+         
+         String query = "INSERT INTO LIGNECOMMANDE (ISBN,IDCOMMANDE,QUANTITECOMMANDE,REDUCTION,TVAAPPLIQUEE,MONTANTLIGNECOMMANDE) VALUES (?,?,?,?,?,?)";
+         PreparedStatement stmt = con.prepareStatement(query);
+         String s = c.getPrixTTC().replaceAll(",", ".");
+         Float num = Float.parseFloat(s);
+            stmt.setString(1, c.getIsbn());
+            stmt.setInt(2, id);
+            stmt.setInt(3, c.getQte());
+            stmt.setFloat(4, c.getReduc());
+            stmt.setFloat(5, c.getTvaAppli());
+            stmt.setFloat(6, num);
+            
+            stmt.executeUpdate();
+            stmt.close();
+     } catch (SQLException ex){
+         System.err.println("Oops:SQL:" + ex.getErrorCode() + "/" + ex.getMessage());
+     }
+     }
+   }
+     
+ 
 }

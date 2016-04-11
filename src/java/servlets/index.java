@@ -8,18 +8,23 @@ import beans.Commentaire;
 import beans.ConnexionForm;
 import beans.Edition;
 import beans.Isbn;
+import beans.LigneCommande;
 import beans.Panier;
 import beans.SousCategorie;
 import beans.Utilisateur;
 import beans.beanAdresse;
 import beans.beanClient;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -615,31 +620,22 @@ System.out.println("presComent :::::" + presComent);
         
         //VALIDATION ADRESSE
         if ("choixadresse".equals(request.getParameter("section"))){
-            if (request.getParameter("doIt") != null){
+        Utilisateur ut = (Utilisateur) session.getAttribute("sessionUtilisateur");    
+        if (request.getParameter("doIt") != null){
+        if (ut != null){              
             url = "./WEB-INF/view/adresse.jsp";
-            
-                beanAdresse adrBeanFacturation = (beanAdresse) session.getAttribute("adresselivraison");
-                if (adrBeanFacturation == null) {
-                    adrBeanFacturation = new beanAdresse(session.getAttribute("login").toString(), "F");
-                    session.setAttribute("adressefacturation", adrBeanFacturation.getList());
-                }
-                adrBeanFacturation.getAdresse(session.getAttribute("login").toString(), "F");
-                request.setAttribute("adressefacturation", adrBeanFacturation.getList());
+                beanAdresse adFacturation = new beanAdresse(ut.getPseudo(), "F");
+                session.setAttribute("adressefacturation", adFacturation.getList());
+                request.setAttribute("adressefacturation", adFacturation.getList());
 
-                beanAdresse adLivraison = (beanAdresse) session.getAttribute("adresselivraison");
-                if (adLivraison == null) {
-                    adLivraison = new beanAdresse(session.getAttribute("login").toString(), "L");
-                    session.setAttribute("adresselivraison", adLivraison.getList());
-                }
-                adLivraison.getAdresse(session.getAttribute("login").toString(), "L");
+                beanAdresse adLivraison = new beanAdresse(ut.getPseudo(), "L");
+                session.setAttribute("adresselivraison", adLivraison.getList());
                 request.setAttribute("adresselivraison", adLivraison.getList());
                 }else{
-                url = "./WEB-INF/view/panier.jsp";
-            }
-            
-            
+                      url = "./WEB-INF/view/login.jsp";
         }
-
+        }
+        }
         // FIN VALIDATION ADRESSE  
         
         // AJOUT ADRESSE
@@ -647,18 +643,19 @@ System.out.println("presComent :::::" + presComent);
             url = "/WEB-INF/view/jspNewAdresse.jsp";
         }
         
-        if ("sauvegAdresse".equals(request.getParameter("section"))){
+        if ("sauvegadresse".equals(request.getParameter("section"))){
             Adresse ad = new Adresse();
+            System.out.println("on va ajouter une adresse");
             Utilisateur ut = (Utilisateur) session.getAttribute("sessionUtilisateur");
-            ad.sauvegarderAdresse(ut.getPseudo(), request.getParameter("Civilite"), request.getParameter("adresseClient"),request.getParameter("codePostal"),request.getParameter("ville"),request.getParameter("complementAdresse"),request.getParameter("pays"),request.getParameter("natureAdresse"));
+            ad.sauvegarderAdresse(ut.getPseudo(), request.getParameter("adresseClient"),request.getParameter("complementAdresse"),request.getParameter("codePostal"),request.getParameter("ville"),request.getParameter("pays"),request.getParameter("natureAdresse"));
             
              if (request.getParameter("doIt") != null) {
-                url = "/WEB-INF/adresse.jsp";
-                beanAdresse adFacturation = new beanAdresse(session.getAttribute("pseudo").toString(), "F");
+                url = "/WEB-INF/view/adresse.jsp";
+                beanAdresse adFacturation = new beanAdresse(ut.getPseudo(), "F");
                 session.setAttribute("adressefacturation", adFacturation.getList());
                 request.setAttribute("adressefacturation", adFacturation.getList());
 
-                beanAdresse adLivraison = new beanAdresse(session.getAttribute("pseudo").toString(), "L");
+                beanAdresse adLivraison = new beanAdresse(ut.getPseudo(), "L");
                 session.setAttribute("adresselivraison", adLivraison.getList());
                 request.setAttribute("adresselivraison", adLivraison.getList());
 
@@ -667,8 +664,36 @@ System.out.println("presComent :::::" + presComent);
         }
         //FIN AJOUT ADRESSE
         
-        // VALIDATION TRANSPORTEUR
-        
+        // VALIDATION PANIER
+        if ("validCommande".equals(request.getParameter("section"))){
+            
+            if (request.getParameter("doIt") != null){
+                
+                Panier p = (Panier)session.getAttribute("panier");
+                System.out.println("panier="+p);
+                Utilisateur ut = (Utilisateur) session.getAttribute("sessionUtilisateur");
+                String ip = InetAddress.getLoopbackAddress().getHostAddress();
+                Calendar c = Calendar.getInstance();
+                Date date = c.getTime();
+                SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy");
+                String d01 = sdt.format(date);
+                System.out.println("pseudo="+ut.getPseudo()+d01+ip);
+                p.sauvegarderCommande(ut.getPseudo(),d01,ip);
+                int num = p.getCommande().getIdCommande();
+                System.out.println("id = "+p.getCommande().getIdCommande());
+                Commande commande = p.getCommande();
+                System.out.println("commande"+commande);
+                ArrayList<LigneCommande> lc = p.getCommande().getLigneCommande();
+                System.out.println("liste="+lc);
+                p.sauvegarderLigneCommande(lc, num);
+                
+                
+                
+                url = "/WEB-INF/view/validCommande.jsp";
+            } else {
+                url = "./WEB-INF/view/adresse.jsp";
+                   }
+        }
         // ccc
         request.setAttribute("section", section);
 

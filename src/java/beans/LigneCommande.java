@@ -132,10 +132,7 @@ public class LigneCommande {
         return vv;
     }
     
-    @Override
-    public String toString() {
-        return this.oeuvre.getTitre();
-    }
+//
         public int delta( int i) {
         this.qte += i;
         return qte;

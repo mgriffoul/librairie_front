@@ -8,7 +8,7 @@
         <title>Choix de l'adresse</title>
     </head>
     <body>
-        <c:if test="${empty sessionScope.sessionUtilisateur}">
+
         
         <h1>Selection des adresses de facturation et de livraison</h1>
         <div style="display: inline-block; height: 30px; width: 410px; padding-left: 10px; float: left"></div>
@@ -29,8 +29,8 @@
                 <br/>
                 <c:forEach var="adresses" items="${adressefacturation}">
                     <input type="radio" name="adressefacturation" value="${adresses.idAdresse}">
-                    Nom : ${adresses.nomClient} ${adresses.prenomClient}
-                    <br/>
+                    <%--Nom : ${adresses.nomClient} ${adresses.prenomClient}--%>
+                    <%--<br/>--%>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${adresses.adresseClient}
                     <br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${adresses.codePostal} ${adresses.ville}
@@ -45,8 +45,8 @@
                 <br/>
                 <c:forEach var="adresses" items="${adresselivraison}">
                     <input type="radio" name="adresselivraison" value="${adresses.idAdresse}">
-                    Nom : ${adresses.nomClient} ${adresses.prenomClient}
-                    <br/>
+                    <%--Nom : ${adresses.nomClient} ${adresses.prenomClient}--%>
+                    <%--<br/>--%>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${adresses.adresseClient}
                     <br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${adresses.codePostal} ${adresses.ville}
@@ -58,15 +58,10 @@
             <br/>
             <div style="display: inline-block; height: 50px; width: 900px; float: left;"></div>
             <div style="display: inline-block; height: 50px; width: 100px;">
-                <input type="hidden" name="section" value="vuepaiement">
-                <input type="submit" name="doIt" value="Suivant">
+                <input type="hidden" name="section" value="validCommande">
+                <input type="submit" name="doIt" value="Terminer">
             </div>
         </form>
-</c:if>
-        
-        <c:if test="${!empty sessionScope.sessionUtilisateur}">
-            <h2>Veuillez vous logger !</h2>
-            
-        </c:if>
+
     </body>
 </html>

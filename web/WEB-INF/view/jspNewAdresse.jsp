@@ -8,7 +8,7 @@
     </head>
     <body>
         <h3>Nouvelle adresse</h3>
-        <form action="index" method="POST">
+        <form action="./index" method="POST">
             <div>
                 <select name="civilite">
                     <option value="1">M.</option>
@@ -56,14 +56,13 @@
                     Type d'adresse : 
                 </div>
                 <div>
-                    <input id="rad1" type="radio" name="natureAdresse" value="L">
+                    <input id="rad1" type="radio" name="natureAdresse" value="l">
                     <label for="rad1"> Adresse de livraison</label>
-                    <input id="rad2" type="radio" name="natureAdresse" value="F">
+                    <input id="rad2" type="radio" name="natureAdresse" value="f">
                     <label for="rad2"> Adresse de facturation</label>
                 </div>
             </div>
-           <%-- <input type="hidden" name="vientde" value="nouvelleadresse"> --%>
-            <input type="hidden" name="section" value="enregistreradresse">
+            <input type="hidden" name="section" value="sauvegadresse">
             <input type="submit" name="doIt" value="Enregistrer et continuer">
         </form>
     </body>
