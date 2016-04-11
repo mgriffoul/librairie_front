@@ -31,7 +31,7 @@
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="./index">Accueil</a>
+                    <a  class="navbar-brand" href="./index">Accueil</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <div class ="menu">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="shop">
                         <a href="./index?section=pan">
-                            <label>(${fn:length(list)})</label><img src="ImagesLibrairie/Bouton/shop-cart-icon.png" alt="shop" style="width:55px;height:55px;">    
+                            <label>(${fn:length(sessionScope.list)})</label><img src="ImagesLibrairie/Bouton/shop-cart-icon.png" alt="shop" style="width:55px;height:55px;">    
                         </a>        
                     </div> 
                 </div>

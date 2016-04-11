@@ -27,7 +27,10 @@ public class Commande {
     String numeroCommande;
     String prixCommande;
     Date dateCommande;
-    
+
+    float totalCom;
+
+
     public String getStatutCommande() {
         return statutCommande;
     }
@@ -48,7 +51,19 @@ public class Commande {
     public void setPrixCommande(String prixCommande) {
         this.prixCommande = prixCommande;
     }
-    
+
+
+    public float getTotalCom() {
+        return totalCom;
+    }
+
+    public void setTotalCom(float totalCom) {
+        this.totalCom = totalCom;
+    }
+
+
+
+
     public String getPseudo() {
         return pseudo;
     }
@@ -126,7 +141,11 @@ public class Commande {
     public void clear() {
         this.LigneCommande.clear();
     }
-    
+    @Override
+    public String toString (){
+    return this.numeroCommande+" "+this.dateCommande+" "+this.statutCommande;
+    }
+
     public int getIdCommande() {
         int idCommande=0;
         
@@ -148,5 +167,6 @@ public class Commande {
         }
         bdd.decoBdd(con);
         return idCommande;
+
     }
 }

@@ -13,7 +13,8 @@ public class LigneCommande {
     private float reduc;
     private float tvaAppli;
     private String prixTTC;
-
+    private float prixUHT;
+    
     public void setNomEditeur(String nomEditeur) {
         this.nomEditeur = nomEditeur;
     }
@@ -89,6 +90,14 @@ public class LigneCommande {
 
     public void setPrixTTC(String prixTTC) {
         this.prixTTC = prixTTC;
+    }
+
+    public float getPrixUHT() {
+        return prixUHT;
+    }
+
+    public void setPrixUHT(float prixUHT) {
+        this.prixUHT = prixUHT;
     }
     
     

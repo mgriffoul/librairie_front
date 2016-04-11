@@ -22,7 +22,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+
 import java.text.SimpleDateFormat;
+
+import java.text.DecimalFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -77,6 +81,7 @@ public class index extends HttpServlet {
 
 //SECTION NULL ----> INDEX        
         if (request.getParameter("section") == null) {
+            System.out.println("entree index");
             section = "/WEB-INF/S2.jsp";
             //recuperation de la liste des categorie
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
@@ -150,7 +155,7 @@ public class index extends HttpServlet {
 
                             System.out.println("envoie à soumission bdd");
                             com.soumettreCom(isb.getNumeroIsbn());
-
+                            request.setAttribute("fait", "done");
                         } else {
                             System.out.println("erreur detectée");
                             request.setAttribute("Erreur", "La note ou le commentaire ne peuvent pas etre vide.");
@@ -191,25 +196,22 @@ public class index extends HttpServlet {
             Boolean presAchat = false;
 
             Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
-            
-            
+
             Edition edit = new Edition();
             Isbn isb = new Isbn();
             isb.setNumeroIsbn(request.getParameter("value"));
             edit.setIsbn(isb);
             edit.chargerEdition();
-            
-            System.out.println("isbn " + isb.getNumeroIsbn());
-            
+
+
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
 
             //Vérification de la présence d'un commentaire déjà laissé par l'utilisateur sur cette edition
-            
             if (util != null) {
                 presComent = util.verifPrevComent(isb.getNumeroIsbn());
             }
-System.out.println("presComent :::::" + presComent);
-            //Vérification de la presence d'un achet du livre par l'utilisateur
+            System.out.println("presComent :::::" + presComent);
+            //Vérification de la presence d'un achat du livre par l'utilisateur dans la base
             if (util != null) {
                 presAchat = util.verifierPrevAchat(isb.getNumeroIsbn());
             }
@@ -218,18 +220,18 @@ System.out.println("presComent :::::" + presComent);
             ArrayList<Commentaire> listeCommentaire = Commentaire.recupererCommentaire(isb.getNumeroIsbn());
 
             //si un commentaire vient d'être laissé
-            if (util != null) {
+            if (util != null && !presComent) {
                 if ("Valider".equals(request.getParameter("go"))) {
-                    System.out.println("entrée dans le test request");
+                    
                     Boolean ok = false;
 
                     if (request.getParameter("note") != null && request.getParameter("coment") != null) {
 
-                        if (!request.getParameter("note").isEmpty() && request.getParameter("coment").length()>1 ) {
+                        if (!request.getParameter("note").isEmpty() && request.getParameter("coment").length() > 1) {
 
-                            System.out.println("NO erreur detectée");
+                            
                             String s = request.getParameter("coment");
-                            System.out.println("SIZE REQU"+ s.length());
+                          
                             ok = true;
 
                             Commentaire com = new Commentaire();
@@ -244,12 +246,11 @@ System.out.println("presComent :::::" + presComent);
                             com.soumettreCom(isb.getNumeroIsbn());
 
                         } else {
-                            System.out.println("erreur detectée");
+                            
                             request.setAttribute("Erreur", "La note ou le commentaire ne peuvent pas etre vide.");
                             request.setAttribute("com", "let");
                         }
                     }
-
                 }
             }
 
@@ -318,7 +319,8 @@ System.out.println("presComent :::::" + presComent);
 
                 listeEdition = Edition.editionParSousCategorie(id, idSsCate);
             }
-
+            System.out.println("id = " + id);
+            request.setAttribute("idCat", id);
             request.setAttribute("ss1", ss1);
             request.setAttribute("ss5", ss2);
             request.setAttribute("Edition", listeEdition);
@@ -330,15 +332,18 @@ System.out.println("presComent :::::" + presComent);
         }
 //FIN SECTION CATALOGUE PAR CATEGORIE       
 
-        // debut client
+// DEBUT AFFICHAGE COMPTE CLIENT 
         // affichage nom, prenom...
+        Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
+
         if ("acc".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=acc";
-
+            section = "/WEB-INF/view/client.jsp";
             Bdd bdd = new Bdd();
             Connection con = bdd.connecterBdd();
-            String str = "bruce28";
-
+            String str = util.getPseudo();
+            System.out.println("valeur str : " + str);
+            String strNumCom = "";
             try {
                 String query = "SELECT * FROM client WHERE pseudo = '" + str + "'";
 
@@ -422,9 +427,6 @@ System.out.println("presComent :::::" + presComent);
                     villeFac = client.getVilleFac();
                     paysFac = client.getPaysFac();
 
-                    if (complementFac == null) {
-                        complementFac = ".";
-                    }
                 }
 
                 request.setAttribute("adresseFac", adresseFac);
@@ -464,9 +466,6 @@ System.out.println("presComent :::::" + presComent);
                     villeLiv = client.getVilleLiv();
                     paysLiv = client.getPaysLiv();
 
-                    if (complementLiv == null) {
-                        complementLiv = ".";
-                    }
                 }
 
                 request.setAttribute("adresseLiv", adresseLiv);
@@ -480,9 +479,102 @@ System.out.println("presComent :::::" + presComent);
             } catch (SQLException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
-// fin client
+// AFFICHAGE DES COMMANDES DU CLIENT
+        float totalCommande = 0f;
+        float totalCommandeInter = 0f;
+
+        if ("com".equals(request.getParameter("section"))) {
+            url = "/WEB-INF/index.jsp?section=com";
+            section = "/WEB-INF/view/ligneCommande.jsp";
+            Bdd bdd = new Bdd();
+            Connection con = bdd.connecterBdd();
+            String str = util.getPseudo();
+            System.out.println("valeur str : " + str);
+            String strNumCom = "";
+            try {
+                String query = "SELECT numerocommande, datecommande, statutcommande FROM commande "
+                        + "WHERE pseudo='" + str + "' ORDER BY datecommande";
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+
+                ArrayList<Commande> listeCom = new ArrayList();
+                ArrayList<LigneCommande> llcom = new ArrayList();
+
+                while (rs.next()) {
+
+                    Commande commande = new Commande();
+                    commande.setNumeroCommande(rs.getString("numerocommande"));
+                    commande.setDateCommande(rs.getDate("datecommande"));
+                    commande.setStatutCommande(rs.getString("statutcommande"));
+                    strNumCom = commande.getNumeroCommande();
+                    commande.setTotalCom(totalCommande);
+                    listeCom.add(commande);
+                    System.out.println("2e SOUT : " + listeCom);
+                }
+
+                request.setAttribute("listeCom", listeCom);
+                System.out.println("3e SOUT : " + listeCom);
+
+                rs.close();
+                stmt.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            String select = request.getParameter("selection"); // toujours null ???
+            System.out.println("test 1 : " + request.getParameter("selection"));
+
+            if (request.getParameter("selection") != null) {
+                url = "/WEB-INF/index.jsp?section=com";
+
+                section = "/WEB-INF/view/ligneCommande.jsp";
+
+                try {
+                    ArrayList<LigneCommande> llcom = new ArrayList();
+
+                    // LIGNES DE COMMANDE
+                    String query2 = "SELECT  titre, quantitecommande, prixventeht, tvaappliquee, reduction "
+                            + "FROM OEUVRE AS oe "
+                            + "JOIN EDITION AS ed "
+                            + "ON oe.IDOEUVRE=ed.IDOEUVRE "
+                            + "JOIN LIGNECOMMANDE AS li "
+                            + "ON ed.ISBN=li.ISBN "
+                            + "JOIN COMMANDE AS co "
+                            + "ON li.IDCOMMANDE=co.IDCOMMANDE "
+                            + "WHERE co.NUMEROCOMMANDE='" + select + "'";
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery(query2);
+
+                    System.out.println("TEST RECUP VALEUR COMBOBOX JSP CLIENT : " + select);
+
+                    while (rs2.next()) {
+                        LigneCommande llCom2 = new LigneCommande();
+
+                        llCom2.setTitreLivre(rs2.getString("titre"));
+                        llCom2.setQte(rs2.getInt("quantitecommande"));
+                        llCom2.setPrixUHT(rs2.getFloat("prixventeht"));
+                        llCom2.setTvaAppli(rs2.getFloat("tvaappliquee"));
+                        llCom2.setReduc(rs2.getFloat("reduction"));
+
+                        totalCommandeInter = (((llCom2.getQte() * llCom2.getPrixUHT()) * (1 + (llCom2.getTvaAppli() / 100))) * (1 - (llCom2.getReduc() / 100)));
+
+                        llcom.add(llCom2);
+                        totalCommande = totalCommande + totalCommandeInter;
+                    }
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    String strTotal = df.format(totalCommande);
+
+                    request.setAttribute("select", select);
+                    request.setAttribute("totalCommande", strTotal);
+                    request.setAttribute("llcom", llcom);
+                } catch (SQLException ex) {
+                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+// FIN AFFICHAGE COMPTE CLIENT
 
 //SECTION RECHERCHE
         if (request.getParameter("rec") != null) {
@@ -576,9 +668,8 @@ System.out.println("presComent :::::" + presComent);
             request.setAttribute("ss", ss8);
         }
 // SECTION PANIER
-        if ("pan".equals(request.getParameter("section"))) {
+        if ("pan".equals(request.getParameter("action"))) {
 
-            section = "/WEB-INF/S1.jsp";
             Panier bPanier = (Panier) session.getAttribute("panier");
 
             if (bPanier == null) {
@@ -594,31 +685,33 @@ System.out.println("presComent :::::" + presComent);
             if (request.getParameter("clear") != null) {
                 bPanier.clear();
             }
-            if (request.getParameter("qte") != null) {  
+            if (request.getParameter("qte") != null) {
                 bPanier.qtyChange(request.getParameter("isbn"), Integer.parseInt(request.getParameter("qte")));
             }
-            
             Commande commande = bPanier.getCommande();
-            Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
+            session.setAttribute("list", commande.getLigneCommande());
+
+        }
+        if ("pan".equals(request.getParameter("section"))) {
+            section = "/WEB-INF/S1.jsp";
+            Panier bPanier = (Panier) session.getAttribute("panier");
+
+            if (bPanier == null) {
+                bPanier = new Panier();
+                session.setAttribute("panier", bPanier);
+            }
+
+            Commande commande = bPanier.getCommande();
 
             request.setAttribute("commande", commande);
             request.setAttribute("ss", ss11);
             request.setAttribute("list", commande.getLigneCommande());
-
         }
-//                if (request.getParameter("dec") != null) {
-//                   bPanier.dec(request.getParameter("dec"));
-//               }
-//             
-//              
-
-
 //FIN SECTION PANIER
 
-
 //SECTION VALIFATION DU PANIER 
-        
         //VALIDATION ADRESSE
+
         if ("choixadresse".equals(request.getParameter("section"))){
         Utilisateur ut = (Utilisateur) session.getAttribute("sessionUtilisateur");    
         if (request.getParameter("doIt") != null){
@@ -627,31 +720,50 @@ System.out.println("presComent :::::" + presComent);
                 beanAdresse adFacturation = new beanAdresse(ut.getPseudo(), "F");
                 session.setAttribute("adressefacturation", adFacturation.getList());
                 request.setAttribute("adressefacturation", adFacturation.getList());
+//=======
+//        if ("choixAdresse".equals(request.getParameter("section"))) {
+//            if (request.getParameter("doIt") != null) {
+//                url = "./WEB-INF/view/adresse.jsp";
+//
+//                beanAdresse adrBeanFacturation = (beanAdresse) session.getAttribute("adresselivraison");
+//                if (adrBeanFacturation == null) {
+//                    adrBeanFacturation = new beanAdresse(session.getAttribute("login").toString(), "F");
+//                    session.setAttribute("adressefacturation", adrBeanFacturation.getList());
+//                }
+//                adrBeanFacturation.getAdresse(session.getAttribute("login").toString(), "F");
+//                request.setAttribute("adressefacturation", adrBeanFacturation.getList());
+//>>>>>>> 5809e460c1f37800edbd7e45199ba935f96571ec
 
                 beanAdresse adLivraison = new beanAdresse(ut.getPseudo(), "L");
                 session.setAttribute("adresselivraison", adLivraison.getList());
                 request.setAttribute("adresselivraison", adLivraison.getList());
-                }else{
-                      url = "./WEB-INF/view/login.jsp";
-        }
-        }
+
+            } else {
+                url = "./WEB-INF/view/panier.jsp";
+            }
+
+
         }
         // FIN VALIDATION ADRESSE  
-        
         // AJOUT ADRESSE
         if ("nouvelleadresse".equals(request.getParameter("section"))) {
             url = "/WEB-INF/view/jspNewAdresse.jsp";
         }
+
         
         if ("sauvegadresse".equals(request.getParameter("section"))){
+
             Adresse ad = new Adresse();
             System.out.println("on va ajouter une adresse");
-            Utilisateur ut = (Utilisateur) session.getAttribute("sessionUtilisateur");
+            ut = (Utilisateur) session.getAttribute("sessionUtilisateur");
+
             ad.sauvegarderAdresse(ut.getPseudo(), request.getParameter("adresseClient"),request.getParameter("complementAdresse"),request.getParameter("codePostal"),request.getParameter("ville"),request.getParameter("pays"),request.getParameter("natureAdresse"));
             
              if (request.getParameter("doIt") != null) {
                 url = "/WEB-INF/view/adresse.jsp";
                 beanAdresse adFacturation = new beanAdresse(ut.getPseudo(), "F");
+
+
                 session.setAttribute("adressefacturation", adFacturation.getList());
                 request.setAttribute("adressefacturation", adFacturation.getList());
 
@@ -659,10 +771,12 @@ System.out.println("presComent :::::" + presComent);
                 session.setAttribute("adresselivraison", adLivraison.getList());
                 request.setAttribute("adresselivraison", adLivraison.getList());
 
-            } else { url = "./WEB-INF/view/panier.jsp";
-        }
+            } else {
+                url = "./WEB-INF/view/panier.jsp";
+            }
         }
         //FIN AJOUT ADRESSE
+
         
         // VALIDATION PANIER
         if ("validCommande".equals(request.getParameter("section"))){
@@ -671,7 +785,7 @@ System.out.println("presComent :::::" + presComent);
                 
                 Panier p = (Panier)session.getAttribute("panier");
                 System.out.println("panier="+p);
-                Utilisateur ut = (Utilisateur) session.getAttribute("sessionUtilisateur");
+                ut = (Utilisateur) session.getAttribute("sessionUtilisateur");
                 String ip = InetAddress.getLoopbackAddress().getHostAddress();
                 Calendar c = Calendar.getInstance();
                 Date date = c.getTime();
@@ -694,9 +808,11 @@ System.out.println("presComent :::::" + presComent);
                 url = "./WEB-INF/view/adresse.jsp";
                    }
         }
-        // ccc
-        request.setAttribute("section", section);
 
+
+        // VALIDATION TRANSPORTEUR
+
+        request.setAttribute("section", section);
 
         request.getRequestDispatcher(url).include(request, response);
     }
@@ -709,7 +825,7 @@ System.out.println("presComent :::::" + presComent);
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     */
+     */}
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -739,5 +855,4 @@ System.out.println("presComent :::::" + presComent);
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-}
+    }

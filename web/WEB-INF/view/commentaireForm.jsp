@@ -1,4 +1,4 @@
-<FORM action="./index?section=focus&value=${Edition.numeroIsbn}" method="POST">
+<FORM action="./index?section=focus&value=${Edition.numeroIsbn}" method="POST" >
     Note : <SELECT name="note">
         <OPTION></OPTION>
         <OPTION>0</OPTION>
