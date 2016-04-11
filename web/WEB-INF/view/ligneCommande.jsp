@@ -54,7 +54,7 @@
                 <tbody> 
                     <c:forEach var="ligne" items="${llcom}">
                         <tr>
-                            <td style="text-align:left ; width:100px; height:30px;"><c:out value="${ligne.titreLivre}"/></td>
+                            <td style="text-align:left ; width:100px; height:30px;"><strong><c:out value="${ligne.titreLivre}"/></strong></td>
                             <td style="text-align:center ; width:30px; height:30px;"><c:out value="${ligne.qte}"/></td>
                             <td style="text-align:center  ; width:30px; height:30px;"><c:out value="${ligne.prixUHT}"/> euro</td>
                             <td style="text-align:center  ; width:30px; height:30px;"><c:out value="${ligne.tvaAppli}"/> %</td>

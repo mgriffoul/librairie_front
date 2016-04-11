@@ -54,23 +54,23 @@
                     </tr>
                 </table>
             </div>  
-            <hr>
+
             <div> 
 
-                <form method="get" action="www01/register">
+                <form method="get" action="">
                     <input class= "button" type="submit" value="Modifier votre Email"  />
                 </form>
+            </div> 
 
-
-
-                <form method="get" action="www01/register">
+            <div>
+                <form method="get" action="">
                     <input class= "button" type="submit" value="Modifier votre Mot de Passe"  />
                 </form>
 
 
             </div>
-            </div>
-            <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
             <div>
                 <table width="400" border="1">
                     <caption>Adresse de Facturation</caption>
@@ -97,7 +97,7 @@
                 </table>
 
             </div>
-            <hr>
+
             <div>
                 <table width="400" border="1">
                     <caption>Adresse de Livraison</caption>
@@ -125,6 +125,6 @@
 
             </div>
         </div>  
-        
+
     </body>
 </html>
