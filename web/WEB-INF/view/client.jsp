@@ -19,7 +19,7 @@
     <body>
 
         <jsp:useBean id="beanPage" scope="page" class="beans.beanClient" />
-        <div class="col-md-5">
+        <div class="col-md-6">
             <div>
                 <table width="400" border="1">
                     <caption>Informations Personnelles</caption>
@@ -69,7 +69,8 @@
 
 
             </div>
-            <hr height="2">
+            </div>
+            <div class="col-md-6">
             <div>
                 <table width="400" border="1">
                     <caption>Adresse de Facturation</caption>
@@ -124,34 +125,6 @@
 
             </div>
         </div>  
-        <div class="col-md-7">
-
-
-            <table align="center" valign="middle">
-                <caption>Vos commandes</caption>
-                <tr>
-                    <td>
-                        <form action="" method="post">
-                            <select name="selection" style=" width:400px; height:30px" >
-                                <c:forEach var="com" items="${listeCom}">
-                                    <option  value="${com.numeroCommande}">
-                                        <c:out value="${com.numeroCommande}"/> - 
-                                        <c:out value="${com.dateCommande}"/> - 
-                                        <c:out value="${com.statutCommande}"/>
-                                    </option>
-                                </c:forEach>
-                            </select>
-                            <input style="width:50px; height:30px" type="submit" value="OK"/>
-                        </form>
-                    </td>
-                </tr>
-            </table>
-            <hr>
-            <div>
-                <jsp:include page="/WEB-INF/view/ligneCommande.jsp"/>
-            </div>
-
-
-        </div>
+        
     </body>
 </html>

@@ -17,7 +17,28 @@
         <title></title>
     </head>
     <body>
-
+<div>
+            <table align="center" valign="middle">
+                <caption>Vos commandes</caption>
+                <tr>
+                    <td>
+                        <form action="" method="post">
+                            <select name="selection" style=" width:400px; height:30px" >
+                                <c:forEach var="com" items="${listeCom}">
+                                    <option  value="${com.numeroCommande}">
+                                        <c:out value="${com.numeroCommande}"/> - 
+                                        <c:out value="${com.dateCommande}"/> - 
+                                        <c:out value="${com.statutCommande}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                            <input style="width:50px; height:30px" type="submit" value="OK"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            
+        </div>
         <div>
             <table  align="center" valign="middle"  CELLPADDING="5" width="220">
                 <caption>Détail commande <font color="red"><c:out value="${select}"/></font></caption>

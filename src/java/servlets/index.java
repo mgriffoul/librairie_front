@@ -474,9 +474,19 @@ public class index extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
 // AFFICHAGE DES COMMANDES DU CLIENT
             float totalCommande = 0f;
             float totalCommandeInter = 0f;
+            
+            if ("com".equals(request.getParameter("section"))) {
+            url = "/WEB-INF/index.jsp?section=com";
+            section = "/WEB-INF/view/ligneCommande.jsp";
+            Bdd bdd = new Bdd();
+            Connection con = bdd.connecterBdd();
+            String str = util.getPseudo();
+            System.out.println("valeur str : "+str);
+            String strNumCom = "";
             try {
                 String query = "SELECT numerocommande, datecommande, statutcommande FROM commande "
                         + "WHERE pseudo='" + str + "' ORDER BY datecommande";
