@@ -17,7 +17,8 @@
         <title></title>
     </head>
     <body>
-<div>
+        <div>
+            
             <table align="center" valign="middle">
                 <caption>Vos commandes</caption>
                 <tr>
@@ -37,9 +38,10 @@
                     </td>
                 </tr>
             </table>
-            
+
         </div>
         <div>
+            
             <table  align="center" valign="middle"  CELLPADDING="5" width="220">
                 <caption>Détail commande n° <font color="red"><c:out value="${select}"/></font></caption>
                 <thead>
@@ -51,7 +53,10 @@
                         <th style="width:30px;">Réduc</th>
                     </tr>
                     </head> 
+
+
                 <tbody> 
+
                     <c:forEach var="ligne" items="${llcom}">
                         <tr>
                             <td style="text-align:left ; width:100px; height:30px;"><strong><c:out value="${ligne.titreLivre}"/></strong></td>
@@ -73,7 +78,7 @@
                 </tfoot>
 
             </table>
-
+            
         </div>
 
     </body>
