@@ -1,4 +1,5 @@
 package servlets;
+
 import beans.Adresse;
 import beans.Bdd;
 import beans.Categorie;
@@ -57,7 +58,6 @@ public class index extends HttpServlet {
         String ATT_USER = "utilisateur";
         String ATT_FORM = "form";
         String ATT_SESSION_USER = "sessionUtilisateur";
-
 
         String section = "";
         String ss1 = "/WEB-INF/view/sidebarCategorie.jsp";
@@ -148,7 +148,7 @@ public class index extends HttpServlet {
 
                             System.out.println("envoie à soumission bdd");
                             com.soumettreCom(isb.getNumeroIsbn());
-
+                            request.setAttribute("fait", "done");
                         } else {
                             System.out.println("erreur detectée");
                             request.setAttribute("Erreur", "La note ou le commentaire ne peuvent pas etre vide.");
@@ -196,7 +196,6 @@ public class index extends HttpServlet {
             edit.setIsbn(isb);
             edit.chargerEdition();
 
-            System.out.println("isbn " + isb.getNumeroIsbn());
 
             ArrayList<Categorie> listeCategorie = Categorie.initSidebar();
 
@@ -205,7 +204,7 @@ public class index extends HttpServlet {
                 presComent = util.verifPrevComent(isb.getNumeroIsbn());
             }
             System.out.println("presComent :::::" + presComent);
-            //Vérification de la presence d'un achet du livre par l'utilisateur
+            //Vérification de la presence d'un achat du livre par l'utilisateur dans la base
             if (util != null) {
                 presAchat = util.verifierPrevAchat(isb.getNumeroIsbn());
             }
@@ -214,18 +213,18 @@ public class index extends HttpServlet {
             ArrayList<Commentaire> listeCommentaire = Commentaire.recupererCommentaire(isb.getNumeroIsbn());
 
             //si un commentaire vient d'être laissé
-            if (util != null) {
+            if (util != null && !presComent) {
                 if ("Valider".equals(request.getParameter("go"))) {
-                    System.out.println("entrée dans le test request");
+                    
                     Boolean ok = false;
 
                     if (request.getParameter("note") != null && request.getParameter("coment") != null) {
 
                         if (!request.getParameter("note").isEmpty() && request.getParameter("coment").length() > 1) {
 
-                            System.out.println("NO erreur detectée");
+                            
                             String s = request.getParameter("coment");
-                            System.out.println("SIZE REQU" + s.length());
+                          
                             ok = true;
 
                             Commentaire com = new Commentaire();
@@ -240,12 +239,11 @@ public class index extends HttpServlet {
                             com.soumettreCom(isb.getNumeroIsbn());
 
                         } else {
-                            System.out.println("erreur detectée");
+                            
                             request.setAttribute("Erreur", "La note ou le commentaire ne peuvent pas etre vide.");
                             request.setAttribute("com", "let");
                         }
                     }
-
                 }
             }
 
@@ -330,14 +328,14 @@ public class index extends HttpServlet {
 // DEBUT AFFICHAGE COMPTE CLIENT 
         // affichage nom, prenom...
         Utilisateur util = (Utilisateur) session.getAttribute("sessionUtilisateur");
-        
+
         if ("acc".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=acc";
             section = "/WEB-INF/view/client.jsp";
             Bdd bdd = new Bdd();
             Connection con = bdd.connecterBdd();
             String str = util.getPseudo();
-            System.out.println("valeur str : "+str);
+            System.out.println("valeur str : " + str);
             String strNumCom = "";
             try {
                 String query = "SELECT * FROM client WHERE pseudo = '" + str + "'";
@@ -476,16 +474,16 @@ public class index extends HttpServlet {
             }
         }
 // AFFICHAGE DES COMMANDES DU CLIENT
-            float totalCommande = 0f;
-            float totalCommandeInter = 0f;
-            
-            if ("com".equals(request.getParameter("section"))) {
+        float totalCommande = 0f;
+        float totalCommandeInter = 0f;
+
+        if ("com".equals(request.getParameter("section"))) {
             url = "/WEB-INF/index.jsp?section=com";
             section = "/WEB-INF/view/ligneCommande.jsp";
             Bdd bdd = new Bdd();
             Connection con = bdd.connecterBdd();
             String str = util.getPseudo();
-            System.out.println("valeur str : "+str);
+            System.out.println("valeur str : " + str);
             String strNumCom = "";
             try {
                 String query = "SELECT numerocommande, datecommande, statutcommande FROM commande "
@@ -495,7 +493,7 @@ public class index extends HttpServlet {
 
                 ArrayList<Commande> listeCom = new ArrayList();
                 ArrayList<LigneCommande> llcom = new ArrayList();
- 
+
                 while (rs.next()) {
 
                     Commande commande = new Commande();
@@ -507,7 +505,7 @@ public class index extends HttpServlet {
                     listeCom.add(commande);
                     System.out.println("2e SOUT : " + listeCom);
                 }
-                
+
                 request.setAttribute("listeCom", listeCom);
                 System.out.println("3e SOUT : " + listeCom);
 
@@ -517,20 +515,19 @@ public class index extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
-            String select=request.getParameter("selection"); // toujours null ???
-            System.out.println("test 1 : "+request.getParameter("selection"));
-            
-            if (request.getParameter("selection") != null){
+
+            String select = request.getParameter("selection"); // toujours null ???
+            System.out.println("test 1 : " + request.getParameter("selection"));
+
+            if (request.getParameter("selection") != null) {
                 url = "/WEB-INF/index.jsp?section=com";
 
-            section = "/WEB-INF/view/ligneCommande.jsp";
+                section = "/WEB-INF/view/ligneCommande.jsp";
 
-            try{
-                ArrayList<LigneCommande> llcom = new ArrayList();
+                try {
+                    ArrayList<LigneCommande> llcom = new ArrayList();
 
-               // LIGNES DE COMMANDE
+                    // LIGNES DE COMMANDE
                     String query2 = "SELECT  titre, quantitecommande, prixventeht, tvaappliquee, reduction "
                             + "FROM OEUVRE AS oe "
                             + "JOIN EDITION AS ed "
@@ -543,31 +540,31 @@ public class index extends HttpServlet {
                     Statement stmt2 = con.createStatement();
                     ResultSet rs2 = stmt2.executeQuery(query2);
 
-                   System.out.println("TEST RECUP VALEUR COMBOBOX JSP CLIENT : "+select);
-                    
+                    System.out.println("TEST RECUP VALEUR COMBOBOX JSP CLIENT : " + select);
+
                     while (rs2.next()) {
                         LigneCommande llCom2 = new LigneCommande();
-                        
+
                         llCom2.setTitreLivre(rs2.getString("titre"));
                         llCom2.setQte(rs2.getInt("quantitecommande"));
                         llCom2.setPrixUHT(rs2.getFloat("prixventeht"));
                         llCom2.setTvaAppli(rs2.getFloat("tvaappliquee"));
                         llCom2.setReduc(rs2.getFloat("reduction"));
-                        
-                        totalCommandeInter=(((llCom2.getQte()*llCom2.getPrixUHT())*(1+(llCom2.getTvaAppli()/100)))*(1-(llCom2.getReduc()/100)));
+
+                        totalCommandeInter = (((llCom2.getQte() * llCom2.getPrixUHT()) * (1 + (llCom2.getTvaAppli() / 100))) * (1 - (llCom2.getReduc() / 100)));
 
                         llcom.add(llCom2);
-                        totalCommande=totalCommande+totalCommandeInter;  
+                        totalCommande = totalCommande + totalCommandeInter;
                     }
-                    DecimalFormat df= new DecimalFormat ("#.00");
+                    DecimalFormat df = new DecimalFormat("#.00");
                     String strTotal = df.format(totalCommande);
-                    
-                    request.setAttribute("select",select);
-                    request.setAttribute("totalCommande",strTotal);
-                    request.setAttribute("llcom", llcom); 
-            }catch (SQLException ex) {
-                Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
+                    request.setAttribute("select", select);
+                    request.setAttribute("totalCommande", strTotal);
+                    request.setAttribute("llcom", llcom);
+                } catch (SQLException ex) {
+                    Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 // FIN AFFICHAGE COMPTE CLIENT
@@ -686,7 +683,6 @@ public class index extends HttpServlet {
             }
             Commande commande = bPanier.getCommande();
             session.setAttribute("list", commande.getLigneCommande());
-            
 
         }
         if ("pan".equals(request.getParameter("section"))) {
